@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SPPRegistrationFormFragment"
+    android:background="@color/background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_width="0sp"
+            android:layout_height="0sp"
+            android:text="Enter\ncompany information"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@id/emailInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/companyNameInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="32dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Name"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.833"
+            app:layout_constraintStart_toEndOf="@id/emailInput"
+            app:layout_constraintTop_toTopOf="@id/emailInput"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <EditText
+            android:id="@+id/phoneNumberInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Phone number"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/streetInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/streetInput"
+            app:layout_constraintTop_toBottomOf="@id/streetInput"
+            app:layout_constraintVertical_bias="0.078" />
+
+        <EditText
+            android:id="@+id/countryInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Country"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/emailInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/emailInput"
+            app:layout_constraintTop_toBottomOf="@id/emailInput"
+            app:layout_constraintVertical_bias="0.053" />
+
+        <EditText
+            android:id="@+id/numberInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/white"
+            android:ems="4"
+            android:hint="Number"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="@id/streetInput"
+            app:layout_constraintEnd_toEndOf="@id/cityInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/cityInput"
+            app:layout_constraintTop_toTopOf="@id/streetInput"
+            app:layout_constraintVertical_bias="0.115" />
+
+        <EditText
+            android:id="@+id/cityInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="City"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="@id/countryInput"
+            app:layout_constraintEnd_toEndOf="@id/companyNameInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/companyNameInput"
+            app:layout_constraintTop_toTopOf="@id/countryInput"
+            app:layout_constraintVertical_bias="0.115" />
+
+        <EditText
+            android:id="@+id/streetInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="28dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Street"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/countryInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/countryInput"
+            app:layout_constraintTop_toBottomOf="@id/countryInput"
+            app:layout_constraintVertical_bias="0.073" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.151"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.14" />
+
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:text="Return"
+            android:textSize="17sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/cityInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/streetInput"
+            app:layout_constraintTop_toBottomOf="@id/companyDescriptionInput"
+            app:layout_constraintVertical_bias="0.701" />
+
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_gold"
+            android:text="Company images"
+            android:textSize="17sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/companyDescriptionInput"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/returnButton"
+            app:layout_constraintTop_toTopOf="@id/returnButton"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/companyDescriptionInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="start|top"
+            android:hint="Company description"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/companyNameInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/phoneNumberInput"
+            app:layout_constraintTop_toBottomOf="@id/phoneNumberInput"
+            app:layout_constraintVertical_bias="0.181" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- TODO: Update blank fragment layout -->
+
+
+</FrameLayout>
