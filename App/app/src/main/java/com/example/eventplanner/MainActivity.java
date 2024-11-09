@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         TimerTask transitionTask = new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
                // finish();
             }
         };
-        transitionTimer.schedule(transitionTask, 5000);
+        transitionTimer.schedule(transitionTask, 1000);
     }
 }
