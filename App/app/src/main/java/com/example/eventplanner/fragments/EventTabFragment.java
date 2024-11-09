@@ -12,11 +12,16 @@ import android.widget.ListView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapterSearch;
+import com.example.eventplanner.model.Address;
+import com.example.eventplanner.model.EventType;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.example.eventplanner.model.Event;
 
 public class EventTabFragment extends Fragment {
@@ -45,9 +50,19 @@ public class EventTabFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         events = new ArrayList<>();
-        events.add(new Event("Neven", "Ilincic"));
-        events.add(new Event("Pera", "Peric"));
-        events.add(new Event("Mika", "Mikic"));
+        Address myAddress = new Address("Serbia", "Novi Sad", "Partizanska", 48);
+        EventType myType = new EventType("Svadba", "Dodjite!", true);
+        Calendar startingDate = Calendar.getInstance();
+        startingDate.set(Calendar.DAY_OF_MONTH, 5);
+        startingDate.set(Calendar.MONTH, 2);
+        startingDate.set(Calendar.DAY_OF_MONTH, 2);
+        startingDate.set(Calendar.HOUR, 15);
+        startingDate.set(Calendar.MINUTE, 30);
+
+
+        events.add(new Event("Neven", "Ilincic", myType, myAddress, startingDate, startingDate, 300));
+        events.add(new Event("Pera", "Peric", myType, myAddress, startingDate, startingDate, 200));
+        events.add(new Event("Mika", "Mikic", myType, myAddress, startingDate, startingDate, 100));
 
         eventAdapterSearch = new EventAdapterSearch(getContext(), events);
 

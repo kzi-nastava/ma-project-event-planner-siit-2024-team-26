@@ -18,6 +18,9 @@ import androidx.annotation.Nullable;
 import com.example.eventplanner.R;
 import com.example.eventplanner.model.Event;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class EventAdapterSearch extends ArrayAdapter<Event> {
@@ -72,8 +75,23 @@ public class EventAdapterSearch extends ArrayAdapter<Event> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_card, parent, false);
         }
 
+        TextView eventName = convertView.findViewById(R.id.eventName);
+        TextView eventType = convertView.findViewById(R.id.eventTypeName);
+        TextView eventGuestsLimit = convertView.findViewById(R.id.eventGuestsLimit);
+        TextView eventStartingDate = convertView.findViewById(R.id.eventStartingDate);
+        TextView eventEndingDate = convertView.findViewById(R.id.eventEndingDate);
 
         if(event != null){
+            eventName.setText("Name: "+ event.getName());
+            eventType.setText("Type: "+event.getEventType().getName());
+            eventGuestsLimit.setText("Guests limit: "+ String.valueOf(event.getGuestsLimit()));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+
+
+            String startingDate = sdf.format(event.getStarts().getTime());
+            String endingDate = sdf.format(event.getEnds().getTime());
+            eventStartingDate.setText("Starts: "+ startingDate);
+            eventEndingDate.setText("Ends: "+ endingDate);
         }
 
         return convertView;
