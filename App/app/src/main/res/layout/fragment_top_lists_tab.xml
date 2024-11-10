@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".fragments.home_screen_fragments.TopListsTabFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/topEventList"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topFiveEvents"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                tools:listitem="@layout/event_cards_list"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/topServiceList"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+            <ListView
+                android:id="@+id/topFiveServices"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/service_cards_list"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/topProductList"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+            <ListView
+                android:id="@+id/topFiveProducts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/product_cards_list"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

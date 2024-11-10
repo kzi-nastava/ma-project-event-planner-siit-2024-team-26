@@ -2,7 +2,6 @@ package com.example.eventplanner.fragments.home_screen_fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,15 +9,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.eventplanner.R;
-import com.example.eventplanner.adapters.EventAdapterSearch;
+import com.example.eventplanner.adapters.EventAdapter;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.EventType;
@@ -35,7 +32,7 @@ import com.example.eventplanner.model.Event;
 public class EventTabFragment extends Fragment {
 
 
-    private EventAdapterSearch eventAdapterSearch;
+    private EventAdapter eventAdapter;
     private ArrayList<Event> events;
 
     private ListView listView;
@@ -72,7 +69,7 @@ public class EventTabFragment extends Fragment {
         events.add(new Event("Pera", "Peric", myType, myAddress, startingDate, startingDate, 200));
         events.add(new Event("Mika", "Mikic", myType, myAddress, startingDate, startingDate, 100));
 
-        eventAdapterSearch = new EventAdapterSearch(getContext(), events);
+        eventAdapter = new EventAdapter(getContext(), events);
 
     }
 
@@ -82,7 +79,7 @@ public class EventTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_tab, container, false);
 
         listView = view.findViewById(R.id.foundEvents);
-        listView.setAdapter(eventAdapterSearch);
+        listView.setAdapter(eventAdapter);
 
         Locale locale = new Locale("en", "US");
         Locale.setDefault(locale);

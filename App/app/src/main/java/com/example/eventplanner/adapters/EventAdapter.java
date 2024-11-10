@@ -2,15 +2,11 @@ package com.example.eventplanner.adapters;
 
 import android.content.Context;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,14 +14,12 @@ import androidx.annotation.Nullable;
 import com.example.eventplanner.R;
 import com.example.eventplanner.model.Event;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class EventAdapterSearch extends ArrayAdapter<Event> {
+public class EventAdapter extends ArrayAdapter<Event> {
     ArrayList<Event> aEvents;
-    public EventAdapterSearch(@NonNull Context context, ArrayList<Event> events) {
+    public EventAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, R.layout.event_card);
         aEvents = events;
     }
