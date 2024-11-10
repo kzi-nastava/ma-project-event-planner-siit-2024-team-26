@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapterSearch;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.EventType;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 
@@ -21,6 +23,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import com.example.eventplanner.model.Event;
 
@@ -77,6 +80,12 @@ public class EventTabFragment extends Fragment {
         listView.setAdapter(eventAdapterSearch);
 
 
+        Locale locale = new Locale("en", "US");
+        Locale.setDefault(locale);
+
+        // Setovanje nove lokalizacije za aplikaciju
+        android.content.res.Configuration config = getResources().getConfiguration();
+        config.setLocale(locale);
 
         Button button = view.findViewById(R.id.eventFilterButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +94,13 @@ public class EventTabFragment extends Fragment {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.FullScreenBottomSheetDialog);
                 View dialogView = getLayoutInflater().inflate(R.layout.events_search_filter, null);
                 bottomSheetDialog.setContentView(dialogView);
+                dialogView.getLayoutParams().height = (int) (800 * getResources().getDisplayMetrics().density);
+                FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                if (bottomSheet != null) {
+                    BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+                    behavior.setDraggable(false); // Onemogući prevlačenje
 
-                dialogView.getLayoutParams().height = (int) (500 * getResources().getDisplayMetrics().density);
+                }
                 bottomSheetDialog.show();
             }
         });

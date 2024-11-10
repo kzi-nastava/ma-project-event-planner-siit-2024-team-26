@@ -6,4 +6,7 @@
     <string name="search">Search</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="notBefore">Not before</string>
+    <string name="notAfter">Not after</string>
+    <string name="guestsLimit">Guests limit</string>
 </resources>
