@@ -9,4 +9,5 @@
     <string name="notBefore">Not before</string>
     <string name="notAfter">Not after</string>
     <string name="guestsLimit">Guests limit</string>
+    <string name="eventType">Event type</string>
 </resources>

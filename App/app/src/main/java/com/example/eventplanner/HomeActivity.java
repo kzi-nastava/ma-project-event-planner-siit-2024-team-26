@@ -8,9 +8,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.eventplanner.fragments.EventTabFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
-import com.example.eventplanner.model.Event;
 
 public class HomeActivity extends AppCompatActivity {
 

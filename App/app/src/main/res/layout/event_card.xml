@@ -6,7 +6,7 @@
     android:layout_height="250dp"
     android:padding="10dp"
     android:orientation="horizontal"
-    android:background="@drawable/event_card_background">
+    android:background="@drawable/card_background_red">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
