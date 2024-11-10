@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profileButton"
+            android:icon="@drawable/baseline_account_24"
+            android:title="@string/DrawerProfile" />
+        <item
+            android:id="@+id/favouritesButton"
+            android:icon="@drawable/baseline_favorite_24"
+            android:title="@string/DrawerFavourites" />
+        <item
+            android:id="@+id/blockedUsersButton"
+            android:icon="@drawable/baseline_block_24"
+            android:title="@string/DrawerBlocked" />
+        <item
+            android:id="@+id/settingsButton"
+            android:icon="@drawable/baseline_settings_24"
+            android:title="@string/DrawerSettings" />
+        <item
+            android:id="@+id/logoutButton"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="@string/DrawerLogout" />
+    </group>
+</menu>
