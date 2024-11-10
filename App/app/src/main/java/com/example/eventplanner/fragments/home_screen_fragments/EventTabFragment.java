@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapterSearch;
+import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.EventType;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -83,7 +84,6 @@ public class EventTabFragment extends Fragment {
         listView = view.findViewById(R.id.foundEvents);
         listView.setAdapter(eventAdapterSearch);
 
-
         Locale locale = new Locale("en", "US");
         Locale.setDefault(locale);
 
@@ -129,6 +129,19 @@ public class EventTabFragment extends Fragment {
                         builder.create().show();
                     }
                 });
+
+                /// Transition to new tab
+                Button searchButton = dialogView.findViewById(R.id.eventsFilterSearchButton);
+                searchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.cancel();
+                        FragmentTransition.to(ServiceProductTabFragment.newInstance(), getActivity(), true, R.id.eventTabFragment);
+                    }
+                });
+
+
+
                 bottomSheetDialog.show();
             }
         });

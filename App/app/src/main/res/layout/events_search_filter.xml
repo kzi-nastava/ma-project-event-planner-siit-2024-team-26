@@ -194,7 +194,7 @@
         </HorizontalScrollView>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/eventsFilterSearchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/lighter_red"

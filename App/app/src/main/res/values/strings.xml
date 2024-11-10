@@ -10,4 +10,18 @@
     <string name="notAfter">Not after</string>
     <string name="guestsLimit">Guests limit</string>
     <string name="eventType">Event type</string>
+    <string name="price">Price</string>
+    <string name="discount">Discount</string>
+    <string name="grade">Grade</string>
+    <string name="isAvailable">Is available</string>
+    <string name="category">Category</string>
+    <string name="serviceProductNameHint">Name</string>
+    <string name="minPrice">Min price</string>
+    <string name="maxPrice">Max price</string>
+    <string name="serviceOnly">Service only:</string>
+    <string name="minDuration">Min duration</string>
+    <string name="maxDuration">Max duration</string>
+    <string name="onlyProducts">Only products</string>
+    <string name="onlyServices">Only services</string>
+    <string name="showBoth">Products and services</string>
 </resources>
