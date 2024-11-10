@@ -9,13 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapter;
-import com.example.eventplanner.adapters.EventAdapterHorizontal;
 import com.example.eventplanner.adapters.ServiceProductAdapter;
-import com.example.eventplanner.adapters.ServiceProductAdapterHorizontal;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.Event;
 import com.example.eventplanner.model.EventType;
@@ -25,16 +22,15 @@ import com.example.eventplanner.model.ServiceProduct;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class TopListsTabFragment extends Fragment {
 
     ArrayList<Event> events;
     ArrayList<ServiceProduct> services;
     ArrayList<ServiceProduct> products;
-    EventAdapterHorizontal eventAdapter;
-    ServiceProductAdapterHorizontal serviceAdapter;
-    ServiceProductAdapterHorizontal productAdapter;
+    EventAdapter eventAdapter;
+    ServiceProductAdapter serviceAdapter;
+    ServiceProductAdapter productAdapter;
 
     RecyclerView topEvents;
     RecyclerView topServices;
@@ -71,7 +67,7 @@ public class TopListsTabFragment extends Fragment {
         events.add(new Event("Mika", "Mikic", myType, myAddress, startingDate, startingDate, 100));
         events.add(new Event("Milos", "Misic", myType, myAddress, startingDate, startingDate, 100));
         events.add(new Event("Jovan", "Jovanovic", myType, myAddress, startingDate, startingDate, 100));
-        eventAdapter = new EventAdapterHorizontal(events);
+        eventAdapter = new EventAdapter(events);
 
         products = new ArrayList<>();
         products.add(new Product("Chair", 150, 0, true, 3, "Decoration",R.drawable.download));
@@ -79,7 +75,7 @@ public class TopListsTabFragment extends Fragment {
         products.add(new Product("Lamp", 150, 0, true, 3.9, "Decoration",R.drawable.download));
         products.add(new Product("Balloon", 10, 0, true, 3, "Decoration",R.drawable.download));
         products.add(new Product("Plates", 20, 0, true, 4.2, "Decoration",R.drawable.download));
-        productAdapter = new ServiceProductAdapterHorizontal(products);
+        productAdapter = new ServiceProductAdapter(products);
 
         services = new ArrayList<>();
         services.add(new Service("Lexington Band", 200, 0, true, 4.6, "Music",R.drawable.download));
@@ -87,7 +83,7 @@ public class TopListsTabFragment extends Fragment {
         services.add(new Service("Shining", 140, 0, true, 4.2, "Lighting",R.drawable.download));
         services.add(new Service("Cleans", 140, 0, true, 4.2, "Cleaning",R.drawable.download));
         services.add(new Service("Rock&Bass Band", 140, 0, true, 4.2, "Music",R.drawable.download));
-        serviceAdapter = new ServiceProductAdapterHorizontal(services);
+        serviceAdapter = new ServiceProductAdapter(services);
     }
 
     @Override

@@ -1,113 +1,130 @@
 package com.example.eventplanner.adapters;
 
-import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventplanner.R;
-import com.example.eventplanner.model.Event;
 import com.example.eventplanner.model.Product;
 import com.example.eventplanner.model.Service;
 import com.example.eventplanner.model.ServiceProduct;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 
-public class ServiceProductAdapter extends ArrayAdapter<ServiceProduct> {
+public class ServiceProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    ArrayList<ServiceProduct> aServiceProducts;
-    View productsView;
-    public ServiceProductAdapter(@NonNull Context context, ArrayList<ServiceProduct> serviceProducts) {
-        super(context, R.layout.product_card);
-        this.aServiceProducts = serviceProducts;
+    private List<ServiceProduct> items;
+
+    public ServiceProductAdapter(List<ServiceProduct> items) {
+        this.items = items;
     }
 
     @Override
-    public int getCount() {
-        return aServiceProducts.size();
-    }
-
-    @Nullable
-    @Override
-    public ServiceProduct getItem(int position) {
-        return aServiceProducts.get(position);
-    }
-
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ServiceProduct serviceProduct = getItem(position);
-
-        if (serviceProduct instanceof Product) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.product_card, parent, false);
+    public int getItemViewType(int position) {
+        // Vraća različite view type-ove na osnovu klase objekta
+        ServiceProduct item = items.get(position);
+        if (item instanceof Product) {
+            return 1; // Tip za Product
+        } else if (item instanceof Service) {
+            return 2; // Tip za Service
         }
-        else{
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.service_card, parent, false);
+        return 0; // Default tip
+    }
 
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        switch (viewType) {
+            case 1:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card, parent, false);
+                return new ProductViewHolder(view);
+            case 2:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.service_card, parent, false);
+                return new ServiceViewHolder(view);
+            default:
+                throw new IllegalArgumentException("Unknown view type");
         }
-        if(serviceProduct != null){
-            if (serviceProduct instanceof Product){
-                TextView productName = convertView.findViewById(R.id.productName);
-                TextView productCategory = convertView.findViewById(R.id.productCategory);
-                TextView productPrice = convertView.findViewById(R.id.productPrice);
-                TextView productDiscount = convertView.findViewById(R.id.productDiscount);
-                TextView productAvailable = convertView.findViewById(R.id.isProductAvailable);
-                TextView productGrade = convertView.findViewById(R.id.productGrade);
-                ImageView productImage = convertView.findViewById(R.id.productImage);
+    }
 
-                productName.setText(serviceProduct.getName());
-                productCategory.setText(serviceProduct.getCategory());
-                productPrice.setText(String.valueOf(serviceProduct.getPrice()));
-                productDiscount.setText(String.valueOf(serviceProduct.getDiscount()));
-                productImage.setImageResource(serviceProduct.getImage());
-                if(serviceProduct.getAvailable()){
-                    productAvailable.setText("Available");
-                }else{
-                    productAvailable.setText("Not available");
-                }
-                productGrade.setText(String.valueOf(serviceProduct.getGrade()));
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ServiceProduct serviceProduct = items.get(position);
+
+        if (holder instanceof ProductViewHolder) {
+            Product product = (Product) serviceProduct;
+            ProductViewHolder productHolder = (ProductViewHolder) holder;
+
+            productHolder.productName.setText(product.getName());
+            productHolder.productCategory.setText(product.getCategory());
+            productHolder.productPrice.setText(String.valueOf(product.getPrice()));
+            if (product.getAvailable()){
+                productHolder.productIsAvailable.setText("Available");
+            }else{
+                productHolder.productIsAvailable.setText("Not available");
             }
+            productHolder.productDiscount.setText(String.valueOf(product.getDiscount()));
+            productHolder.productGrade.setText(String.valueOf(product.getGrade()));
+            productHolder.productImage.setImageResource(product.getImage());
 
-            if (serviceProduct instanceof Service){
-                TextView serviceName = convertView.findViewById(R.id.serviceName);
-                TextView serviceCategory = convertView.findViewById(R.id.serviceCategory);
-                TextView servicePrice = convertView.findViewById(R.id.servicePrice);
-                TextView serviceDiscount = convertView.findViewById(R.id.serviceDiscount);
-                TextView serviceAvailable = convertView.findViewById(R.id.isServiceAvailable);
-                TextView serviceGrade = convertView.findViewById(R.id.serviceGrade);
-                ImageView serviceImage = convertView.findViewById(R.id.serviceImage);
+        } else if (holder instanceof ServiceViewHolder) {
+            Service service = (Service) serviceProduct;
+            ServiceViewHolder serviceHolder = (ServiceViewHolder) holder;
 
-                serviceName.setText(serviceProduct.getName());
-                serviceCategory.setText(serviceProduct.getCategory());
-                servicePrice.setText(String.valueOf(serviceProduct.getPrice()));
-                serviceDiscount.setText(String.valueOf(serviceProduct.getDiscount()));
-                serviceImage.setImageResource(serviceProduct.getImage());
-                if(serviceProduct.getAvailable()){
-                    serviceAvailable.setText("Available");
-                }else{
-                    serviceAvailable.setText("Not available");
-                }
-                serviceGrade.setText(String.valueOf(serviceProduct.getGrade()));
+            serviceHolder.serviceName.setText(service.getName());
+            serviceHolder.serviceCategory.setText(service.getCategory());
+            serviceHolder.servicePrice.setText(String.valueOf(service.getPrice()));
+            if (service.getAvailable()){
+                serviceHolder.serviceIsAvailable.setText("Available");
+            }else{
+                serviceHolder.serviceIsAvailable.setText("Not available");
             }
+            serviceHolder.serviceDiscount.setText(String.valueOf(service.getDiscount()));
+            serviceHolder.serviceGrade.setText(String.valueOf(service.getGrade()));
+            serviceHolder.serviceImage.setImageResource(service.getImage());
         }
-
-        return convertView;
     }
 
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
 
+    // ViewHolders za Product i Service
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
+        TextView productName, productCategory, productPrice, productDiscount,
+                productIsAvailable, productGrade;
+        ImageView productImage;
+
+        public ProductViewHolder(View itemView) {
+            super(itemView);
+            productName = itemView.findViewById(R.id.productName);
+            productCategory = itemView.findViewById(R.id.productCategory);
+            productPrice = itemView.findViewById(R.id.productPrice);
+            productDiscount = itemView.findViewById(R.id.productDiscount);
+            productIsAvailable = itemView.findViewById(R.id.isProductAvailable);
+            productGrade = itemView.findViewById(R.id.productGrade);
+            productImage = itemView.findViewById(R.id.productImage);
+        }
+    }
+
+    public static class ServiceViewHolder extends RecyclerView.ViewHolder {
+        TextView serviceName, serviceCategory, servicePrice, serviceDiscount,
+                    serviceIsAvailable, serviceGrade;
+        ImageView serviceImage;
+
+        public ServiceViewHolder(View itemView) {
+            super(itemView);
+            serviceName = itemView.findViewById(R.id.serviceName);
+            serviceCategory = itemView.findViewById(R.id.serviceCategory);
+            servicePrice = itemView.findViewById(R.id.servicePrice);
+            serviceDiscount = itemView.findViewById(R.id.serviceDiscount);
+            serviceIsAvailable = itemView.findViewById(R.id.isServiceAvailable);
+            serviceGrade = itemView.findViewById(R.id.serviceGrade);
+            serviceImage = itemView.findViewById(R.id.serviceImage);
+        }
+    }
 }

@@ -5,13 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.eventplanner.R;
@@ -33,7 +34,7 @@ public class ServiceProductTabFragment extends Fragment {
 
     ArrayList<ServiceProduct> serviceProducts;
     ServiceProductAdapter serviceProductAdapter;
-    ListView listView;
+    RecyclerView recyclerView;
 
     public ServiceProductTabFragment() {
         // Required empty public constructor
@@ -58,7 +59,7 @@ public class ServiceProductTabFragment extends Fragment {
         serviceProducts.add(new Service("HappyYou", 150, 0, true, 4.2, "Decoration",R.drawable.download));
         serviceProducts.add(new Service("Shining", 140, 0, true, 4.2, "Lighting",R.drawable.download));
 
-        serviceProductAdapter = new ServiceProductAdapter(getContext(), serviceProducts);
+        serviceProductAdapter = new ServiceProductAdapter(serviceProducts);
     }
 
     @Override
@@ -66,8 +67,10 @@ public class ServiceProductTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_product_tab, container, false);
 
-        listView = view.findViewById(R.id.foundServiceProducts);
-        listView.setAdapter(serviceProductAdapter);
+        recyclerView = view.findViewById(R.id.foundServiceProducts);
+        LinearLayoutManager layoutManagerServiceProduct = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManagerServiceProduct);
+        recyclerView.setAdapter(serviceProductAdapter);
 
         Button filterButton = view.findViewById(R.id.serviceProductFilterButton);
         filterButton.setOnClickListener(new View.OnClickListener() {

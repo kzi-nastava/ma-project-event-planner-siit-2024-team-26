@@ -5,13 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.eventplanner.R;
@@ -35,7 +36,7 @@ public class EventTabFragment extends Fragment {
     private EventAdapter eventAdapter;
     private ArrayList<Event> events;
 
-    private ListView listView;
+    private RecyclerView recyclerView;
 
     public EventTabFragment() {
         // Required empty public constructor
@@ -69,7 +70,7 @@ public class EventTabFragment extends Fragment {
         events.add(new Event("Pera", "Peric", myType, myAddress, startingDate, startingDate, 200));
         events.add(new Event("Mika", "Mikic", myType, myAddress, startingDate, startingDate, 100));
 
-        eventAdapter = new EventAdapter(getContext(), events);
+        eventAdapter = new EventAdapter(events);
 
     }
 
@@ -78,8 +79,10 @@ public class EventTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_tab, container, false);
 
-        listView = view.findViewById(R.id.foundEvents);
-        listView.setAdapter(eventAdapter);
+        recyclerView = view.findViewById(R.id.foundEvents);
+        LinearLayoutManager layoutManagerEvents = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManagerEvents);
+        recyclerView.setAdapter(eventAdapter);
 
         Locale locale = new Locale("en", "US");
         Locale.setDefault(locale);

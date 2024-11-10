@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 
 public class HomeActivity extends AppCompatActivity {
