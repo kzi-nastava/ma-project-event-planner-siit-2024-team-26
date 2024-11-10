@@ -27,5 +27,6 @@
     <string name="topEventList">Top 5 events</string>
     <string name="topServiceList">Top 5 services</string>
     <string name="topProductList">Top 5 products</string>
+    <string name="swipeRight">Swipe right</string>
 
 </resources>

@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="700dp">
+        android:layout_height="750dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,13 +24,19 @@
                 android:text="@string/topEventList"
                 android:textSize="40sp"
                 android:textStyle="bold" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/topFiveEvents"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 tools:listitem="@layout/event_cards_list"/>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swipeRight"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,6 +49,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 tools:listitem="@layout/service_cards_list"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swipeRight"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,6 +70,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 tools:listitem="@layout/product_cards_list"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swipeRight"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="20dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
