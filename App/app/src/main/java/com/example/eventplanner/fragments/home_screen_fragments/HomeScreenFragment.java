@@ -48,14 +48,14 @@ public class HomeScreenFragment extends Fragment {
         TextView servicesProductText = v.findViewById(R.id.servicesAndProductsText);
 
         //Put fragment on opening this activity
-        trendingText.setTextColor(getResources().getColor(R.color.black));
+        trendingText.setTextColor(getResources().getColor(R.color.neutral));
         FragmentTransition.to(TopListsTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
 
         eventsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
-                eventsText.setTextColor(getResources().getColor(R.color.black));
+                eventsText.setTextColor(getResources().getColor(R.color.neutral));
                 FragmentTransition.to(EventTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
             }
         });
@@ -64,7 +64,7 @@ public class HomeScreenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
-                trendingText.setTextColor(getResources().getColor(R.color.black));
+                trendingText.setTextColor(getResources().getColor(R.color.neutral));
                 FragmentTransition.to(TopListsTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
             }
         });
@@ -73,7 +73,7 @@ public class HomeScreenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
-                servicesProductText.setTextColor(getResources().getColor(R.color.black));
+                servicesProductText.setTextColor(getResources().getColor(R.color.neutral));
                 FragmentTransition.to(ServiceProductTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
             }
         });

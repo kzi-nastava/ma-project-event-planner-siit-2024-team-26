@@ -1,8 +1,10 @@
 package com.example.eventplanner.fragments.home_screen_fragments;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapter;
@@ -35,7 +38,6 @@ public class EventTabFragment extends Fragment {
 
     private EventAdapter eventAdapter;
     private ArrayList<Event> events;
-
     private RecyclerView recyclerView;
 
     public EventTabFragment() {
@@ -130,12 +132,32 @@ public class EventTabFragment extends Fragment {
                     }
                 });
 
-
-
+                Button date1Button = dialogView.findViewById(R.id.date1button);
+                date1Button.setOnClickListener(view -> showDatePickerDialog());
+                Button date2Button = dialogView.findViewById(R.id.date2button);
+                date2Button.setOnClickListener(view -> showDatePickerDialog());
 
                 bottomSheetDialog.show();
             }
         });
         return view;
+    }
+
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireActivity(), // Use requireActivity() for the context
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    Toast.makeText(requireContext(), "Selected Date: " + date, Toast.LENGTH_SHORT).show();
+                },
+                year, month, day
+        );
+
+        datePickerDialog.show();
     }
 }

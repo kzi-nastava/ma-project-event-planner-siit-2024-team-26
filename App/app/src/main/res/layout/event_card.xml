@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/neutral"
             android:text="More information"
+            android:textColor="@color/white"
             app:cornerRadius="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

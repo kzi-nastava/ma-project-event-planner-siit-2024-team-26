@@ -12,39 +12,37 @@
         android:orientation="horizontal"
         android:layout_weight="11"
         android:background="@color/secondary">
+
         <TextView
             android:id="@+id/trendingText"
-            android:layout_width="150dp"
+            android:layout_width="137dp"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
-            android:textColor="@color/white"
-            android:text="@string/trending"
-            android:textStyle="bold"
-            android:textSize="15sp"
             android:gravity="center"
-            android:paddingStart="20dp"/>
+            android:text="@string/trending"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/eventsText"
-            android:layout_width="150dp"
+            android:layout_width="137dp"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
             android:gravity="center"
             android:text="@string/events"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/servicesAndProductsText"
-            android:layout_width="wrap_content"
+            android:layout_width="137dp"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
-            android:textColor="@color/white"
+            android:gravity="center"
             android:text="@string/productAndServices"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="15sp"
-            android:gravity="center"/>
+            android:textStyle="bold" />
+
     </LinearLayout>
     <FrameLayout
         android:id="@+id/homeScreenFragment"
