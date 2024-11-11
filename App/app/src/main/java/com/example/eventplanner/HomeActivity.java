@@ -124,14 +124,14 @@ public class HomeActivity extends AppCompatActivity {
         TextView servicesProductText = findViewById(R.id.servicesAndProductsText);
 
         //Put fragment on opening this activity
-        trendingText.setTextColor(getResources().getColor(R.color.accent));
+        trendingText.setTextColor(getResources().getColor(R.color.black));
         FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
 
         eventsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
-                eventsText.setTextColor(getResources().getColor(R.color.accent));
+                eventsText.setTextColor(getResources().getColor(R.color.black));
                 FragmentTransition.to(EventTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
             }
         });
@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
-                trendingText.setTextColor(getResources().getColor(R.color.accent));
+                trendingText.setTextColor(getResources().getColor(R.color.black));
                 FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
             }
         });
@@ -149,7 +149,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
-                servicesProductText.setTextColor(getResources().getColor(R.color.accent));
+                servicesProductText.setTextColor(getResources().getColor(R.color.black));
                 FragmentTransition.to(ServiceProductTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
             }
         });

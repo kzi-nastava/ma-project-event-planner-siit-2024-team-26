@@ -58,32 +58,32 @@ public class ServiceProductAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Product product = (Product) serviceProduct;
             ProductViewHolder productHolder = (ProductViewHolder) holder;
 
-            productHolder.productName.setText(product.getName());
-            productHolder.productCategory.setText(product.getCategory());
-            productHolder.productPrice.setText(String.valueOf(product.getPrice()));
+            productHolder.productName.setText("Name: "+product.getName());
+            productHolder.productCategory.setText("Category: "+product.getCategory());
+            productHolder.productPrice.setText("Price: "+String.valueOf(product.getPrice())+"€");
             if (product.getAvailable()){
                 productHolder.productIsAvailable.setText("Available");
             }else{
                 productHolder.productIsAvailable.setText("Not available");
             }
-            productHolder.productDiscount.setText(String.valueOf(product.getDiscount()));
-            productHolder.productGrade.setText(String.valueOf(product.getGrade()));
+            productHolder.productDiscount.setText("Discount: "+String.valueOf(product.getDiscount())+"%");
+            productHolder.productGrade.setText("Grade: "+String.valueOf(product.getGrade()));
             productHolder.productImage.setImageResource(product.getImage());
 
         } else if (holder instanceof ServiceViewHolder) {
             Service service = (Service) serviceProduct;
             ServiceViewHolder serviceHolder = (ServiceViewHolder) holder;
 
-            serviceHolder.serviceName.setText(service.getName());
-            serviceHolder.serviceCategory.setText(service.getCategory());
-            serviceHolder.servicePrice.setText(String.valueOf(service.getPrice()));
+            serviceHolder.serviceName.setText("Name: "+service.getName());
+            serviceHolder.serviceCategory.setText("Category: "+service.getCategory());
+            serviceHolder.servicePrice.setText("Price: "+String.valueOf(service.getPrice())+"€");
             if (service.getAvailable()){
                 serviceHolder.serviceIsAvailable.setText("Available");
             }else{
                 serviceHolder.serviceIsAvailable.setText("Not available");
             }
-            serviceHolder.serviceDiscount.setText(String.valueOf(service.getDiscount()));
-            serviceHolder.serviceGrade.setText(String.valueOf(service.getGrade()));
+            serviceHolder.serviceDiscount.setText("Discount: "+String.valueOf(service.getDiscount())+"%");
+            serviceHolder.serviceGrade.setText("Grade: "+String.valueOf(service.getGrade()));
             serviceHolder.serviceImage.setImageResource(service.getImage());
         }
     }

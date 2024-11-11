@@ -2,15 +2,15 @@ package com.example.eventplanner.model;
 
 public class ServiceProduct {
     private String name;
-    private double price;
-    private double discount;
+    private int price;
+    private int discount;
     private Boolean isAvailable;
 
     private double grade;
     private String category;
     private int image;
 
-    public ServiceProduct(String name, double price, double discount, Boolean isAvailable, double grade, String category, int image) {
+    public ServiceProduct(String name, int price, int discount, Boolean isAvailable, double grade, String category, int image) {
         this.name = name;
         this.price = price;
         this.discount = discount;
@@ -28,19 +28,19 @@ public class ServiceProduct {
         this.name = name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public double getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 

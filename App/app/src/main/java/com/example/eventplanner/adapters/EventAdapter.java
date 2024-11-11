@@ -34,15 +34,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
         Event event = events.get(position);
-        holder.eventName.setText(event.getName());
-        holder.eventType.setText(event.getEventType().getName());
-        holder.eventGuestsLimit.setText(String.valueOf(event.getGuestsLimit()));
+        holder.eventName.setText("Name: "+event.getName());
+        holder.eventType.setText("Type: "+event.getEventType().getName());
+        holder.eventGuestsLimit.setText("Guests limit: "+String.valueOf(event.getGuestsLimit()));
 
         String startingDate = sdf.format(event.getStarts().getTime());
-        holder.eventStarts.setText(startingDate);
+        holder.eventStarts.setText("Starts: "+startingDate);
 
         String endingDate = sdf.format(event.getEnds().getTime());
-        holder.eventEnds.setText(endingDate);
+        holder.eventEnds.setText("Ends: "+endingDate);
     }
 
 
