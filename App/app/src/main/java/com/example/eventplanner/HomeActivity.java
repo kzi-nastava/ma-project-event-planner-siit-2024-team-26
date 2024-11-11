@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -42,10 +43,7 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-
-        //Function that handles tabs selection
-        setUpTabs();
-
+        FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
         setSupportActionBar(toolbar);
@@ -118,47 +116,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private void setUpTabs(){
-        TextView trendingText = findViewById(R.id.trendingText);
-        TextView eventsText = findViewById(R.id.eventsText);
-        TextView servicesProductText = findViewById(R.id.servicesAndProductsText);
 
-        //Put fragment on opening this activity
-        trendingText.setTextColor(getResources().getColor(R.color.black));
-        FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
-
-        eventsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetColors(trendingText, eventsText, servicesProductText);
-                eventsText.setTextColor(getResources().getColor(R.color.black));
-                FragmentTransition.to(EventTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
-            }
-        });
-
-        trendingText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetColors(trendingText, eventsText, servicesProductText);
-                trendingText.setTextColor(getResources().getColor(R.color.black));
-                FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
-            }
-        });
-
-        servicesProductText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetColors(trendingText, eventsText, servicesProductText);
-                servicesProductText.setTextColor(getResources().getColor(R.color.black));
-                FragmentTransition.to(ServiceProductTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
-            }
-        });
-    }
-
-    private void resetColors(TextView trendingText, TextView eventsText, TextView servicesProductsText){
-        trendingText.setTextColor(getResources().getColor(R.color.white));
-        eventsText.setTextColor(getResources().getColor(R.color.white));
-        servicesProductsText.setTextColor(getResources().getColor(R.color.white));
-    }
 
 }
