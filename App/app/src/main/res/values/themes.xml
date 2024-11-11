@@ -10,5 +10,10 @@
         <item name="colorOnBackground">@color/background</item> -->
     </style>
 
+    <style name="Toolbar_Theme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- color used by navigation icon and overflow icon -->
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
     <style name="Theme.EventPlanner" parent="Base.Theme.EventPlanner" />
 </resources>
