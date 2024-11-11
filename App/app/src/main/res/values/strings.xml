@@ -19,4 +19,33 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="filters">Filters</string>
+    <string name="search">Search</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="notBefore">Not before</string>
+    <string name="notAfter">Not after</string>
+    <string name="guestsLimit">Guests limit</string>
+    <string name="eventType">Event type</string>
+    <string name="price">Price</string>
+    <string name="discount">Discount</string>
+    <string name="grade">Grade</string>
+    <string name="isAvailable">Is available</string>
+    <string name="category">Category</string>
+    <string name="serviceProductNameHint">Name</string>
+    <string name="minPrice">Min price</string>
+    <string name="maxPrice">Max price</string>
+    <string name="serviceOnly">Service only:</string>
+    <string name="minDuration">Min duration</string>
+    <string name="maxDuration">Max duration</string>
+    <string name="onlyProducts">Only products</string>
+    <string name="onlyServices">Only services</string>
+    <string name="showBoth">Products and services</string>
+    <string name="topEventList">Top 5 events</string>
+    <string name="topServiceList">Top 5 services</string>
+    <string name="topProductList">Top 5 products</string>
+    <string name="swipeRight">Swipe right</string>
+    <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
+    <string name="events">EVENTS</string>
+    <string name="trending">TRENDING</string>
 </resources>

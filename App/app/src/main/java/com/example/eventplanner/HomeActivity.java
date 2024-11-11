@@ -1,10 +1,14 @@
 package com.example.eventplanner;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,6 +19,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
+import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class HomeActivity extends AppCompatActivity {
@@ -34,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
+        FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
         setSupportActionBar(toolbar);
@@ -104,4 +114,8 @@ public class HomeActivity extends AppCompatActivity {
             icon.setTint(getResources().getColor(R.color.white)); // Set the icon color to white
         }
     }
+
+
+
+
 }
