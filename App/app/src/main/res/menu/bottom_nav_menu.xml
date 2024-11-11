@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/Home" />
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:title="@string/Calendar" />
+    <item
+        android:id="@+id/create"
+        android:icon="@drawable/baseline_add_24"
+        android:title="@string/Create" />
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/baseline_chat_24"
+        android:title="@string/Chat" />
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/baseline_notifications_24"
+        android:title="@string/Notifications" />
+</menu>
