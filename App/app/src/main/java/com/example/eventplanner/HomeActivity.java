@@ -1,10 +1,14 @@
 package com.example.eventplanner;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -29,7 +33,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
@@ -39,7 +42,10 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.eventTabFragment);
+
+        //Function that handles tabs selection
+        setUpTabs();
+
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
         setSupportActionBar(toolbar);
@@ -110,4 +116,49 @@ public class HomeActivity extends AppCompatActivity {
             icon.setTint(getResources().getColor(R.color.white)); // Set the icon color to white
         }
     }
+
+
+    private void setUpTabs(){
+        TextView trendingText = findViewById(R.id.trendingText);
+        TextView eventsText = findViewById(R.id.eventsText);
+        TextView servicesProductText = findViewById(R.id.servicesAndProductsText);
+
+        //Put fragment on opening this activity
+        trendingText.setTextColor(getResources().getColor(R.color.accent));
+        FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
+
+        eventsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetColors(trendingText, eventsText, servicesProductText);
+                eventsText.setTextColor(getResources().getColor(R.color.accent));
+                FragmentTransition.to(EventTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
+            }
+        });
+
+        trendingText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetColors(trendingText, eventsText, servicesProductText);
+                trendingText.setTextColor(getResources().getColor(R.color.accent));
+                FragmentTransition.to(TopListsTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
+            }
+        });
+
+        servicesProductText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetColors(trendingText, eventsText, servicesProductText);
+                servicesProductText.setTextColor(getResources().getColor(R.color.accent));
+                FragmentTransition.to(ServiceProductTabFragment.newInstance(), HomeActivity.this, false, R.id.homeScreenFragment);
+            }
+        });
+    }
+
+    private void resetColors(TextView trendingText, TextView eventsText, TextView servicesProductsText){
+        trendingText.setTextColor(getResources().getColor(R.color.white));
+        eventsText.setTextColor(getResources().getColor(R.color.white));
+        servicesProductsText.setTextColor(getResources().getColor(R.color.white));
+    }
+
 }

@@ -45,5 +45,7 @@
     <string name="topServiceList">Top 5 services</string>
     <string name="topProductList">Top 5 products</string>
     <string name="swipeRight">Swipe right</string>
-
+    <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
+    <string name="events">EVENTS</string>
+    <string name="trending">TRENDING</string>
 </resources>

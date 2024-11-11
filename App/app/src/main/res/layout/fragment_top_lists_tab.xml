@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="750dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,7 +23,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/topEventList"
                 android:textSize="40sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/blackreversable"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/topFiveEvents"
                 android:layout_width="match_parent"
@@ -43,7 +44,8 @@
                 android:text="@string/topServiceList"
                 android:textSize="40sp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="@color/blackreversable"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/topFiveServices"
                 android:layout_width="match_parent"
@@ -64,7 +66,8 @@
                 android:text="@string/topProductList"
                 android:textSize="40sp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:textColor="@color/blackreversable"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/topFiveProducts"
                 android:layout_width="match_parent"
