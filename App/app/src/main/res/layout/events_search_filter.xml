@@ -96,7 +96,6 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
 
-            android:layout_marginBottom="468dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="City"
@@ -105,17 +104,15 @@
             android:textColorHint="@color/neutral"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/guestLimitSearch"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.984"
             app:layout_constraintStart_toEndOf="@id/countrySearch"
             app:layout_constraintTop_toBottomOf="@+id/guestLimitSearch"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.052" />
 
         <EditText
             android:id="@+id/guestLimitSearch"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-
-            android:layout_marginBottom="540dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="@string/guestsLimit"
@@ -127,7 +124,7 @@
             app:layout_constraintHorizontal_bias="0.703"
             app:layout_constraintStart_toEndOf="@+id/eventTypeSearch"
             app:layout_constraintTop_toBottomOf="@+id/nameSearch"
-            app:layout_constraintVertical_bias="0.923" />
+            app:layout_constraintVertical_bias="0.042" />
 
         <TextView
             android:id="@+id/notBeforeLabel"
