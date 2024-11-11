@@ -130,15 +130,6 @@ public class EventTabFragment extends Fragment {
                     }
                 });
 
-                /// Transition to new tab
-                Button searchButton = dialogView.findViewById(R.id.eventsFilterSearchButton);
-                searchButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bottomSheetDialog.cancel();
-                        FragmentTransition.to(ServiceProductTabFragment.newInstance(), getActivity(), true, R.id.eventTabFragment);
-                    }
-                });
 
 
 

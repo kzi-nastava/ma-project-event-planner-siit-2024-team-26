@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/topEventList"
                 android:textSize="40sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/topFiveEvents"
                 android:layout_width="match_parent"
