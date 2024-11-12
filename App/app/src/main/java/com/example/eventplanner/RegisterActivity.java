@@ -1,8 +1,11 @@
 package com.example.eventplanner;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,4 +29,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         FragmentTransition.to(RoleFragment.newInstance(), RegisterActivity.this, false, R.id.containerRegister);
     }
+
+
 }

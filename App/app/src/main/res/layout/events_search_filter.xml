@@ -198,6 +198,45 @@
             app:layout_constraintTop_toBottomOf="@+id/date1button" />
 
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="230dp"
+            app:layout_constraintStart_toStartOf="@id/date1button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date1button">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sortBy"
+                android:textColor="@color/blackreversable"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="447dp" />
+
+            <Spinner
+                android:id="@+id/sortBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blackreversable"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/order"/>
+
+            <Spinner
+                android:id="@+id/sortOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"/>
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

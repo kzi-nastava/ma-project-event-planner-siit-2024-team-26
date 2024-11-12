@@ -1,8 +1,11 @@
 package com.example.eventplanner.fragments;
+import androidx.activity.OnBackPressedCallback;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.eventplanner.HomeActivity;
 import com.example.eventplanner.LoginActivity;
 import com.example.eventplanner.R;
 import com.example.eventplanner.RegisterActivity;
@@ -37,6 +41,7 @@ public class RoleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handleBackButtonClicked();
 
     }
 
@@ -68,10 +73,24 @@ public class RoleFragment extends Fragment {
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         return view;
 
+    }
+
+    private void handleBackButtonClicked(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+
+            }
+        };
+        getActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
 

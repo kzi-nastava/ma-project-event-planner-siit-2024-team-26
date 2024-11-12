@@ -3,8 +3,8 @@ package com.example.eventplanner.fragments.home_screen_fragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapter;
-import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.EventType;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -136,6 +137,19 @@ public class EventTabFragment extends Fragment {
                 date1Button.setOnClickListener(view -> showDatePickerDialog());
                 Button date2Button = dialogView.findViewById(R.id.date2button);
                 date2Button.setOnClickListener(view -> showDatePickerDialog());
+
+                Spinner spinnerCriteria = dialogView.findViewById(R.id.sortBy);
+                String[] sortCriteria = {"Name", "Type", "Starting date", "Ending date"};
+                ArrayAdapter<String> criteriaAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_selected_item, sortCriteria);
+                criteriaAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                spinnerCriteria.setAdapter(criteriaAdapter);
+
+                Spinner spinnerOrder = dialogView.findViewById(R.id.sortOrder);
+                String[] sortOrder = {"ASC", "DESC"};
+                ArrayAdapter<String> orderAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_selected_item, sortOrder);
+                orderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                spinnerOrder.setAdapter(orderAdapter);
+
 
                 bottomSheetDialog.show();
             }

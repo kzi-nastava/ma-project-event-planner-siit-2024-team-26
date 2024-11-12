@@ -48,4 +48,6 @@
     <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
     <string name="events">EVENTS</string>
     <string name="trending">TRENDING</string>
+    <string name="sortBy">Sort by:</string>
+    <string name="order">Order: </string>
 </resources>

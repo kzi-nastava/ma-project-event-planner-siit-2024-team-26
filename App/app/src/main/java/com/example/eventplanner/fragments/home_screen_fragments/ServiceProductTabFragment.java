@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.eventplanner.R;
@@ -110,6 +112,19 @@ public class ServiceProductTabFragment extends Fragment {
                         builder.create().show();
                     }
                 });
+
+                Spinner spinnerCriteria = dialogView.findViewById(R.id.sortBy);
+                String[] sortCriteria = {"Name", "Category", "Min price", "Max price", "Discount", "Min duration", "Max duration"};
+                ArrayAdapter<String> criteriaAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_selected_item, sortCriteria);
+                criteriaAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                spinnerCriteria.setAdapter(criteriaAdapter);
+
+                Spinner spinnerOrder = dialogView.findViewById(R.id.sortOrder);
+                String[] sortOrder = {"ASC", "DESC"};
+                ArrayAdapter<String> orderAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_selected_item, sortOrder);
+                orderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                spinnerOrder.setAdapter(orderAdapter);
+
 
                 bottomSheetDialog.show();
             }
