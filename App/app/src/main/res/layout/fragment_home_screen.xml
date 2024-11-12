@@ -15,8 +15,9 @@
 
         <TextView
             android:id="@+id/trendingText"
-            android:layout_width="137dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/trending"
             android:textColor="@color/white"
@@ -25,8 +26,9 @@
 
         <TextView
             android:id="@+id/eventsText"
-            android:layout_width="137dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/events"
             android:textColor="@color/white"
@@ -35,8 +37,9 @@
 
         <TextView
             android:id="@+id/servicesAndProductsText"
-            android:layout_width="137dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/productAndServices"
             android:textColor="@color/white"

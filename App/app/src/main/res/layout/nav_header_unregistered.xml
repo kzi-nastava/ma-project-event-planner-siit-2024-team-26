@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="215dp"
+    android:background="@color/background"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:tint="@color/blackreversable"
+        app:srcCompat="@drawable/baseline_account_24"
+        tools:ignore="UseAppTint" />
+
+    <TextView
+        android:id="@+id/drawerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/PlaceholderNotLogged"
+        android:textAlignment="center"
+        android:textColor="@color/blackreversable"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/neutral" />
+</LinearLayout>
