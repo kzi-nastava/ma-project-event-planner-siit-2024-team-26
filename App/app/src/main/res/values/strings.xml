@@ -10,12 +10,15 @@
     <string name="Notifications">Notifications</string>
 
     <string name="PlaceholderName">Firstname Lastname</string>
+    <string name="PlaceholderNotLogged">Not logged in</string>
 
     <string name="DrawerProfile">My Profile</string>
     <string name="DrawerFavourites">Favourites</string>
     <string name="DrawerBlocked">Blocked users</string>
     <string name="DrawerSettings">Settings</string>
     <string name="DrawerLogout">Log out</string>
+    <string name="DrawerLogin">Log in</string>
+    <string name="DrawerRegister">Register account</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -48,4 +51,6 @@
     <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
     <string name="events">EVENTS</string>
     <string name="trending">TRENDING</string>
+
+    <string name="login_features">Log in or register to access more features</string>
 </resources>

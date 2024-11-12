@@ -60,6 +60,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Button unregisteredButton = findViewById(R.id.noaccount);
+
+        // Set an OnClickListener to open the new activity
+        unregisteredButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to start the SecondActivity
+                Intent intent = new Intent(LoginActivity.this, HomeUnregisteredActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void createUsers(){
