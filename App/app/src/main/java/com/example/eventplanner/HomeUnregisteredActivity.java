@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -51,6 +52,10 @@ public class HomeUnregisteredActivity extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        TextView loginMessage = findViewById(R.id.login_message);
+        loginMessage.setText(getResources().getText(R.string.login_features));
+        loginMessage.setTextColor(getResources().getColor(R.color.white, null));
 
         handleDrawerIconSelection(); //When icon on sidebar is pressed
 
