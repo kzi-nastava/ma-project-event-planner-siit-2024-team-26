@@ -114,7 +114,7 @@ public class ServiceProductTabFragment extends Fragment {
                 });
 
                 Spinner spinnerCriteria = dialogView.findViewById(R.id.sortBy);
-                String[] sortCriteria = {"Name", "Category", "Price", "Discount"};
+                String[] sortCriteria = {"Name", "Category", "Min price", "Max price", "Discount", "Min duration", "Max duration"};
                 ArrayAdapter<String> criteriaAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_selected_item, sortCriteria);
                 criteriaAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                 spinnerCriteria.setAdapter(criteriaAdapter);
