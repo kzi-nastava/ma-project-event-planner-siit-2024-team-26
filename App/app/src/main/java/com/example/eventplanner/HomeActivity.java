@@ -1,6 +1,7 @@
 package com.example.eventplanner;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -60,16 +61,10 @@ public class HomeActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        handleDrawerIconSelection();
+        handleDrawerIconSelection(); //When icon on sidebar is pressed
 
-        // When it's pressed back button, it doesn't close activity
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // Ostavite prazno telo metode ako ne želite da se desi ništa
-            }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
+        handleBackButtonClicked(); // When back button is pressed
+
     }
 
     @Override
@@ -138,16 +133,46 @@ public class HomeActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.logoutButton){
-                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+                if (item.getItemId() == R.id.logoutButton){ // Log out button
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                    builder.setTitle("Log out")
+                            .setMessage("Are you sure you want to log out?")
+                            .setPositiveButton("YES", (dialog, which) -> {
+                                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            })
+                            .setNegativeButton("NO", (dialog, which) -> {
+                                dialog.dismiss();
+                            })
+                            .setCancelable(true)
+                            .show();
+
                 }
                 return false;
             }
         });
     }
 
+    private void handleBackButtonClicked(){
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle("Closing application")
+                        .setMessage("Are you sure you want to close application?")
+                        .setPositiveButton("YES", (dialog, which) -> {
+                            finish();
+                        })
+                        .setNegativeButton("NO", (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .setCancelable(true)
+                        .show();
 
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
 }
