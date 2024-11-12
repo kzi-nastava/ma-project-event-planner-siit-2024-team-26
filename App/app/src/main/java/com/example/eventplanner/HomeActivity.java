@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -27,6 +29,7 @@ import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragme
 import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -56,6 +59,8 @@ public class HomeActivity extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        handleDrawerIconSelection();
 
         // When it's pressed back button, it doesn't close activity
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -127,6 +132,21 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    // When button in sidebar is pressed
+    private void handleDrawerIconSelection(){
+        NavigationView navigationView = findViewById(R.id.navigation_drawer);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.logoutButton){
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                return false;
+            }
+        });
+    }
 
 
 
