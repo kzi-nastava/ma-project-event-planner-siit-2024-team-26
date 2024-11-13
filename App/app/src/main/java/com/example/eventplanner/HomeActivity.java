@@ -24,6 +24,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
@@ -44,6 +45,10 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
 
     private AuthenticatedUser user;
+    private Boolean isCreationFormShowed;
+
+    BottomNavigationView bottomNavigationView;
+    int currentSelectedBottomIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,8 @@ public class HomeActivity extends AppCompatActivity {
         if (bundle != null) {
             user = bundle.getParcelable("User");
         }
+
+        currentSelectedBottomIcon = R.id.home;
 
     }
 
@@ -166,12 +173,21 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView2);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView2);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == currentSelectedBottomIcon){
+                    return true;
+                }
                 if (item.getItemId() == R.id.create && user instanceof ServiceProductProvider) {
                     showCreateDialogSpp();
+                    return true;
+                }
+                if (item.getItemId() == R.id.home){
+                    FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    currentSelectedBottomIcon = R.id.home;
+                    return true;
                 }
                 return false;
             }
@@ -204,19 +220,32 @@ public class HomeActivity extends AppCompatActivity {
     private void showCreateDialogSpp() {
         String[] optionsArray = {"Service", "Product"};
         int checkedItem = -1;
-
+        final boolean[] selected = {false};
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setTitle("Event types")
                 .setSingleChoiceItems(optionsArray, checkedItem, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0){
+                            selected[0] = true;
                             dialog.dismiss();
                             FragmentTransition.to(ServiceCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                            currentSelectedBottomIcon = R.id.create;
                         }
+                    }
+                }).
+                setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                       if (!selected[0]){
+                           FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                            bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
+                       }
                     }
                 });
 
 
         builder.show();
     }
+
+
 }
