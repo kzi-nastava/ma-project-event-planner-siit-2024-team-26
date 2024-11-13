@@ -2,6 +2,7 @@ package com.example.eventplanner;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -24,18 +25,25 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.eventplanner.fragments.ServiceCreationFormFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
+import com.example.eventplanner.model.AuthenticatedUser;
+import com.example.eventplanner.model.ServiceProductProvider;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
+
+    private AuthenticatedUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,11 @@ public class HomeActivity extends AppCompatActivity {
 
         handleBackButtonClicked(); // When back button is pressed
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            user = bundle.getParcelable("User");
+        }
+
     }
 
     @Override
@@ -93,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
             toggleTheme(item);
             return true;
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -128,12 +141,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     // When button in sidebar is pressed
-    private void handleDrawerIconSelection(){
+    private void handleDrawerIconSelection() {
         NavigationView navigationView = findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.logoutButton){ // Log out button
+                if (item.getItemId() == R.id.logoutButton) { // Log out button
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                     builder.setTitle("Log out")
                             .setMessage("Are you sure you want to log out?")
@@ -152,9 +165,22 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView2);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.create && user instanceof ServiceProductProvider) {
+                    showCreateDialogSpp();
+                }
+                return false;
+            }
+        });
+
+
     }
 
-    private void handleBackButtonClicked(){
+    private void handleBackButtonClicked() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -175,4 +201,22 @@ public class HomeActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
+    private void showCreateDialogSpp() {
+        String[] optionsArray = {"Service", "Product"};
+        int checkedItem = -1;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle("Event types")
+                .setSingleChoiceItems(optionsArray, checkedItem, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0){
+                            dialog.dismiss();
+                            FragmentTransition.to(ServiceCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                        }
+                    }
+                });
+
+
+        builder.show();
+    }
 }

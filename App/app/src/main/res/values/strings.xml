@@ -51,7 +51,21 @@
     <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
     <string name="events">EVENTS</string>
     <string name="trending">TRENDING</string>
-  
+    <string name="name">Name</string>
+    <string name="minEngagement">Min engagement</string>
+    <string name="maxEngagement">Max engagement</string>
+    <string name="reservationDeadline">Reservation\ndeadline (days)</string>
+    <string name="cancelationDeadline">Cancelation\ndeadline (days)</string>
+    <string name="serviceDuration">Service duration</string>
+    <string name="serviceDescription">Service description</string>
+    <string name="serviceSpecificities">Service specificities</string>
+    <string name="newCategory">New category</string>
+    <string name="newCategoryDescription">New category description</string>
+    <string name="visibleForEventOrganizer">Visible for event organizer</string>
+    <string name="recommendNewCategory">Recommend new category</string>
+    <string name="fixedServiceDuration">Fixed service duration</string>
+    <string name="uploadImages">Upload images</string>
+
     <string name="login_features">Log in or register to access more features</string>
 
     <string name="sortBy">Sort by:</string>

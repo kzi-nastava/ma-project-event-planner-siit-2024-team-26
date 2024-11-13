@@ -44,8 +44,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 String email = emailTextView.getText().toString();
                 String password = passwordTextView.getText().toString();
-                if (doesExists(email, password)){
+                AuthenticatedUser foundUser = doesExists(email, password);
+                if (foundUser != null){
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    Bundle args = new Bundle();
+                    args.putParcelable("User", foundUser);
+                    intent.putExtras(args);
                     startActivity(intent);
                     finish();
                 }
@@ -86,13 +90,12 @@ public class LoginActivity extends AppCompatActivity {
         users.add(administrator);
     }
 
-    private boolean doesExists(String email, String password){
+    private AuthenticatedUser doesExists(String email, String password){
         for (AuthenticatedUser user: users){
-            Log.i("MAME", user.getEmail());
             if (user.getEmail().equals(email) && user.getPassword().equals(password)){
-                return true;
+                return user;
             }
         }
-        return false;
+        return null;
     }
 }

@@ -1,6 +1,9 @@
 package com.example.eventplanner.model;
 
-public class Address {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Address implements Parcelable {
 
     private String country;
     private String city;
@@ -45,4 +48,37 @@ public class Address {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    protected Address(Parcel in) {
+        country = in.readString();
+        city = in.readString();
+        street = in.readString();
+        number = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(country);
+        dest.writeString(city);
+        dest.writeString(street);
+        dest.writeInt(number);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        @Override
+        public Address createFromParcel(Parcel in) {
+            return new Address(in);
+        }
+
+        @Override
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
+
 }
