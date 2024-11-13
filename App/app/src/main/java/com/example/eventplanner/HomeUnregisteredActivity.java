@@ -1,6 +1,7 @@
 package com.example.eventplanner;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -129,6 +130,16 @@ public class HomeUnregisteredActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                if (item.getItemId() == R.id.login_drawer_button){
+                    intent = new Intent(HomeUnregisteredActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                else if (item.getItemId() == R.id.register_drawer_button){
+                    intent = new Intent(HomeUnregisteredActivity.this, RegisterActivity.class);
+                    startActivity(intent);
+                }
+                finish();
                 return false;
             }
         });

@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Create an Intent to start the SecondActivity
                 Intent intent = new Intent(LoginActivity.this, HomeUnregisteredActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
