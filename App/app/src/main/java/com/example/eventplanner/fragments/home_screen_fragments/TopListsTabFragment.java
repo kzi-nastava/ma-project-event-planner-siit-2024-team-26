@@ -54,7 +54,7 @@ public class TopListsTabFragment extends Fragment {
 
         events = new ArrayList<>();
         Address myAddress = new Address("Serbia", "Novi Sad", "Partizanska", 48);
-        EventType myType = new EventType("Svadba", "Dodjite!", true);
+        EventType myType = new EventType("Wedding", "Wedding type!", true);
         Calendar startingDate = Calendar.getInstance();
         startingDate.set(Calendar.DAY_OF_MONTH, 5);
         startingDate.set(Calendar.MONTH, 2);
@@ -62,11 +62,11 @@ public class TopListsTabFragment extends Fragment {
         startingDate.set(Calendar.HOUR, 15);
         startingDate.set(Calendar.MINUTE, 30);
 
-        events.add(new Event("Neven", "Ilincic", myType, myAddress, startingDate, startingDate, 300));
-        events.add(new Event("Pera", "Peric", myType, myAddress, startingDate, startingDate, 200));
-        events.add(new Event("Mika", "Mikic", myType, myAddress, startingDate, startingDate, 100));
-        events.add(new Event("Milos", "Misic", myType, myAddress, startingDate, startingDate, 100));
-        events.add(new Event("Jovan", "Jovanovic", myType, myAddress, startingDate, startingDate, 100));
+        events.add(new Event("George and Sophie", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 300));
+        events.add(new Event("Luke and Nataly", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 200));
+        events.add(new Event("Jack and Lana", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
+        events.add(new Event("Josh and Sophie", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
+        events.add(new Event("Duke and Stephany", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
         eventAdapter = new EventAdapter(events);
 
         products = new ArrayList<>();
