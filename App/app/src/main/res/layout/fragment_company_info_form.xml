@@ -13,146 +13,118 @@
 
 
         <TextView
-            android:layout_width="0sp"
-            android:layout_height="0sp"
-            android:text="Enter\ncompany information"
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="5dp"
+            android:text="Enter company information"
             android:textAlignment="center"
             android:textColor="@color/blackreversable"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/emailInput"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <EditText
             android:id="@+id/companyNameInput"
-            android:layout_width="169dp"
+            android:layout_width="373dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginTop="20dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="Name"
             android:inputType="text"
-            android:textColor="@color/blackreversable"
+            android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@id/emailInput"
-            app:layout_constraintTop_toTopOf="@id/emailInput"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="@+id/emailInput"
+            app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
         <EditText
             android:id="@+id/phoneNumberInput"
-            android:layout_width="wrap_content"
+            android:layout_width="373dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginTop="20dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="Phone number"
             android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/streetInput"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/streetInput"
-            app:layout_constraintTop_toBottomOf="@id/streetInput"
-            app:layout_constraintVertical_bias="0.078" />
+            app:layout_constraintStart_toStartOf="@+id/companyNameInput"
+            app:layout_constraintTop_toBottomOf="@+id/companyNameInput" />
 
-        <EditText
+        <TextView
             android:id="@+id/countryInput"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="28dp"
-            android:background="@color/white"
-            android:ems="7"
-            android:hint="Country"
-            android:inputType="text"
+            android:layout_marginTop="20dp"
+            android:background="@color/accent"
+            android:gravity="left|center_vertical"
+            android:hint="Select country"
             android:textColor="@color/black"
-            android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/emailInput"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/emailInput"
-            app:layout_constraintTop_toBottomOf="@id/emailInput"
-            app:layout_constraintVertical_bias="0.053" />
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/phoneNumberInput"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumberInput" />
 
         <EditText
             android:id="@+id/numberInput"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginEnd="28dp"
             android:background="@color/white"
             android:ems="4"
             android:hint="Number"
             android:inputType="text"
             android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="@id/streetInput"
-            app:layout_constraintEnd_toEndOf="@id/cityInput"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/cityInput"
-            app:layout_constraintTop_toTopOf="@id/streetInput"
-            app:layout_constraintVertical_bias="0.115" />
+            app:layout_constraintTop_toTopOf="@id/streetInput" />
 
         <EditText
             android:id="@+id/cityInput"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="28dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="City"
             android:inputType="text"
             android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="@id/countryInput"
-            app:layout_constraintEnd_toEndOf="@id/companyNameInput"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/companyNameInput"
-            app:layout_constraintTop_toTopOf="@id/countryInput"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumberInput"
+            app:layout_constraintTop_toTopOf="@+id/countryInput" />
 
         <EditText
             android:id="@+id/streetInput"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginTop="20dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="Street"
             android:inputType="text"
             android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/countryInput"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/countryInput"
-            app:layout_constraintTop_toBottomOf="@id/countryInput"
-            app:layout_constraintVertical_bias="0.073" />
+            app:layout_constraintTop_toBottomOf="@id/countryInput" />
+
 
         <EditText
             android:id="@+id/emailInput"
-            android:layout_width="wrap_content"
+            android:layout_width="373dp"
             android:layout_height="48dp"
+            android:layout_marginTop="30dp"
             android:background="@color/white"
             android:ems="7"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.151"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.14" />
-
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <Button
             android:id="@+id/returnButton"
@@ -189,8 +161,9 @@
 
         <EditText
             android:id="@+id/companyDescriptionInput"
-            android:layout_width="0dp"
+            android:layout_width="373dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:background="@color/white"
             android:gravity="start|top"
             android:hint="Company description"
@@ -198,12 +171,22 @@
             android:lines="5"
             android:textColor="@color/black"
             android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/companyNameInput"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/phoneNumberInput"
-            app:layout_constraintTop_toBottomOf="@id/phoneNumberInput"
-            app:layout_constraintVertical_bias="0.181" />
+            app:layout_constraintStart_toStartOf="@+id/streetInput"
+            app:layout_constraintTop_toBottomOf="@+id/streetInput" />
+
+        <TextView
+            android:id="@+id/images_added"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="You selected 0 images"
+            android:textAlignment="center"
+            android:textColor="@color/blackreversable"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/uploadButton"
+            app:layout_constraintEnd_toEndOf="@+id/uploadButton"
+            app:layout_constraintStart_toStartOf="@+id/uploadButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
