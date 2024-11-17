@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".fragments.ServiceCreationFormFragment">
+
+
+    <EditText
+        android:id="@id/serviceDiscount"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/discount"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@id/servicePrice"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/servicePrice"
+        app:layout_constraintTop_toBottomOf="@id/servicePrice" />
+
+    <EditText
+        android:id="@+id/serviceName"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:textColorHint="@color/neutral"
+        android:ems="7"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/maxEngagement"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:hint="@string/maxEngagement"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/serviceDiscount"
+        app:layout_constraintTop_toTopOf="@id/minEngagement" />
+
+    <EditText
+        android:id="@+id/minEngagement"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/minEngagement"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/category" />
+
+    <EditText
+        android:id="@+id/reservationDeadline"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/reservationDeadline"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/minEngagement" />
+
+    <EditText
+        android:id="@+id/newCategory"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/newCategory"
+        android:inputType="text"
+        android:enabled="false"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/serviceDescription" />
+
+    <EditText
+        android:id="@+id/serviceDescription"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/serviceDescription"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/eventType" />
+
+    <EditText
+        android:id="@+id/serviceSpecificities"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/serviceSpecificities"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/serviceDuration"
+        app:layout_constraintTop_toTopOf="@id/serviceDescription" />
+
+    <EditText
+        android:id="@+id/newCategoryDescription"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/newCategoryDescription"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:enabled="false"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/serviceSpecificities"
+        app:layout_constraintTop_toTopOf="@id/newCategory" />
+
+    <EditText
+        android:id="@+id/cancelationDeadline"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/cancelationDeadline"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/maxEngagement"
+        app:layout_constraintTop_toTopOf="@id/reservationDeadline" />
+
+    <EditText
+        android:id="@+id/serviceDuration"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/serviceDuration"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/cancelationDeadline"
+        app:layout_constraintTop_toTopOf="@id/eventType" />
+
+    <TextView
+        android:id="@+id/category"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:background="@color/accent"
+        android:ems="7"
+        android:gravity="left|center_vertical"
+        android:hint="@string/category"
+        android:textColorHint="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toTopOf="@id/serviceDiscount" />
+
+    <TextView
+        android:id="@+id/eventType"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/accent"
+        android:ems="7"
+        android:gravity="left|center_vertical"
+        android:hint="@string/eventType"
+        android:textColorHint="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/reservationDeadline" />
+
+    <EditText
+        android:id="@id/servicePrice"
+        android:layout_width="145dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        android:ems="7"
+        android:hint="@string/price"
+        android:inputType="number"
+        android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/serviceName"
+        app:layout_constraintTop_toTopOf="@id/serviceName" />
+
+    <CheckBox
+        android:id="@+id/visibleForEventOrganizerCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/visibleForEventOrganizer"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/newCategory" />
+
+    <CheckBox
+        android:id="@+id/availableForReservationCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/availableForReservation"
+        android:textColorHint="@color/neutral"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/visibleForEventOrganizerCheckBox" />
+
+    <CheckBox
+        android:id="@+id/recommendNewCategoryCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recommendNewCategory"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/availableForReservationCheckBox" />
+
+    <CheckBox
+        android:id="@+id/fixedServiceDurationCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fixedServiceDuration"
+        app:layout_constraintStart_toStartOf="@id/serviceName"
+        app:layout_constraintTop_toBottomOf="@id/recommendNewCategoryCheckBox" />
+
+    <Button
+        android:id="@+id/serviceImagesButton"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/accent"
+        android:text="@string/uploadImages"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="@id/newCategoryDescription"
+        app:layout_constraintTop_toBottomOf="@id/newCategoryDescription" />
+
+    <TextView
+        android:id="@+id/imagesAdded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="You selected 0 images"
+        android:textAlignment="center"
+        android:textColor="@color/blackreversable"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@id/newCategoryDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/newCategoryDescription"
+        app:layout_constraintTop_toBottomOf="@id/newCategoryDescription" />
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/neutral"
+        android:text="@string/Create"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="@id/newCategoryDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/serviceImagesButton"
+        app:layout_constraintTop_toBottomOf="@id/serviceImagesButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

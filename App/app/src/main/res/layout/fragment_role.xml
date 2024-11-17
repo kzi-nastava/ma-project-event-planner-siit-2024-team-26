@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RoleFragment"
+    android:background="@color/background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/EventOrganizerImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:src="@drawable/baseline_calendar_month_24"
+            android:background="@color/primary"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.182"
+            tools:srcCompat="@drawable/baseline_calendar_month_24" />
+
+        <ImageView
+            android:id="@+id/SPPImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:background="@color/primary"
+            android:src="@drawable/baseline_storefront_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/EventOrganizerImage"
+            app:layout_constraintStart_toStartOf="@+id/EventOrganizerImage"
+            app:layout_constraintTop_toBottomOf="@id/EventOrganizerImage"
+            app:layout_constraintVertical_bias="0.348"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Event Organizer"
+            android:textAlignment="center"
+            android:textColor="@color/blackreversable"
+            android:textColorHint="@color/neutral"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/EventOrganizerImage"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/EventOrganizerImage"
+            app:layout_constraintTop_toBottomOf="@id/EventOrganizerImage" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Service and Product\nProvider"
+            android:textAlignment="center"
+            android:textColor="@color/blackreversable"
+            android:textColorHint="@color/neutral"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/SPPImage"
+            app:layout_constraintStart_toStartOf="@+id/SPPImage"
+            app:layout_constraintTop_toBottomOf="@id/SPPImage" />
+
+        <Button
+            android:id="@id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/neutral"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.141"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/SPPImage"
+            app:layout_constraintVertical_bias="0.725" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <Button
+            android:id="@+id/date1button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/accent"
+            android:text="Choose date"
+            android:textColor="@color/blackreversable"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/notBeforeLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/notBeforeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/notBeforeLabel" />
+
+        <TextView
+            android:id="@+id/date2text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="DD.MM.YYYY"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintEnd_toEndOf="@+id/date2button"
+            app:layout_constraintStart_toStartOf="@+id/date2button"
+            app:layout_constraintTop_toBottomOf="@+id/date2button" />
+
+        <EditText
+            android:id="@+id/nameSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/white"
+
+            android:ems="17"
+            android:hint="Event name"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.509"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.101" />
+
+        <TextView
+            android:id="@+id/eventTypeSearch"
+            android:layout_width="145dp"
+            android:layout_height="48dp"
+            android:background="@color/accent"
+            android:gravity="left|center_vertical"
+            android:hint="@string/eventType"
+            android:textColorHint="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/nameSearch"
+            app:layout_constraintTop_toBottomOf="@id/nameSearch"
+            app:layout_constraintVertical_bias="0.042" />
+
+        <EditText
+            android:id="@+id/countrySearch"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/white"
+
+            android:ems="7"
+            android:hint="Country"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/eventTypeSearch"
+            app:layout_constraintTop_toBottomOf="@id/eventTypeSearch"
+            app:layout_constraintVertical_bias="0.054" />
+
+
+        <EditText
+            android:id="@+id/citySearch"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="City"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/guestLimitSearch"
+            app:layout_constraintTop_toBottomOf="@+id/guestLimitSearch"
+            app:layout_constraintVertical_bias="0.052" />
+
+        <EditText
+            android:id="@+id/guestLimitSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="@string/guestsLimit"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/nameSearch"
+            app:layout_constraintTop_toBottomOf="@+id/nameSearch"
+            app:layout_constraintVertical_bias="0.042" />
+
+        <TextView
+            android:id="@+id/notBeforeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/notBefore"
+            android:textColor="@color/blackreversable"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/countrySearch"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/countrySearch"
+            app:layout_constraintTop_toBottomOf="@id/countrySearch"
+            app:layout_constraintVertical_bias="0.044" />
+
+        <TextView
+            android:id="@+id/notAfterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/notAfter"
+            android:textColor="@color/blackreversable"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/citySearch"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/citySearch"
+            app:layout_constraintTop_toBottomOf="@id/citySearch"
+            app:layout_constraintVertical_bias="0.046" />
+
+        <Button
+            android:id="@+id/eventsFilterSearchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/secondary"
+            android:text="@string/search"
+            android:textColor="@color/white"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toTopOf="@id/nameSearch"
+            app:layout_constraintEnd_toEndOf="@id/nameSearch"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/date2button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/accent"
+            android:text="Choose date"
+            android:textColor="@color/blackreversable"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/notAfterLabel"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/notAfterLabel"
+            app:layout_constraintTop_toBottomOf="@+id/notAfterLabel" />
+
+        <TextView
+            android:id="@+id/date1text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="DD.MM.YYYY"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintEnd_toEndOf="@+id/date1button"
+            app:layout_constraintStart_toStartOf="@+id/date1button"
+            app:layout_constraintTop_toBottomOf="@+id/date1button" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="230dp"
+            app:layout_constraintStart_toStartOf="@id/date1button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date1button">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sortBy"
+                android:textColor="@color/blackreversable"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="447dp" />
+
+            <Spinner
+                android:id="@+id/sortBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blackreversable"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/order"/>
+
+            <Spinner
+                android:id="@+id/sortOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

@@ -2,8 +2,28 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EventPlanner" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!--
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorTertiary">@color/neutral</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorOnBackground">@color/background</item> -->
+    </style>
+
+    <style name="Toolbar_Theme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- color used by navigation icon and overflow icon -->
+        <item name="colorOnPrimary">@color/white</item>
     </style>
 
     <style name="Theme.EventPlanner" parent="Base.Theme.EventPlanner" />
+    <style name="FullScreenBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item>
+
+    </style>
+
+    <style name="BottomSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_animation</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_animation</item>
+    </style>
+
 </resources>

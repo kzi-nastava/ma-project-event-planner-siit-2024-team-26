@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SPPRegistrationFormFragment"
+    android:background="@color/background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="5dp"
+            android:text="Enter your information"
+            android:textAlignment="center"
+            android:textColor="@color/blackreversable"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/firstNameInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="First name"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintStart_toStartOf="@+id/confirmPasswordInput"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordInput" />
+
+        <EditText
+            android:id="@+id/lastNameInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Last name"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintStart_toStartOf="@+id/firstNameInput"
+            app:layout_constraintTop_toBottomOf="@+id/firstNameInput" />
+
+        <EditText
+            android:id="@+id/phoneNumberInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Phone number"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintEnd_toEndOf="@+id/emailInput"
+            app:layout_constraintTop_toTopOf="@+id/lastNameInput" />
+
+        <TextView
+            android:id="@+id/countryInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/accent"
+            android:gravity="left|center_vertical"
+            android:hint="Select country"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/lastNameInput"
+            app:layout_constraintTop_toBottomOf="@+id/lastNameInput" />
+
+        <EditText
+            android:id="@+id/numberInput"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="4"
+            android:hint="Number"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintStart_toStartOf="@+id/cityInput"
+            app:layout_constraintTop_toBottomOf="@+id/cityInput" />
+
+        <EditText
+            android:id="@+id/cityInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="City"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumberInput"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumberInput" />
+
+        <EditText
+            android:id="@+id/streetInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Street"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintStart_toStartOf="@id/countryInput"
+            app:layout_constraintTop_toBottomOf="@id/countryInput" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="373dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.421"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintEnd_toEndOf="@id/emailInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/emailInput"
+            app:layout_constraintTop_toBottomOf="@+id/emailInput" />
+
+        <EditText
+            android:id="@+id/confirmPasswordInput"
+            android:layout_width="175dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:ems="7"
+            android:hint="Confirm password"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textColorHint="@color/neutral"
+            app:layout_constraintEnd_toEndOf="@id/emailInput"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/passwordInput"
+            app:layout_constraintTop_toBottomOf="@id/passwordInput" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/primary"
+            android:text="Register"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/cityInput" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/neutral"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/streetInput" />
+
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:text="Profile image"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumberInput"
+            app:layout_constraintStart_toStartOf="@+id/phoneNumberInput"
+            app:layout_constraintTop_toTopOf="@+id/firstNameInput" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/baseline_account_24"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumberInput"
+            app:layout_constraintStart_toStartOf="@+id/phoneNumberInput"
+            app:layout_constraintTop_toTopOf="@+id/passwordInput" />
+
+        <Button
+            android:id="@+id/companyInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:text="Company"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:cornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/registerButton"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toEndOf="@+id/cancelButton"
+            app:layout_constraintTop_toTopOf="@+id/cancelButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- TODO: Update blank fragment layout -->
+
+
+</FrameLayout>

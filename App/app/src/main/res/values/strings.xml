@@ -1,3 +1,75 @@
 <resources>
     <string name="app_name">Event Planner</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="Home">Home</string>
+    <string name="Calendar">Calendar</string>
+    <string name="Create">Create</string>
+    <string name="Chat">Chat</string>
+    <string name="Notifications">Notifications</string>
+
+    <string name="PlaceholderName">Firstname Lastname</string>
+    <string name="PlaceholderNotLogged">Not logged in</string>
+
+    <string name="DrawerProfile">My Profile</string>
+    <string name="DrawerFavourites">Favourites</string>
+    <string name="DrawerBlocked">Blocked users</string>
+    <string name="DrawerSettings">Settings</string>
+    <string name="DrawerLogout">Log out</string>
+    <string name="DrawerLogin">Log in</string>
+    <string name="DrawerRegister">Register account</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="filters">Filters</string>
+    <string name="search">Search</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="notBefore">Not before</string>
+    <string name="notAfter">Not after</string>
+    <string name="guestsLimit">Guests limit</string>
+    <string name="eventType">Event type</string>
+    <string name="price">Price</string>
+    <string name="discount">Discount</string>
+    <string name="grade">Grade</string>
+    <string name="isAvailable">Is available</string>
+    <string name="category">Category</string>
+    <string name="serviceProductNameHint">Name</string>
+    <string name="minPrice">Min price</string>
+    <string name="maxPrice">Max price</string>
+    <string name="serviceOnly">Service only:</string>
+    <string name="minDuration">Min duration</string>
+    <string name="maxDuration">Max duration</string>
+    <string name="onlyProducts">Only products</string>
+    <string name="onlyServices">Only services</string>
+    <string name="showBoth">Products and services</string>
+    <string name="topEventList">Top 5 events</string>
+    <string name="topServiceList">Top 5 services</string>
+    <string name="topProductList">Top 5 products</string>
+    <string name="swipeRight">Swipe right</string>
+    <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
+    <string name="events">EVENTS</string>
+    <string name="trending">TRENDING</string>
+    <string name="name">Name</string>
+    <string name="minEngagement">Min engagement</string>
+    <string name="maxEngagement">Max engagement</string>
+    <string name="reservationDeadline">Reservation\ndeadline (days)</string>
+    <string name="cancelationDeadline">Cancelation\ndeadline (days)</string>
+    <string name="serviceDuration">Service duration</string>
+    <string name="serviceDescription">Service description</string>
+    <string name="serviceSpecificities">Service specificities</string>
+    <string name="newCategory">New category</string>
+    <string name="newCategoryDescription">New category description</string>
+    <string name="visibleForEventOrganizer">Visible for event organizer</string>
+    <string name="recommendNewCategory">Recommend new category</string>
+    <string name="fixedServiceDuration">Fixed service duration</string>
+    <string name="uploadImages">Upload images</string>
+    <string name="availableForReservation">Available for reservation</string>
+
+    <string name="login_features">Log in or register to access more features</string>
+
+    <string name="sortBy">Sort by:</string>
+    <string name="order">Order: </string>
+
 </resources>
