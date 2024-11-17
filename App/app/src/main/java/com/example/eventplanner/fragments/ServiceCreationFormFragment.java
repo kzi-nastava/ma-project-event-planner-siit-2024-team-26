@@ -1,14 +1,22 @@
 package com.example.eventplanner.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,10 +33,10 @@ import org.w3c.dom.Text;
  * create an instance of this fragment.
  */
 public class ServiceCreationFormFragment extends Fragment {
+    private static final int REQUEST_CODE_PERMISSION = 1;
 
     CheckBox recommendNewCategoryCheckBox;
     CheckBox fixedServiceDurationCheckBox;
-
     EditText newCategoryEditText;
     EditText newCategoryDescriptionEditText;
     EditText minServiceEngagementEditText;
@@ -36,6 +44,9 @@ public class ServiceCreationFormFragment extends Fragment {
     EditText serviceDurationEditText;
     TextView categoryTextView;
     TextView eventTextView;
+    TextView imagesString;
+
+    Button uploadButton;
 
     public ServiceCreationFormFragment() {
         // Required empty public constructor
@@ -66,6 +77,8 @@ public class ServiceCreationFormFragment extends Fragment {
         serviceDurationEditText = view.findViewById(R.id.serviceDuration);
         categoryTextView = view.findViewById(R.id.category);
         eventTextView = view.findViewById(R.id.eventType);
+        uploadButton = view.findViewById(R.id.serviceImagesButton);
+        imagesString = view.findViewById(R.id.imagesAdded);
 
         checkIsDisabledDurationInput();
         checkIsDisabledCategoriesInputs();
@@ -124,6 +137,36 @@ public class ServiceCreationFormFragment extends Fragment {
                 builder.show();
             }
         });
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    // For Android 13 (API 33) and above
+                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_CODE_PERMISSION);
+                    } else {
+                        // Permission already granted, open gallery
+                        openGallery();
+                    }
+                } else {
+                    // For Android versions below 13
+                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
+                    } else {
+                        // Permission already granted, open gallery
+                        openGallery();
+                    }
+                }
+            }
+        });
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true); // Allow multiple images
+        startActivityForResult(intent, 100); // Start the gallery activity
     }
 
     private void checkIsDisabledCategoriesInputs(){
@@ -165,6 +208,26 @@ public class ServiceCreationFormFragment extends Fragment {
             maxServiceEngagementEditText.setBackgroundResource(R.color.white);
             serviceDurationEditText.setBackgroundResource(R.color.neutral);
             serviceDurationEditText.setText("");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            if (data.getClipData() != null) {
+                // Multiple images selected
+                int imageCount = data.getClipData().getItemCount();
+                if (imageCount > 1) {
+                    imagesString.setText("You selected " + imageCount + " images");
+                } else {
+                    imagesString.setText("You selected 1 image");
+                }
+            } else if (data.getData() != null) {
+                // Single image selected
+                imagesString.setText("You selected 1 image");
+            }
         }
     }
 }
