@@ -139,6 +139,7 @@
         android:lines="4"
         android:enabled="false"
         android:textColorHint="@color/neutral"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/serviceSpecificities"
         app:layout_constraintTop_toTopOf="@id/newCategory" />
