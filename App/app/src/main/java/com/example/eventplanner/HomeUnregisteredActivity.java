@@ -62,6 +62,31 @@ public class HomeUnregisteredActivity extends AppCompatActivity {
 
         handleBackButtonClicked(); // When back button is pressed
 
+        NavigationView navigationView = findViewById(R.id.navigation_drawer);
+
+        // Set navigation item click listener
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                // Handle menu item clicks
+                if (id == R.id.login_drawer_button) {
+                    // Go to HomeActivity
+                    startActivity(new Intent(HomeUnregisteredActivity.this, LoginActivity.class));
+                    finish();
+                } else if (id == R.id.register_drawer_button) {
+                    // Go to ProfileActivity
+                    startActivity(new Intent(HomeUnregisteredActivity.this, RegisterActivity.class));
+                    finish();
+                }
+
+                // Close drawer after item selection
+                drawerLayout.closeDrawers();
+
+                return true;
+            }
+        });
     }
 
     @Override
