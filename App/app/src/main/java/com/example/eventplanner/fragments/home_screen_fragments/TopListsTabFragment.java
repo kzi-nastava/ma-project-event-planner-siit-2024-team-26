@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapter;
+import com.example.eventplanner.adapters.ProductAdapter;
 import com.example.eventplanner.adapters.ServiceAdapter;
 import com.example.eventplanner.adapters.ServiceProductAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.event.TopEventDTO;
+import com.example.eventplanner.dto.product.TopProductDTO;
 import com.example.eventplanner.dto.service.TopServiceDTO;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.Event;
@@ -40,16 +42,16 @@ public class TopListsTabFragment extends Fragment {
 
     private ArrayList<TopEventDTO> topEvents;
     private ArrayList<TopServiceDTO> topServices;
+    private ArrayList<TopProductDTO> topProducts;
 
-    ArrayList<ServiceProduct> products;
-    EventAdapter eventAdapter;
-    ServiceAdapter serviceAdapter;
-    ServiceProductAdapter productAdapter;
+    private EventAdapter eventAdapter;
+    private ServiceAdapter serviceAdapter;
+    private ProductAdapter productAdapter;
 
 
-    RecyclerView topEventsView;
-    RecyclerView topServicesView;
-    RecyclerView topProductsView;
+    private RecyclerView topEventsView;
+    private RecyclerView topServicesView;
+    private RecyclerView topProductsView;
 
     public TopListsTabFragment() {
         // Required empty public constructor
@@ -69,35 +71,25 @@ public class TopListsTabFragment extends Fragment {
 
         showTopEvents();
         showTopServices();
-
-        products = new ArrayList<>();
-        products.add(new Product("Chair", 150, 0, true, 3, "Decoration",R.drawable.download));
-        products.add(new Product("Table", 300, 0, false, 4, "Decoration",R.drawable.download));
-        products.add(new Product("Lamp", 150, 0, true, 3.9, "Decoration",R.drawable.download));
-        products.add(new Product("Balloon", 10, 0, true, 3, "Decoration",R.drawable.download));
-        products.add(new Product("Plates", 20, 0, true, 4.2, "Decoration",R.drawable.download));
-        productAdapter = new ServiceProductAdapter(products);
-
+        showTopProducts();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top_lists_tab, container, false);
+        //Event
         topEventsView = view.findViewById(R.id.topFiveEvents);
         LinearLayoutManager layoutManagerEvents = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         topEventsView.setLayoutManager(layoutManagerEvents);
-
-
+        //Service
         topServicesView = view.findViewById(R.id.topFiveServices);
         LinearLayoutManager layoutManagerServices = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         topServicesView.setLayoutManager(layoutManagerServices);
-
-
+        //Product
         topProductsView = view.findViewById(R.id.topFiveProducts);
         LinearLayoutManager layoutManagerProducts = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         topProductsView.setLayoutManager(layoutManagerProducts);
-        topProductsView.setAdapter(productAdapter);
         return view;
     }
 
@@ -141,6 +133,26 @@ public class TopListsTabFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<TopServiceDTO>> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
+    }
+
+    private void showTopProducts(){
+        Call<ArrayList<TopProductDTO>> call = ClientUtils.productService.getTopProducts();
+        call.enqueue(new Callback<ArrayList<TopProductDTO>>() {
+
+            @Override
+            public void onResponse(Call<ArrayList<TopProductDTO>> call, Response<ArrayList<TopProductDTO>> response) {
+                if (response.isSuccessful()) {
+                    topProducts = response.body();
+                    productAdapter = new ProductAdapter(topProducts);
+                    topProductsView.setAdapter(productAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<TopProductDTO>> call, Throwable t) {
                 Log.i("POZIV", t.getMessage());
             }
         });

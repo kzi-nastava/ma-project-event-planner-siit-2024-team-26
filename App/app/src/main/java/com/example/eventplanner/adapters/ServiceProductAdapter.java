@@ -101,13 +101,13 @@ public class ServiceProductAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            productName = itemView.findViewById(R.id.productName);
-            productCategory = itemView.findViewById(R.id.productCategory);
-            productPrice = itemView.findViewById(R.id.productPrice);
-            productDiscount = itemView.findViewById(R.id.productDiscount);
-            productIsAvailable = itemView.findViewById(R.id.isProductAvailable);
-            productGrade = itemView.findViewById(R.id.productGrade);
-            productImage = itemView.findViewById(R.id.productImage);
+//            productName = itemView.findViewById(R.id.productName);
+//            productCategory = itemView.findViewById(R.id.productCategory);
+//            productPrice = itemView.findViewById(R.id.productPrice);
+//            productDiscount = itemView.findViewById(R.id.productDiscount);
+//            productIsAvailable = itemView.findViewById(R.id.isProductAvailable);
+//            productGrade = itemView.findViewById(R.id.productGrade);
+//            productImage = itemView.findViewById(R.id.productImage);
         }
     }
 
