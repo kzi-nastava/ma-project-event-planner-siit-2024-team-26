@@ -106,7 +106,7 @@ public class TopListsTabFragment extends Fragment {
                     // Logovanje JSON odgovora
                     Log.d("JSON_RESPONSE", jsonResponse);
                     topEvents = response.body();
-                    eventAdapter = new EventAdapter(topEvents);
+                    eventAdapter = new EventAdapter(topEvents, getContext());
                     topEventsView.setAdapter(eventAdapter);
                 }
             }
@@ -126,7 +126,7 @@ public class TopListsTabFragment extends Fragment {
             public void onResponse(Call<ArrayList<TopServiceDTO>> call, Response<ArrayList<TopServiceDTO>> response) {
                 if (response.isSuccessful()) {
                     topServices = response.body();
-                    serviceAdapter = new ServiceAdapter(topServices);
+                    serviceAdapter = new ServiceAdapter(topServices, getContext());
                     topServicesView.setAdapter(serviceAdapter);
                 }
             }
@@ -146,7 +146,7 @@ public class TopListsTabFragment extends Fragment {
             public void onResponse(Call<ArrayList<TopProductDTO>> call, Response<ArrayList<TopProductDTO>> response) {
                 if (response.isSuccessful()) {
                     topProducts = response.body();
-                    productAdapter = new ProductAdapter(topProducts);
+                    productAdapter = new ProductAdapter(topProducts, getContext());
                     topProductsView.setAdapter(productAdapter);
                 }
             }

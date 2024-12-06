@@ -1,13 +1,16 @@
 package com.example.eventplanner.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.model.Event;
@@ -20,9 +23,11 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
     private List<TopEventDTO> topEvents;
+    private Context context;
 
-    public EventAdapter(List<TopEventDTO> events) {
+    public EventAdapter(List<TopEventDTO> events, Context context) {
         this.topEvents = events;
+        this.context = context;
     }
 
     @NonNull
@@ -39,6 +44,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         holder.eventName.setText(event.getName());
         holder.eventDescription.setText(event.getDescription());
         holder.eventStarts.setText(DateStringFormatter.format(event.getStarts(), "dd.MM.yyyy. HH:mm"));
+        Glide.with(this.context)
+                .load(event.getImages().get(0)) // URL slike
+                .into(holder.eventImage);
 
     }
 
@@ -52,12 +60,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         TextView eventName;
         TextView eventDescription;
         TextView eventStarts;
+        ImageView eventImage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             eventName = itemView.findViewById(R.id.eventName);
             eventDescription = itemView.findViewById(R.id.eventDescription);
             eventStarts = itemView.findViewById(R.id.eventStartingDate);
+            eventImage = itemView.findViewById(R.id.eventImage);
 
         }
     }

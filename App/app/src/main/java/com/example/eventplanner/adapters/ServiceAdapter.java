@@ -1,13 +1,17 @@
 package com.example.eventplanner.adapters;
 
+import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.service.TopServiceDTO;
@@ -19,9 +23,11 @@ import java.util.List;
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHolder> {
 
     private List<TopServiceDTO> topServices;
+    private Context context;
 
-    public ServiceAdapter(List<TopServiceDTO> topServices) {
+    public ServiceAdapter(List<TopServiceDTO> topServices, Context context) {
         this.topServices = topServices;
+        this.context = context;
     }
 
     @NonNull
@@ -38,6 +44,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         holder.serviceName.setText(service.getName());
         holder.serviceDescription.setText(service.getDescription());
         holder.servicePrice.setText(String.valueOf(service.getPrice()) + "€");
+        Glide.with(this.context)
+                .load(service.getImages().get(0)) // URL slike
+                .into(holder.serviceImage);
     }
 
 
@@ -50,12 +59,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         TextView serviceName;
         TextView serviceDescription;
         TextView servicePrice;
+        ImageView serviceImage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             serviceName = itemView.findViewById(R.id.serviceName);
             serviceDescription = itemView.findViewById(R.id.serviceDescription);
             servicePrice = itemView.findViewById(R.id.servicePrice);
+            serviceImage = itemView.findViewById(R.id.serviceImage);
 
         }
     }
