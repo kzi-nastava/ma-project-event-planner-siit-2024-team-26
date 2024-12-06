@@ -116,6 +116,8 @@ public class EventTabFragment extends Fragment {
 
                 selectedEventTypes = new ArrayList<>();
                 selectedCities = new ArrayList<>();
+                selectedDateNotBefore = "01.01.1000.";
+                selectedDateNotAfter = "30.12.3000.";
                 //EVENT TYPES
                 String[] optionsArray = {"Workshop", "Conference", "Birthday"};
                 ArrayList<String> options = new ArrayList<>();
@@ -235,11 +237,11 @@ public class EventTabFragment extends Fragment {
                 (view, selectedYear, selectedMonth, selectedDay) -> {
                     if(which.equals("notBefore")){
                     selectedDateNotBefore = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear + ".";
-                    Toast.makeText(requireContext(), "Selected Date: " + selectedDateNotBefore, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Not before: " + selectedDateNotBefore, Toast.LENGTH_SHORT).show();
                     }
                     else{
                         selectedDateNotAfter = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear + ".";
-                        Toast.makeText(requireContext(), "Selected Date: " + selectedDateNotAfter, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Not after: " + selectedDateNotAfter, Toast.LENGTH_SHORT).show();
                     }
                 },
                 year, month, day
@@ -251,9 +253,7 @@ public class EventTabFragment extends Fragment {
     private void searchEvents(View v, Spinner spinnerOrder){
         sortDirection = spinnerOrder.getSelectedItem().toString();
         EditText nameSearch = v.findViewById(R.id.nameSearchEvents);
-        if (nameSearch == null){
-            Log.i("SUPARA", "MRS");
-        }
+
         name = nameSearch.getText().toString();
 
         Call<Page<EventCardDTO>> call = ClientUtils.eventService.searchEvents(name, selectedDateNotBefore, selectedDateNotAfter, selectedEventTypes, selectedCities, sortDirection);
@@ -264,7 +264,6 @@ public class EventTabFragment extends Fragment {
                 if (response.isSuccessful()) {
                     foundEvents = response.body().getContent();
                     ArrayList<EventCardDTO> foundEventsArrayList = new ArrayList<>(foundEvents);
-                    Log.i("SUPARA", "EEE");
                     eventAdapter = new EventSearchAdapter(foundEventsArrayList, getContext());
                     recyclerView.setAdapter(eventAdapter);
                 }
