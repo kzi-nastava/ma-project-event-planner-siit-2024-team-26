@@ -52,79 +52,31 @@
 
         <TextView
             android:id="@+id/eventName"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
 
-            android:inputType="text"
+            android:textAlignment="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="false"
             android:text="Name"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.076"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.076" />
 
         <TextView
-            android:id="@+id/eventTypeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="Event type"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/eventName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.27" />
-
-        <TextView
-            android:id="@+id/eventGuestsLimit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="Guests limit"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/eventName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.453" />
-
-        <TextView
-            android:id="@+id/eventEndingDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="Ends"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/eventName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.847" />
-
-        <TextView
             android:id="@+id/eventStartingDate"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
 
-            android:inputType="text"
             android:text="Starts"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -133,7 +85,28 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/eventName"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.645" />
+            app:layout_constraintVertical_bias="0.876" />
+
+        <TextView
+            android:id="@+id/eventDescription"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="16dp"
+            android:breakStrategy="simple"
+            android:ellipsize="end"
+            android:maxLines="5"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:text="Description"
+            android:lineSpacingExtra="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

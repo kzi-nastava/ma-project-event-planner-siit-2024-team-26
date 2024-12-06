@@ -34,12 +34,16 @@ import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTa
 import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.example.eventplanner.model.AuthenticatedUser;
 import com.example.eventplanner.model.ServiceProductProvider;
+import com.example.eventplanner.service.EventService;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
+
+
+    private EventService eventService;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;

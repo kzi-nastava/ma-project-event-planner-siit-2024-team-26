@@ -9,17 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventplanner.R;
+import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.model.Event;
+import com.example.eventplanner.utils.DateStringFormatter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
-    private List<Event> events;
+    private List<TopEventDTO> topEvents;
 
-    public EventAdapter(List<Event> events) {
-        this.events = events;
+    public EventAdapter(List<TopEventDTO> events) {
+        this.topEvents = events;
     }
 
     @NonNull
@@ -32,39 +35,34 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
-        Event event = events.get(position);
-        holder.eventName.setText("Name: "+event.getName());
-        holder.eventType.setText("Type: "+event.getEventType().getName());
-        holder.eventGuestsLimit.setText("Guests limit: "+String.valueOf(event.getGuestsLimit()));
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
+        TopEventDTO event = topEvents.get(position);
+        holder.eventName.setText(event.getName());
 
-        String startingDate = sdf.format(event.getStarts().getTime());
-        holder.eventStarts.setText("Starts: "+startingDate);
+        holder.eventDescription.setText(event.getDescription());
 
-        String endingDate = sdf.format(event.getEnds().getTime());
-        holder.eventEnds.setText("Ends: "+endingDate);
+        //String startingDate = sdf.format(event.getStarts());
+        holder.eventStarts.setText(DateStringFormatter.format(event.getStarts(), "dd.MM.yyyy. HH:mm"));
+
     }
 
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return topEvents.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView eventName;
-        TextView eventType;
-        TextView eventGuestsLimit;
+        TextView eventDescription;
         TextView eventStarts;
-        TextView eventEnds;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             eventName = itemView.findViewById(R.id.eventName);
-            eventType = itemView.findViewById(R.id.eventTypeName);
-            eventGuestsLimit = itemView.findViewById(R.id.eventGuestsLimit);
+            eventDescription = itemView.findViewById(R.id.eventDescription);
             eventStarts = itemView.findViewById(R.id.eventStartingDate);
-            eventEnds = itemView.findViewById(R.id.eventEndingDate);
+
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,31 @@ import android.view.ViewGroup;
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapter;
 import com.example.eventplanner.adapters.ServiceProductAdapter;
+import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.model.Address;
 import com.example.eventplanner.model.Event;
 import com.example.eventplanner.model.EventType;
 import com.example.eventplanner.model.Product;
 import com.example.eventplanner.model.Service;
 import com.example.eventplanner.model.ServiceProduct;
+import com.example.eventplanner.service.EventService;
+import com.google.gson.Gson;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TopListsTabFragment extends Fragment {
+
+    private EventService eventService;
+
+    private ArrayList<TopEventDTO> topEvents;
+
 
     ArrayList<Event> events;
     ArrayList<ServiceProduct> services;
@@ -32,9 +47,9 @@ public class TopListsTabFragment extends Fragment {
     ServiceProductAdapter serviceAdapter;
     ServiceProductAdapter productAdapter;
 
-    RecyclerView topEvents;
-    RecyclerView topServices;
-    RecyclerView topProducts;
+    RecyclerView topEventsView;
+    RecyclerView topServicesView;
+    RecyclerView topProductsView;
 
     public TopListsTabFragment() {
         // Required empty public constructor
@@ -52,6 +67,8 @@ public class TopListsTabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        showTopEvents();
+
         events = new ArrayList<>();
         Address myAddress = new Address("Serbia", "Novi Sad", "Partizanska", 48);
         EventType myType = new EventType("Wedding", "Wedding type!", true);
@@ -62,12 +79,12 @@ public class TopListsTabFragment extends Fragment {
         startingDate.set(Calendar.HOUR, 15);
         startingDate.set(Calendar.MINUTE, 30);
 
-        events.add(new Event("George and Sophie", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 300));
-        events.add(new Event("Luke and Nataly", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 200));
-        events.add(new Event("Jack and Lana", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
-        events.add(new Event("Josh and Sophie", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
-        events.add(new Event("Duke and Stephany", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
-        eventAdapter = new EventAdapter(events);
+//        events.add(new Event("George and Sophie", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 300));
+//        events.add(new Event("Luke and Nataly", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 200));
+//        events.add(new Event("Jack and Lana", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
+//        events.add(new Event("Josh and Sophie", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
+//        events.add(new Event("Duke and Stephany", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
+
 
         products = new ArrayList<>();
         products.add(new Product("Chair", 150, 0, true, 3, "Decoration",R.drawable.download));
@@ -90,20 +107,40 @@ public class TopListsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top_lists_tab, container, false);
-        topEvents = view.findViewById(R.id.topFiveEvents);
+        topEventsView = view.findViewById(R.id.topFiveEvents);
         LinearLayoutManager layoutManagerEvents = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        topEvents.setLayoutManager(layoutManagerEvents);
-        topEvents.setAdapter(eventAdapter);
+        topEventsView.setLayoutManager(layoutManagerEvents);
 
-        topServices = view.findViewById(R.id.topFiveServices);
+
+        topServicesView = view.findViewById(R.id.topFiveServices);
         LinearLayoutManager layoutManagerServices = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        topServices.setLayoutManager(layoutManagerServices);
-        topServices.setAdapter(serviceAdapter);
+        topServicesView.setLayoutManager(layoutManagerServices);
+        topServicesView.setAdapter(serviceAdapter);
 
-        topProducts = view.findViewById(R.id.topFiveProducts);
+        topProductsView = view.findViewById(R.id.topFiveProducts);
         LinearLayoutManager layoutManagerProducts = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        topProducts.setLayoutManager(layoutManagerProducts);
-        topProducts.setAdapter(productAdapter);
+        topProductsView.setLayoutManager(layoutManagerProducts);
+        topProductsView.setAdapter(productAdapter);
         return view;
+    }
+
+    private void showTopEvents(){
+        Call<ArrayList<TopEventDTO>> call = ClientUtils.eventService.getTopEvents();
+        call.enqueue(new Callback<ArrayList<TopEventDTO>>() {
+
+            @Override
+            public void onResponse(Call<ArrayList<TopEventDTO>> call, Response<ArrayList<TopEventDTO>> response) {
+                if (response.isSuccessful()) {
+                    topEvents = response.body();
+                    eventAdapter = new EventAdapter(topEvents);
+                    topEventsView.setAdapter(eventAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<TopEventDTO>> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
     }
 }
