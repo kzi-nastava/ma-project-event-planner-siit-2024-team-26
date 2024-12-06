@@ -73,7 +73,7 @@ public class EventTabFragment extends Fragment {
         events.add(new Event("Luke and Nataly", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 200));
         events.add(new Event("Jack and Lana", "Come to our wedding!", myType, myAddress, startingDate, startingDate, 100));
 
-        eventAdapter = new EventAdapter(events);
+//        eventAdapter = new EventAdapter(events);
 
     }
 

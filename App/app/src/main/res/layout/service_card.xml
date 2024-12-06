@@ -52,45 +52,53 @@
 
         <TextView
             android:id="@+id/serviceName"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
 
-            android:inputType="text"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="false"
             android:text="Name"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.076"
+            app:layout_constraintHorizontal_bias="0.457"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.076" />
 
         <TextView
-            android:id="@+id/serviceCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="@string/category"
+            android:id="@+id/serviceDescription"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="16dp"
+            android:breakStrategy="simple"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:text="Description"
+            android:lineSpacingExtra="4dp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/serviceName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.247" />
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/servicePrice"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
 
-            android:inputType="text"
             android:text="@string/price"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -99,57 +107,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/serviceName"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.457" />
+            app:layout_constraintVertical_bias="0.88" />
 
-        <TextView
-            android:id="@+id/serviceDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="@string/discount"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/servicePrice"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.642" />
-
-        <TextView
-            android:id="@+id/serviceGrade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="@string/grade"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/serviceName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.828" />
-
-        <TextView
-            android:id="@+id/isServiceAvailable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:inputType="text"
-            android:text="@string/isAvailable"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.889"
-            app:layout_constraintStart_toStartOf="@id/serviceName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.828" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

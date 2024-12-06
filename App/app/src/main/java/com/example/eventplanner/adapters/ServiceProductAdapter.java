@@ -101,13 +101,13 @@ public class ServiceProductAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            productName = itemView.findViewById(R.id.productName);
-            productCategory = itemView.findViewById(R.id.productCategory);
-            productPrice = itemView.findViewById(R.id.productPrice);
-            productDiscount = itemView.findViewById(R.id.productDiscount);
-            productIsAvailable = itemView.findViewById(R.id.isProductAvailable);
-            productGrade = itemView.findViewById(R.id.productGrade);
-            productImage = itemView.findViewById(R.id.productImage);
+//            productName = itemView.findViewById(R.id.productName);
+//            productCategory = itemView.findViewById(R.id.productCategory);
+//            productPrice = itemView.findViewById(R.id.productPrice);
+//            productDiscount = itemView.findViewById(R.id.productDiscount);
+//            productIsAvailable = itemView.findViewById(R.id.isProductAvailable);
+//            productGrade = itemView.findViewById(R.id.productGrade);
+//            productImage = itemView.findViewById(R.id.productImage);
         }
     }
 
@@ -118,13 +118,13 @@ public class ServiceProductAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public ServiceViewHolder(View itemView) {
             super(itemView);
-            serviceName = itemView.findViewById(R.id.serviceName);
-            serviceCategory = itemView.findViewById(R.id.serviceCategory);
-            servicePrice = itemView.findViewById(R.id.servicePrice);
-            serviceDiscount = itemView.findViewById(R.id.serviceDiscount);
-            serviceIsAvailable = itemView.findViewById(R.id.isServiceAvailable);
-            serviceGrade = itemView.findViewById(R.id.serviceGrade);
-            serviceImage = itemView.findViewById(R.id.serviceImage);
+//            serviceName = itemView.findViewById(R.id.serviceName);
+//            serviceCategory = itemView.findViewById(R.id.serviceCategory);
+//            servicePrice = itemView.findViewById(R.id.servicePrice);
+//            serviceDiscount = itemView.findViewById(R.id.serviceDiscount);
+//            serviceIsAvailable = itemView.findViewById(R.id.isServiceAvailable);
+//            serviceGrade = itemView.findViewById(R.id.serviceGrade);
+//            serviceImage = itemView.findViewById(R.id.serviceImage);
         }
     }
 }
