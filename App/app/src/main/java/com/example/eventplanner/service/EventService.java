@@ -24,6 +24,8 @@ public interface EventService {
             @Query("notAfter") String notAfter,
             @Query("eventTypes") List<String> eventTypes,
             @Query("cities") List<String> cities,
-            @Query("sortDirection") String sortDirection
+            @Query("sortDirection") String sortDirection,
+            @Query("size") Integer size,
+            @Query("page") Integer page
     );
 }

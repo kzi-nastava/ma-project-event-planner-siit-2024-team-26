@@ -63,6 +63,15 @@ public class EventTabFragment extends Fragment {
     String selectedDateNotAfter;
     String sortDirection;
 
+    Integer totalPages;
+    Integer currentPage;
+
+    View mainView;
+    Button nextButton;
+    Button previousButton;
+
+    Boolean canNext;
+    Boolean canPrevious;
 
     public EventTabFragment() {
         // Required empty public constructor
@@ -80,6 +89,15 @@ public class EventTabFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.totalPages = 0;
+        this.currentPage = 0;
+
+        this.name = "";
+        this.selectedDateNotAfter =  "01.01.1000.";
+        selectedEventTypes = new ArrayList<>();
+        selectedCities = new ArrayList<>();
+        this.selectedDateNotAfter = "30.12.3000.";
+
 
     }
 
@@ -88,9 +106,35 @@ public class EventTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_tab, container, false);
 
+        mainView = view;
+        previousButton = mainView.findViewById(R.id.previousEventsButton);
+        nextButton = mainView.findViewById(R.id.nextEventsButton);
+
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (canPrevious){
+                    currentPage -= 1;
+                    makeSearch();
+                }
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (canNext){
+                    currentPage += 1;
+                    makeSearch();
+                }
+            }
+        });
+
         recyclerView = view.findViewById(R.id.foundEvents);
         LinearLayoutManager layoutManagerEvents = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManagerEvents);
+
+        makeSearch();
 
         Locale locale = new Locale("en", "US");
         Locale.setDefault(locale);
@@ -214,7 +258,6 @@ public class EventTabFragment extends Fragment {
                 searchButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         searchEvents(dialogView, spinnerOrder);
                     }
                 });
@@ -256,16 +299,22 @@ public class EventTabFragment extends Fragment {
 
         name = nameSearch.getText().toString();
 
-        Call<Page<EventCardDTO>> call = ClientUtils.eventService.searchEvents(name, selectedDateNotBefore, selectedDateNotAfter, selectedEventTypes, selectedCities, sortDirection);
+        makeSearch();
+    }
+
+    private void makeSearch(){
+        Call<Page<EventCardDTO>> call = ClientUtils.eventService.searchEvents(name, selectedDateNotBefore, selectedDateNotAfter, selectedEventTypes, selectedCities, sortDirection, 1, currentPage);
         call.enqueue(new Callback<Page<EventCardDTO>>() {
 
             @Override
             public void onResponse(Call<Page<EventCardDTO>> call, Response<Page<EventCardDTO>> response) {
                 if (response.isSuccessful()) {
                     foundEvents = response.body().getContent();
+                    totalPages = response.body().getTotalPages();
                     ArrayList<EventCardDTO> foundEventsArrayList = new ArrayList<>(foundEvents);
                     eventAdapter = new EventSearchAdapter(foundEventsArrayList, getContext());
                     recyclerView.setAdapter(eventAdapter);
+                    setUpPageButtonsAvailability();
                 }
             }
 
@@ -276,5 +325,11 @@ public class EventTabFragment extends Fragment {
         });
     }
 
+    private void setUpPageButtonsAvailability(){
+        if (currentPage == 0){ previousButton.setAlpha(0.5f); canPrevious = false; }
+        else{ previousButton.setAlpha(1); canPrevious = true; }
+        if (currentPage == totalPages - 1){ nextButton.setAlpha(0.5f); canNext = false;}
+        else{ nextButton.setAlpha(1); canNext = true;}
+    }
 
 }
