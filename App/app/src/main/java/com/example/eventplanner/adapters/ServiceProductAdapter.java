@@ -118,13 +118,13 @@ public class ServiceProductAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public ServiceViewHolder(View itemView) {
             super(itemView);
-            serviceName = itemView.findViewById(R.id.serviceName);
-            serviceCategory = itemView.findViewById(R.id.serviceCategory);
-            servicePrice = itemView.findViewById(R.id.servicePrice);
-            serviceDiscount = itemView.findViewById(R.id.serviceDiscount);
-            serviceIsAvailable = itemView.findViewById(R.id.isServiceAvailable);
-            serviceGrade = itemView.findViewById(R.id.serviceGrade);
-            serviceImage = itemView.findViewById(R.id.serviceImage);
+//            serviceName = itemView.findViewById(R.id.serviceName);
+//            serviceCategory = itemView.findViewById(R.id.serviceCategory);
+//            servicePrice = itemView.findViewById(R.id.servicePrice);
+//            serviceDiscount = itemView.findViewById(R.id.serviceDiscount);
+//            serviceIsAvailable = itemView.findViewById(R.id.isServiceAvailable);
+//            serviceGrade = itemView.findViewById(R.id.serviceGrade);
+//            serviceImage = itemView.findViewById(R.id.serviceImage);
         }
     }
 }

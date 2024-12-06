@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@id/serviceDiscount"
+        android:id="@+id/serviceDiscount"
         android:layout_width="145dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
