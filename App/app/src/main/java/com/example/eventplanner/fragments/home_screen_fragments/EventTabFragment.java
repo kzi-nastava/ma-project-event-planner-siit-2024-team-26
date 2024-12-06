@@ -303,7 +303,7 @@ public class EventTabFragment extends Fragment {
     }
 
     private void makeSearch(){
-        Call<Page<EventCardDTO>> call = ClientUtils.eventService.searchEvents(name, selectedDateNotBefore, selectedDateNotAfter, selectedEventTypes, selectedCities, sortDirection, 1, currentPage);
+        Call<Page<EventCardDTO>> call = ClientUtils.eventService.searchEvents(name, selectedDateNotBefore, selectedDateNotAfter, selectedEventTypes, selectedCities, sortDirection, 5, currentPage);
         call.enqueue(new Callback<Page<EventCardDTO>>() {
 
             @Override
