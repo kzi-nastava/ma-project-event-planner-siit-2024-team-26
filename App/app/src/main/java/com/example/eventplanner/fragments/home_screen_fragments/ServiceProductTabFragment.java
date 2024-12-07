@@ -21,19 +21,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.eventplanner.R;
-import com.example.eventplanner.adapters.EventSearchAdapter;
-import com.example.eventplanner.adapters.ProductAdapter;
 import com.example.eventplanner.adapters.ProductSearchAdapter;
-import com.example.eventplanner.adapters.ServiceProductAdapter;
+import com.example.eventplanner.adapters.ServiceProductSearchAdapter;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
-import com.example.eventplanner.dto.event.EventCardDTO;
 import com.example.eventplanner.dto.product.ProductCardDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
+import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
 import com.example.eventplanner.model.Page;
-import com.example.eventplanner.model.Product;
-import com.example.eventplanner.model.Service;
-import com.example.eventplanner.model.ServiceProduct;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -51,12 +46,14 @@ import retrofit2.Response;
  */
 public class ServiceProductTabFragment extends Fragment {
 
-    List<ServiceCardDTO> serviceProducts;
+    List<ServiceProductCardDTO> foundServicesProducts;
     List<ServiceCardDTO> foundServices;
     List<ProductCardDTO> foundProducts;
-    ServiceProductAdapter serviceProductAdapter;
+
+    ServiceProductSearchAdapter serviceProductSearchAdapter;
     RecyclerView recyclerView;
 
+    ServiceProductSearchAdapter serviceProductAdapter;
     ServiceSearchAdapter serviceAdapter;
     ProductSearchAdapter productAdapter;
 
@@ -111,7 +108,7 @@ public class ServiceProductTabFragment extends Fragment {
         recyclerView = view.findViewById(R.id.foundServiceProducts);
         LinearLayoutManager layoutManagerServiceProduct = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManagerServiceProduct);
-        recyclerView.setAdapter(serviceProductAdapter);
+        recyclerView.setAdapter(serviceProductSearchAdapter);
 
         previousButton = view.findViewById(R.id.previousServiceProductButton);
         nextButton = view.findViewById(R.id.nextServiceProductsButton);
@@ -138,7 +135,7 @@ public class ServiceProductTabFragment extends Fragment {
         });
 
 
-        searchServices(); // IZMENITI
+        callRightSearch();
 
         Button filterButton = view.findViewById(R.id.serviceProductFilterButton);
         filterButton.setOnClickListener(new View.OnClickListener() {
@@ -243,13 +240,16 @@ public class ServiceProductTabFragment extends Fragment {
     }
 
     private void callRightSearch(){
-        int selectedRadioButton = R.id.onlyServicesRadioButton;
+        int selectedRadioButton = R.id.showBothRadioButton;
         if (onlyRadioGroup != null){
             selectedRadioButton = onlyRadioGroup.getCheckedRadioButtonId();
         }
-        if (selectedRadioButton == R.id.onlyServicesRadioButton){
+        if (selectedRadioButton == R.id.showBothRadioButton){
+            searchServicesAndProducts();
+        }
+        else if (selectedRadioButton == R.id.onlyServicesRadioButton){
             searchServices();
-        } else if (selectedRadioButton == R.id.onlyProductsRadioButton){
+        } else{
             searchProducts();
         }
 
@@ -261,6 +261,31 @@ public class ServiceProductTabFragment extends Fragment {
         else{ nextButton.setAlpha(1); canNext = true;}
     }
 
+
+    private void searchServicesAndProducts(){
+        Call<Page<ServiceProductCardDTO>> call = ClientUtils.serviceProductService.searchServicesAndProducts(name, minPrice, maxPrice, selectedCategories, sortDirection, 5, currentPage);
+        call.enqueue(new Callback<Page<ServiceProductCardDTO>>() {
+
+            @Override
+            public void onResponse(Call<Page<ServiceProductCardDTO>> call, Response<Page<ServiceProductCardDTO>> response) {
+                if (response.isSuccessful()) {
+
+                    foundServicesProducts = response.body().getContent();
+
+                    totalPages = response.body().getTotalPages();
+                    ArrayList<ServiceProductCardDTO> foundServicesProductsArrayList = new ArrayList<>(foundServicesProducts);
+                    serviceProductAdapter = new ServiceProductSearchAdapter(foundServicesProductsArrayList, getContext());
+                    recyclerView.setAdapter(serviceProductAdapter);
+                    setUpPageButtonsAvailability();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Page<ServiceProductCardDTO>> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
+    }
 
     private void searchServices(){
         Call<Page<ServiceCardDTO>> call = ClientUtils.serviceService.searchServices(name, minPrice, maxPrice, minDurationService, maxDurationService, selectedCategories, sortDirection, 5, currentPage);

@@ -15,24 +15,13 @@ import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventAdapter;
 import com.example.eventplanner.adapters.ProductAdapter;
 import com.example.eventplanner.adapters.ServiceAdapter;
-import com.example.eventplanner.adapters.ServiceProductAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.product.TopProductDTO;
 import com.example.eventplanner.dto.service.TopServiceDTO;
-import com.example.eventplanner.model.Address;
-import com.example.eventplanner.model.Event;
-import com.example.eventplanner.model.EventType;
-import com.example.eventplanner.model.Product;
-import com.example.eventplanner.model.Service;
-import com.example.eventplanner.model.ServiceProduct;
-import com.example.eventplanner.service.EventService;
-import com.example.eventplanner.service.ServiceService;
 import com.google.gson.Gson;
 
-import java.io.Console;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
