@@ -259,6 +259,7 @@ public class EventTabFragment extends Fragment {
                     public void onClick(View v) {
                         currentPage = 0;
                         searchEvents(dialogView, spinnerOrder);
+                        bottomSheetDialog.cancel();
                     }
                 });
 

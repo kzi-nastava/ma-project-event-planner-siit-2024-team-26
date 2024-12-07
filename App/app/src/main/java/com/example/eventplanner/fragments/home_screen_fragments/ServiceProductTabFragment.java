@@ -208,6 +208,7 @@ public class ServiceProductTabFragment extends Fragment {
                     public void onClick(View v) {
                         currentPage = 0;
                         makeSearch(dialogView, spinnerOrder);
+                        bottomSheetDialog.cancel();
                     }
                 });
 

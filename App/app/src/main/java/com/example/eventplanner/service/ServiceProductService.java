@@ -16,8 +16,6 @@ public interface ServiceProductService {
             @Query("name") String name,
             @Query("minPrice") Integer minPrice,
             @Query("maxPrice") Integer maxPrice,
-//            @Query("minEngagement") Integer minEngagement,
-//            @Query("maxEngagement") Integer maxEngagement,
             @Query("categories") List<String> categories,
             @Query("sortDirection") String sortDirection,
             @Query("size") Integer size,
