@@ -22,10 +22,13 @@ import android.widget.TextView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.EventSearchAdapter;
+import com.example.eventplanner.adapters.ProductAdapter;
+import com.example.eventplanner.adapters.ProductSearchAdapter;
 import com.example.eventplanner.adapters.ServiceProductAdapter;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.event.EventCardDTO;
+import com.example.eventplanner.dto.product.ProductCardDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.model.Page;
 import com.example.eventplanner.model.Product;
@@ -50,10 +53,12 @@ public class ServiceProductTabFragment extends Fragment {
 
     List<ServiceCardDTO> serviceProducts;
     List<ServiceCardDTO> foundServices;
+    List<ProductCardDTO> foundProducts;
     ServiceProductAdapter serviceProductAdapter;
     RecyclerView recyclerView;
 
     ServiceSearchAdapter serviceAdapter;
+    ProductSearchAdapter productAdapter;
 
 
     String name;
@@ -244,6 +249,8 @@ public class ServiceProductTabFragment extends Fragment {
         }
         if (selectedRadioButton == R.id.onlyServicesRadioButton){
             searchServices();
+        } else if (selectedRadioButton == R.id.onlyProductsRadioButton){
+            searchProducts();
         }
 
     }
@@ -275,6 +282,29 @@ public class ServiceProductTabFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Page<ServiceCardDTO>> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
+    }
+
+    private void searchProducts(){
+        Call<Page<ProductCardDTO>> call = ClientUtils.productService.searchProducts(name, minPrice, maxPrice, selectedCategories, sortDirection, 5, currentPage);
+        call.enqueue(new Callback<Page<ProductCardDTO>>() {
+
+            @Override
+            public void onResponse(Call<Page<ProductCardDTO>> call, Response<Page<ProductCardDTO>> response) {
+                if (response.isSuccessful()) {
+                    foundProducts = response.body().getContent();
+                    totalPages = response.body().getTotalPages();
+                    ArrayList<ProductCardDTO> foundProductsArrayList = new ArrayList<>(foundProducts);
+                    productAdapter = new ProductSearchAdapter(foundProductsArrayList, getContext());
+                    recyclerView.setAdapter(productAdapter);
+                    setUpPageButtonsAvailability();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Page<ProductCardDTO>> call, Throwable t) {
                 Log.i("POZIV", t.getMessage());
             }
         });
