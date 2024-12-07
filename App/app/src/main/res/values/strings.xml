@@ -67,9 +67,13 @@
     <string name="uploadImages">Upload images</string>
     <string name="availableForReservation">Available for reservation</string>
     <string name="cities">Cities</string>
-
+    <string name="company">Company</string>
+    <string name="makeReservation">Make reservation</string>
     <string name="login_features">Log in or register to access more features</string>
-
+    <string name="addToFavourites">Add to favourites</string>
+    <string name="provider">Provider</string>
+    <string name="chatWithProvider">Chat with provider</string>
+    <string name="addReview">Add review</string>
     <string name="sortBy">Sort by:</string>
     <string name="order">Order: </string>
 

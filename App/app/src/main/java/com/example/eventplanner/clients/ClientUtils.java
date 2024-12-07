@@ -1,19 +1,14 @@
 package com.example.eventplanner.clients;
 import com.example.eventplanner.BuildConfig;
-import com.example.eventplanner.model.Service;
-import com.example.eventplanner.service.EventService;
-import com.example.eventplanner.service.ProductService;
-import com.example.eventplanner.service.ServiceProductService;
-import com.example.eventplanner.service.ServiceService;
+import com.example.eventplanner.clients.service.EventService;
+import com.example.eventplanner.clients.service.ProductService;
+import com.example.eventplanner.clients.service.ServiceProductService;
+import com.example.eventplanner.clients.service.ServiceService;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

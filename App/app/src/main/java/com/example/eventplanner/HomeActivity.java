@@ -1,18 +1,13 @@
 package com.example.eventplanner;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -24,17 +19,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.example.eventplanner.model.AuthenticatedUser;
 import com.example.eventplanner.model.ServiceProductProvider;
-import com.example.eventplanner.service.EventService;
+import com.example.eventplanner.clients.service.EventService;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
