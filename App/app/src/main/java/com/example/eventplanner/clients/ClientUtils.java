@@ -3,6 +3,7 @@ import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.model.Service;
 import com.example.eventplanner.service.EventService;
 import com.example.eventplanner.service.ProductService;
+import com.example.eventplanner.service.ServiceProductService;
 import com.example.eventplanner.service.ServiceService;
 
 import java.util.ArrayList;
@@ -42,5 +43,6 @@ public class ClientUtils {
     public static EventService eventService = retrofit.create(EventService.class);
     public static ServiceService serviceService = retrofit.create(ServiceService.class);
     public static ProductService productService = retrofit.create(ProductService.class);
+    public static ServiceProductService serviceProductService = retrofit.create(ServiceProductService.class);
 
 }

@@ -13,7 +13,7 @@
 
 
         <Button
-            android:id="@+id/date1button"
+            android:id="@+id/notBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="4dp"
@@ -33,12 +33,12 @@
             android:layout_marginTop="10dp"
             android:text="DD.MM.YYYY"
             android:textColor="@color/blackreversable"
-            app:layout_constraintEnd_toEndOf="@+id/date2button"
-            app:layout_constraintStart_toStartOf="@+id/date2button"
-            app:layout_constraintTop_toBottomOf="@+id/date2button" />
+            app:layout_constraintEnd_toEndOf="@id/notAfterButton"
+            app:layout_constraintStart_toStartOf="@id/notAfterButton"
+            app:layout_constraintTop_toBottomOf="@id/notAfterButton" />
 
         <EditText
-            android:id="@+id/nameSearch"
+            android:id="@+id/nameSearchEvents"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:background="@color/white"
@@ -66,57 +66,28 @@
             android:textColorHint="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/nameSearch"
-            app:layout_constraintTop_toBottomOf="@id/nameSearch"
+            app:layout_constraintStart_toStartOf="@id/nameSearchEvents"
+            app:layout_constraintTop_toBottomOf="@id/nameSearchEvents"
             app:layout_constraintVertical_bias="0.042" />
 
-        <EditText
-            android:id="@+id/countrySearch"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@color/white"
 
+        <TextView
+            android:id="@+id/citiesSearch"
+            android:layout_width="145dp"
+            android:layout_height="48dp"
+
+            android:background="@color/accent"
             android:ems="7"
-            android:hint="Country"
+            android:gravity="left|center_vertical"
+            android:hint="@string/cities"
             android:inputType="text"
             android:textColor="@color/black"
-            android:textColorHint="@color/neutral"
+            android:textColorHint="@color/black"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/eventTypeSearch"
-            app:layout_constraintTop_toBottomOf="@id/eventTypeSearch"
-            app:layout_constraintVertical_bias="0.054" />
-
-
-        <EditText
-            android:id="@+id/citySearch"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-
-            android:background="@color/white"
-            android:ems="7"
-            android:hint="City"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/guestLimitSearch"
-            app:layout_constraintTop_toBottomOf="@+id/guestLimitSearch"
-            app:layout_constraintVertical_bias="0.052" />
-
-        <EditText
-            android:id="@+id/guestLimitSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@color/white"
-            android:ems="7"
-            android:hint="@string/guestsLimit"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/nameSearch"
-            app:layout_constraintTop_toBottomOf="@+id/nameSearch"
-            app:layout_constraintVertical_bias="0.042" />
+            app:layout_constraintEnd_toEndOf="@id/nameSearchEvents"
+            app:layout_constraintTop_toTopOf="@id/eventTypeSearch"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/notBeforeLabel"
@@ -128,10 +99,10 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/countrySearch"
+            app:layout_constraintEnd_toEndOf="@id/eventTypeSearch"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/countrySearch"
-            app:layout_constraintTop_toBottomOf="@id/countrySearch"
+            app:layout_constraintStart_toStartOf="@id/eventTypeSearch"
+            app:layout_constraintTop_toBottomOf="@id/eventTypeSearch"
             app:layout_constraintVertical_bias="0.044" />
 
         <TextView
@@ -144,10 +115,10 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/citySearch"
+            app:layout_constraintEnd_toEndOf="@id/citiesSearch"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@id/citySearch"
-            app:layout_constraintTop_toBottomOf="@id/citySearch"
+            app:layout_constraintStart_toStartOf="@id/citiesSearch"
+            app:layout_constraintTop_toBottomOf="@id/citiesSearch"
             app:layout_constraintVertical_bias="0.046" />
 
         <Button
@@ -158,14 +129,14 @@
             android:text="@string/search"
             android:textColor="@color/white"
             app:cornerRadius="5dp"
-            app:layout_constraintBottom_toTopOf="@id/nameSearch"
-            app:layout_constraintEnd_toEndOf="@id/nameSearch"
+            app:layout_constraintBottom_toTopOf="@id/nameSearchEvents"
+            app:layout_constraintEnd_toEndOf="@id/nameSearchEvents"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/date2button"
+            android:id="@+id/notAfterButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="4dp"
@@ -185,9 +156,9 @@
             android:layout_marginTop="12dp"
             android:text="DD.MM.YYYY"
             android:textColor="@color/blackreversable"
-            app:layout_constraintEnd_toEndOf="@+id/date1button"
-            app:layout_constraintStart_toStartOf="@+id/date1button"
-            app:layout_constraintTop_toBottomOf="@+id/date1button" />
+            app:layout_constraintEnd_toEndOf="@id/notBeforeButton"
+            app:layout_constraintStart_toStartOf="@id/notBeforeButton"
+            app:layout_constraintTop_toBottomOf="@id/notBeforeButton" />
 
 
         <LinearLayout
@@ -195,9 +166,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="230dp"
-            app:layout_constraintStart_toStartOf="@id/date1button"
+            app:layout_constraintStart_toStartOf="@id/notBeforeButton"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date1button">
+            app:layout_constraintTop_toBottomOf="@id/notBeforeButton">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

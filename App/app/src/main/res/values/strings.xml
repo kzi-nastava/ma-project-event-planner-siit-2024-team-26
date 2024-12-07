@@ -66,6 +66,7 @@
     <string name="fixedServiceDuration">Fixed service duration</string>
     <string name="uploadImages">Upload images</string>
     <string name="availableForReservation">Available for reservation</string>
+    <string name="cities">Cities</string>
 
     <string name="login_features">Log in or register to access more features</string>
 
