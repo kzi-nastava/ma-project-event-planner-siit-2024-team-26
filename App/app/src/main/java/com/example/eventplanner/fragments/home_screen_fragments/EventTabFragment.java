@@ -98,7 +98,6 @@ public class EventTabFragment extends Fragment {
         selectedCities = new ArrayList<>();
         this.selectedDateNotAfter = "30.12.3000.";
 
-
     }
 
     @Override
@@ -258,6 +257,7 @@ public class EventTabFragment extends Fragment {
                 searchButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        currentPage = 0;
                         searchEvents(dialogView, spinnerOrder);
                     }
                 });

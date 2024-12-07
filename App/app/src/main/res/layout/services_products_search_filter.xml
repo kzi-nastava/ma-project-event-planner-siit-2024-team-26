@@ -47,42 +47,8 @@
             app:layout_constraintTop_toBottomOf="@id/nameSearch"
             app:layout_constraintVertical_bias="0.042" />
 
-        <EditText
-            android:id="@+id/serviceProductCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@color/white"
-
-            android:ems="7"
-            android:hint="Country"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/serviceProductCategory"
-            app:layout_constraintTop_toBottomOf="@id/serviceProductCategory"
-            app:layout_constraintVertical_bias="0.054" />
 
 
-        <EditText
-            android:id="@+id/citySearch"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@color/white"
-
-            android:ems="7"
-            android:hint="City"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textColorHint="@color/neutral"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/nameSearch"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@id/serviceProductMinPrice"
-            app:layout_constraintTop_toBottomOf="@id/serviceProductCategory"
-            app:layout_constraintVertical_bias="0.052" />
 
         <EditText
             android:id="@+id/serviceProductMaxPrice"
@@ -131,10 +97,10 @@
             android:textStyle="bold"
             android:textColor="@color/blackreversable"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/serviceProductCountry"
+            app:layout_constraintEnd_toEndOf="@id/serviceProductCategory"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/serviceProductCountry"
-            app:layout_constraintTop_toBottomOf="@id/serviceProductCountry"
+            app:layout_constraintStart_toStartOf="@id/serviceProductCategory"
+            app:layout_constraintTop_toBottomOf="@id/serviceProductCategory"
             app:layout_constraintVertical_bias="0.083" />
 
         <EditText
@@ -152,7 +118,7 @@
             app:layout_constraintEnd_toEndOf="@id/serviceProductMinPrice"
             app:layout_constraintHorizontal_bias="0.414"
             app:layout_constraintStart_toEndOf="@id/serviceOnlyLabel"
-            app:layout_constraintTop_toBottomOf="@id/citySearch"
+            app:layout_constraintTop_toBottomOf="@id/serviceProductMinPrice"
             app:layout_constraintVertical_bias="0.068" />
 
         <EditText
@@ -170,12 +136,12 @@
             app:layout_constraintEnd_toEndOf="@id/nameSearch"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/serviceMinDuration"
-            app:layout_constraintTop_toBottomOf="@id/citySearch"
+            app:layout_constraintTop_toBottomOf="@id/serviceProductMinPrice"
             app:layout_constraintVertical_bias="0.068" />
 
 
         <Button
-            android:id="@+id/eventsFilterSearchButton"
+            android:id="@+id/serviceProductsFilterSearchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/secondary"
