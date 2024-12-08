@@ -300,7 +300,7 @@ public class ServiceProductTabFragment extends Fragment {
 
                     totalPages = response.body().getTotalPages();
                     ArrayList<ServiceCardDTO> foundServicesArrayList = new ArrayList<>(foundServices);
-                    serviceAdapter = new ServiceSearchAdapter(foundServicesArrayList, getContext());
+                    serviceAdapter = new ServiceSearchAdapter(foundServicesArrayList, getContext(), getActivity());
                     recyclerView.setAdapter(serviceAdapter);
                     setUpPageButtonsAvailability();
                 }
