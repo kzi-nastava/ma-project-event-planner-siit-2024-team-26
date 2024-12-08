@@ -5,16 +5,20 @@ import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.service.TopServiceDTO;
+import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.details.ServiceDetailsFragment;
 import com.example.eventplanner.model.Service;
 import com.example.eventplanner.utils.DateStringFormatter;
 
@@ -24,10 +28,12 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
 
     private List<TopServiceDTO> topServices;
     private Context context;
+    private FragmentActivity fragmentActivity;
 
-    public ServiceAdapter(List<TopServiceDTO> topServices, Context context) {
+    public ServiceAdapter(List<TopServiceDTO> topServices, Context context, FragmentActivity fragmentActivity) {
         this.topServices = topServices;
         this.context = context;
+        this.fragmentActivity = fragmentActivity;
     }
 
     @NonNull
@@ -47,6 +53,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         Glide.with(this.context)
                 .load(service.getImages().get(0)) // URL slike
                 .into(holder.serviceImage);
+
+        holder.moreInformationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransition.to(ServiceDetailsFragment.newInstance(service.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            }
+        });
     }
 
 
@@ -60,6 +73,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         TextView serviceDescription;
         TextView servicePrice;
         ImageView serviceImage;
+        Button moreInformationButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -67,6 +81,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
             serviceDescription = itemView.findViewById(R.id.serviceDescription);
             servicePrice = itemView.findViewById(R.id.servicePrice);
             serviceImage = itemView.findViewById(R.id.serviceImage);
+            moreInformationButton = itemView.findViewById(R.id.moreInformationButton);
 
         }
     }

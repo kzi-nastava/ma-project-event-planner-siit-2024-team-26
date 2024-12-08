@@ -115,7 +115,7 @@ public class TopListsTabFragment extends Fragment {
             public void onResponse(Call<ArrayList<TopServiceDTO>> call, Response<ArrayList<TopServiceDTO>> response) {
                 if (response.isSuccessful()) {
                     topServices = response.body();
-                    serviceAdapter = new ServiceAdapter(topServices, getContext());
+                    serviceAdapter = new ServiceAdapter(topServices, getContext(), getActivity());
                     topServicesView.setAdapter(serviceAdapter);
                 }
             }
