@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,6 +20,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
@@ -41,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private AuthenticatedUser user;
     private Boolean isCreationFormShowed;
+
+    private Boolean toExitApplication;
 
     BottomNavigationView bottomNavigationView;
     int currentSelectedBottomIcon;
@@ -192,21 +196,27 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void handleBackButtonClicked() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+
             @Override
             public void handleOnBackPressed() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("Closing application")
-                        .setMessage("Are you sure you want to close application?")
-                        .setPositiveButton("YES", (dialog, which) -> {
-                            finish();
-                        })
-                        .setNegativeButton("NO", (dialog, which) -> {
-                            dialog.dismiss();
-                        })
-                        .setCancelable(true)
-                        .show();
-
+               if (!isMoreFragment(fragmentManager)) {
+                   AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                   builder.setTitle("Closing application")
+                           .setMessage("Are you sure you want to close application?")
+                           .setPositiveButton("YES", (dialog, which) -> {
+                               finish();
+                           })
+                           .setNegativeButton("NO", (dialog, which) -> {
+                               dialog.dismiss();
+                           })
+                           .setCancelable(true)
+                           .show();
+               }else{
+                   fragmentManager.popBackStack();
+               }
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
@@ -242,5 +252,14 @@ public class HomeActivity extends AppCompatActivity {
         builder.show();
     }
 
+
+    private boolean isMoreFragment(FragmentManager fragmentManager){
+        fragmentManager = getSupportFragmentManager();
+        Log.i("NESTO", String.valueOf(fragmentManager.getBackStackEntryCount()));
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 
 }
