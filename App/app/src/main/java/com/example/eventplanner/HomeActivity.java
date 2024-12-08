@@ -1,6 +1,5 @@
 package com.example.eventplanner;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,9 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -24,17 +20,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.example.eventplanner.model.AuthenticatedUser;
 import com.example.eventplanner.model.ServiceProductProvider;
-import com.example.eventplanner.service.EventService;
+import com.example.eventplanner.clients.service.EventService;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -50,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private AuthenticatedUser user;
     private Boolean isCreationFormShowed;
+
+    private Boolean toExitApplication;
 
     BottomNavigationView bottomNavigationView;
     int currentSelectedBottomIcon;
@@ -201,21 +196,27 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void handleBackButtonClicked() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+
             @Override
             public void handleOnBackPressed() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("Closing application")
-                        .setMessage("Are you sure you want to close application?")
-                        .setPositiveButton("YES", (dialog, which) -> {
-                            finish();
-                        })
-                        .setNegativeButton("NO", (dialog, which) -> {
-                            dialog.dismiss();
-                        })
-                        .setCancelable(true)
-                        .show();
-
+               if (!isMoreFragment(fragmentManager)) {
+                   AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                   builder.setTitle("Closing application")
+                           .setMessage("Are you sure you want to close application?")
+                           .setPositiveButton("YES", (dialog, which) -> {
+                               finish();
+                           })
+                           .setNegativeButton("NO", (dialog, which) -> {
+                               dialog.dismiss();
+                           })
+                           .setCancelable(true)
+                           .show();
+               }else{
+                   fragmentManager.popBackStack();
+               }
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
@@ -251,5 +252,14 @@ public class HomeActivity extends AppCompatActivity {
         builder.show();
     }
 
+
+    private boolean isMoreFragment(FragmentManager fragmentManager){
+        fragmentManager = getSupportFragmentManager();
+        Log.i("NESTO", String.valueOf(fragmentManager.getBackStackEntryCount()));
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 
 }
