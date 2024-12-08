@@ -3,6 +3,7 @@ package com.example.eventplanner.fragments.details;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -85,6 +86,7 @@ public class ServiceDetailsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     foundService = response.body();
                     imageAdapter = new ImageAdapter(foundService.getImages(), getContext());
+
                     setAttributes(view);
                 }
             }
@@ -98,6 +100,8 @@ public class ServiceDetailsFragment extends Fragment {
 
     private void setAttributes(View v){
         imagesListView = v.findViewById(R.id.serviceImages);
+        LinearLayoutManager layoutManagerEvents = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        imagesListView.setLayoutManager(layoutManagerEvents);
         imagesListView.setAdapter(imageAdapter);
         makeReservationButton = v.findViewById(R.id.makeReservationButton);
         addToFavouritesButton = v.findViewById(R.id.addToFavourites);

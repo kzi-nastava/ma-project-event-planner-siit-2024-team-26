@@ -1,6 +1,7 @@
 package com.example.eventplanner.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
         public MyViewHolder(View itemView) {
             super(itemView);
-          imageView = itemView.findViewById(R.id.imageScroll);
+            Log.i("slika", "OVDE");
+            imageView = itemView.findViewById(R.id.imageScroll);
         }
     }
 }
