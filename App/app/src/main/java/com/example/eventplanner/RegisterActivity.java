@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.QuickRegistrationForm;
 import com.example.eventplanner.fragments.RoleFragment;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -26,8 +27,12 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        FragmentTransition.to(RoleFragment.newInstance(), RegisterActivity.this, false, R.id.containerRegister);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getString("givenEmail") == null) {
+            FragmentTransition.to(RoleFragment.newInstance(), RegisterActivity.this, false, R.id.containerRegister);
+        }else{
+            FragmentTransition.to(QuickRegistrationForm.newInstance(bundle.getString("givenEmail")), RegisterActivity.this, false, R.id.containerRegister);
+        }
     }
 
 
