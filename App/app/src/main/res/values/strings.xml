@@ -76,5 +76,10 @@
     <string name="addReview">Add review</string>
     <string name="sortBy">Sort by:</string>
     <string name="order">Order: </string>
+    <string name="firstName">First name:</string>
+    <string name="lastName">Last name:</string>
+    <string name="register">Register</string>
+
+    <string name="quickRegistrationText">To use additional features promote account to Service Product Provider or Event Organizer!</string>
 
 </resources>
