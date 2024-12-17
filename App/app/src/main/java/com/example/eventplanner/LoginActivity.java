@@ -80,14 +80,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createUsers(){
-        Address address = new Address("Serbia", "Belgrade", "Kalemegdanska", 13);
-        Company company = new Company("mycompany@gmail.com", "BlueWhaleCompany", "We have the solution!", "1429319", address);
-        AuthenticatedUser eventOrganizer = new EventOrganizer("eo@gmail.com", "sifrica", true,"eo", "Pera", "Peric", "12312412", address);
-        AuthenticatedUser serviceProductProvider = new ServiceProductProvider("sp@gmail.com", "sifrica", true,"spp", "Milos", "Misic", "12312412", address, company);
-        AuthenticatedUser administrator = new EventOrganizer("admin@gmail.com", "sifrica", true,"admin", "Dragan", "Dragic", "12312412", address);
-        users.add(eventOrganizer);
-        users.add(serviceProductProvider);
-        users.add(administrator);
+//        Address address = new Address("Serbia", "Belgrade", "Kalemegdanska", 13);
+//        Company company = new Company("mycompany@gmail.com", "BlueWhaleCompany", "We have the solution!", "1429319", address);
+//        AuthenticatedUser eventOrganizer = new EventOrganizer("eo@gmail.com", "sifrica", true,"eo", "Pera", "Peric", "12312412", address);
+//        AuthenticatedUser serviceProductProvider = new ServiceProductProvider("sp@gmail.com", "sifrica", true,"spp", "Milos", "Misic", "12312412", address, company);
+//        AuthenticatedUser administrator = new EventOrganizer("admin@gmail.com", "sifrica", true,"admin", "Dragan", "Dragic", "12312412", address);
+//        users.add(eventOrganizer);
+//        users.add(serviceProductProvider);
+//        users.add(administrator);
     }
 
     private AuthenticatedUser doesExists(String email, String password){

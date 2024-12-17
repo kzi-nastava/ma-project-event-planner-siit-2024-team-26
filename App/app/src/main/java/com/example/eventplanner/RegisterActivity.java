@@ -27,11 +27,11 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Bundle bundle = getIntent().getExtras();
-        if (bundle.getString("givenEmail") == null) {
-            FragmentTransition.to(RoleFragment.newInstance(), RegisterActivity.this, false, R.id.containerRegister);
-        }else{
+        if (getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
             FragmentTransition.to(QuickRegistrationForm.newInstance(bundle.getString("givenEmail")), RegisterActivity.this, false, R.id.containerRegister);
+        }else{
+            FragmentTransition.to(RoleFragment.newInstance(), RegisterActivity.this, false, R.id.containerRegister);
         }
     }
 
