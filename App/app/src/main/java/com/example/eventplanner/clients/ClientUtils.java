@@ -1,5 +1,6 @@
 package com.example.eventplanner.clients;
 import com.example.eventplanner.BuildConfig;
+import com.example.eventplanner.clients.service.AuthenticatedUserService;
 import com.example.eventplanner.clients.service.EventService;
 import com.example.eventplanner.clients.service.ProductService;
 import com.example.eventplanner.clients.service.ServiceProductService;
@@ -39,5 +40,6 @@ public class ClientUtils {
     public static ServiceService serviceService = retrofit.create(ServiceService.class);
     public static ProductService productService = retrofit.create(ProductService.class);
     public static ServiceProductService serviceProductService = retrofit.create(ServiceProductService.class);
+    public static AuthenticatedUserService authenticatedUserService = retrofit.create(AuthenticatedUserService.class);
 
 }

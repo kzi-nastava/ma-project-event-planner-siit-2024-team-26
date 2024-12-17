@@ -10,11 +10,14 @@ public class Address implements Parcelable {
     private String street;
     private int number;
 
-    public Address(String country, String city, String street, int number) {
+    private Location location;
+
+    public Address(String country, String city, String street, int number, Location location) {
         this.country = country;
         this.city = city;
         this.street = street;
         this.number = number;
+        this.location = location;
     }
 
     public String getCountry() {
@@ -49,11 +52,20 @@ public class Address implements Parcelable {
         this.number = number;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     protected Address(Parcel in) {
         country = in.readString();
         city = in.readString();
         street = in.readString();
         number = in.readInt();
+        location = in.readParcelable(Location.class.getClassLoader());
     }
 
     @Override
@@ -62,6 +74,7 @@ public class Address implements Parcelable {
         dest.writeString(city);
         dest.writeString(street);
         dest.writeInt(number);
+        dest.writeParcelable(location, flags);
     }
 
     @Override

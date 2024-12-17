@@ -1,6 +1,7 @@
 package com.example.eventplanner;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -25,7 +26,23 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        doTransition();
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
+            Uri data = intent.getData();
+
+            // Preuzmi query parametar "email"
+            String email = data.getQueryParameter("email");
+            if (email != null) {
+                Bundle args = new Bundle();
+                args.putString("givenEmail", email);
+                Intent newIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                newIntent.putExtras(args);
+                startActivity(newIntent);
+                finish();
+            }
+        }else{
+            doTransition();
+        }
     }
 
     private void doTransition() {
