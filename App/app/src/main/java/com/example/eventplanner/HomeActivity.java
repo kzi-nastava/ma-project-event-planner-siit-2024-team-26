@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -93,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
         setUser();
 
         currentSelectedBottomIcon = R.id.home;
+
 
     }
 
@@ -284,6 +287,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<GetAuthenticatedUserDTO> call, Response<GetAuthenticatedUserDTO> response) {
                 if (response.isSuccessful()) {
                     user = response.body();
+                    setNameInDrawerMenu();
                 }
             }
 
@@ -292,7 +296,15 @@ public class HomeActivity extends AppCompatActivity {
                 Log.i("POZIV", t.getMessage());
             }
         });
+
+
     }
 
+    private void setNameInDrawerMenu(){
+        NavigationView navigationView = findViewById(R.id.navigation_drawer);
+        View headerView = navigationView.getHeaderView(0);
+        TextView drawerNameTextView = headerView.findViewById(R.id.drawerName); // R.id.drawerName je ID vašeg TextView-a u nav_header.xml
+        drawerNameTextView.setText(user.getFirstName() + " " + user.getLastName());
+    }
 
 }

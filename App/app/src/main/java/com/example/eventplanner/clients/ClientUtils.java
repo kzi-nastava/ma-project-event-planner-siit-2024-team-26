@@ -32,6 +32,7 @@ public class ClientUtils {
 
     public static void setContext(Context context){
         givenContext = context;
+        tokenManager = new TokenManager(givenContext);
     }
 
     public static TokenManager getTokenManager(){
@@ -40,7 +41,6 @@ public class ClientUtils {
 
     //TOKEN
     private static String getToken(){
-        tokenManager = new TokenManager(givenContext);
         return tokenManager.getToken();
     }
 
