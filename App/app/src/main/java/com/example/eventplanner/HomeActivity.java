@@ -22,16 +22,29 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.eventplanner.adapters.ServiceSearchAdapter;
+import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
 import com.example.eventplanner.model.AuthenticatedUser;
+import com.example.eventplanner.model.Page;
+import com.example.eventplanner.model.Role;
 import com.example.eventplanner.model.ServiceProductProvider;
 import com.example.eventplanner.clients.service.EventService;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -41,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
 
-    private AuthenticatedUser user;
+    private GetAuthenticatedUserDTO user;
     private Boolean isCreationFormShowed;
 
     private Boolean toExitApplication;
@@ -77,10 +90,7 @@ public class HomeActivity extends AppCompatActivity {
 
         handleBackButtonClicked(); // When back button is pressed
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            user = bundle.getParcelable("User");
-        }
+        setUser();
 
         currentSelectedBottomIcon = R.id.home;
 
@@ -157,6 +167,7 @@ public class HomeActivity extends AppCompatActivity {
                     builder.setTitle("Log out")
                             .setMessage("Are you sure you want to log out?")
                             .setPositiveButton("YES", (dialog, which) -> {
+                                ClientUtils.removeToken(); // Removes token from SharedPreferences
                                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -179,7 +190,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (item.getItemId() == currentSelectedBottomIcon){
                     return true;
                 }
-                if (item.getItemId() == R.id.create && user instanceof ServiceProductProvider) {
+                if (item.getItemId() == R.id.create && user.getRole() == Role.SERVICE_PRODUCT_PROVIDER) {
                     showCreateDialogSpp();
                     return true;
                 }
@@ -261,5 +272,27 @@ public class HomeActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void setUser(){
+        TokenManager tokenManager = ClientUtils.getTokenManager();
+        String email = tokenManager.getEmail(tokenManager.getToken());
+
+        Call<GetAuthenticatedUserDTO> call = ClientUtils.authenticatedUserService.getUserByEmail(email);
+        call.enqueue(new Callback<GetAuthenticatedUserDTO>() {
+
+            @Override
+            public void onResponse(Call<GetAuthenticatedUserDTO> call, Response<GetAuthenticatedUserDTO> response) {
+                if (response.isSuccessful()) {
+                    user = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetAuthenticatedUserDTO> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
+    }
+
 
 }

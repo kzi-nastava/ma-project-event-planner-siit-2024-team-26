@@ -1,6 +1,12 @@
 package com.example.eventplanner.clients;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.example.eventplanner.BuildConfig;
+import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.clients.authorization.TokenResponse;
 import com.example.eventplanner.clients.service.AuthenticatedUserService;
+import com.example.eventplanner.clients.service.AuthenticationService;
 import com.example.eventplanner.clients.service.EventService;
 import com.example.eventplanner.clients.service.ProductService;
 import com.example.eventplanner.clients.service.ServiceProductService;
@@ -8,7 +14,9 @@ import com.example.eventplanner.clients.service.ServiceService;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,15 +25,60 @@ public class ClientUtils {
 
     public static final String SERVICE_API_PATH = "http://"+ BuildConfig.IP_ADDR + ":8080/api/";
 
+
+    private static Context givenContext;
+
+    private static TokenManager tokenManager;
+
+    public static void setContext(Context context){
+        givenContext = context;
+    }
+
+    public static TokenManager getTokenManager(){
+        return new TokenManager(givenContext);
+    }
+
+    //TOKEN
+    private static String getToken(){
+        tokenManager = new TokenManager(givenContext);
+        return tokenManager.getToken();
+    }
+
+    public static void saveToken(TokenResponse tokenResponse){
+        tokenManager.saveToken(tokenResponse.getToken());
+    }
+
+    public static void removeToken(){
+        tokenManager.removeToken();
+    }
+
+    //////////
     public static OkHttpClient test(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        Interceptor tokenInterceptor = chain -> {
+            String token = getToken();
+            Request originalRequest = chain.request();
+            // Proveri da li postoji token
+            if (token != null && !token.isEmpty()) {
+                Request requestWithToken = originalRequest.newBuilder()
+                        .addHeader("Authorization", "Bearer " + token)
+                        .build();
+                return chain.proceed(requestWithToken);
+            } else {
+                // Ako token ne postoji, nastavi bez Authorization zaglavlja
+                return chain.proceed(originalRequest);
+            }
+        };
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
-                .addInterceptor(interceptor).build();
+                .addInterceptor(interceptor)
+                .addInterceptor(tokenInterceptor)
+                .build();
 
         return client;
     }
@@ -41,5 +94,6 @@ public class ClientUtils {
     public static ProductService productService = retrofit.create(ProductService.class);
     public static ServiceProductService serviceProductService = retrofit.create(ServiceProductService.class);
     public static AuthenticatedUserService authenticatedUserService = retrofit.create(AuthenticatedUserService.class);
+    public static AuthenticationService authenticationService = retrofit.create(AuthenticationService.class);
 
 }

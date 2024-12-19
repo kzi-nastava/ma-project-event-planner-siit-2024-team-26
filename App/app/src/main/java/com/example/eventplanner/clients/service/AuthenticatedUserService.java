@@ -15,6 +15,9 @@ public interface AuthenticatedUserService {
     @GET("users/{id}")
     Call<GetAuthenticatedUserDTO> getUserByID(@Path("id") Integer id);
 
+    @GET("users/email/{email}")
+    Call<GetAuthenticatedUserDTO> getUserByEmail(@Path("email") String email);
+
     @POST("users")
     Call<CreatedAuthenticatedUserDTO> createAuthenticatedUser(@Body CreateAuthenticatedUserDTO user);
 }
