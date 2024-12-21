@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.communication.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
@@ -288,6 +289,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     user = response.body();
                     setNameInDrawerMenu();
+                    WebSocketService wbs = new WebSocketService(user.getEmail());
                 }
             }
 

@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
                 Log.i("POZIV", t.getMessage());
-                Toast.makeText(LoginActivity.this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Invalid credentials! BRUDA", Toast.LENGTH_SHORT).show();
 
             }
         });
