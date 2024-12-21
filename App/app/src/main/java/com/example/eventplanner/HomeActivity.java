@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,7 +29,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
-import com.example.eventplanner.communication.WebSocketService;
+import com.example.eventplanner.services.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
@@ -96,6 +98,12 @@ public class HomeActivity extends AppCompatActivity {
         setUser();
 
         currentSelectedBottomIcon = R.id.home;
+
+
+        WebSocketService wbs = new WebSocketService();
+
+
+        checkForNotifications();
 
 
     }
@@ -172,6 +180,7 @@ public class HomeActivity extends AppCompatActivity {
                             .setMessage("Are you sure you want to log out?")
                             .setPositiveButton("YES", (dialog, which) -> {
                                 ClientUtils.removeToken(); // Removes token from SharedPreferences
+                                stopBackgroundService(); // Stops foreground service ( WEBSOCKET )
                                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -289,7 +298,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     user = response.body();
                     setNameInDrawerMenu();
-                    WebSocketService wbs = new WebSocketService(user.getEmail());
+                    runBackgroundService();
                 }
             }
 
@@ -308,5 +317,32 @@ public class HomeActivity extends AppCompatActivity {
         TextView drawerNameTextView = headerView.findViewById(R.id.drawerName); // R.id.drawerName je ID vašeg TextView-a u nav_header.xml
         drawerNameTextView.setText(user.getFirstName() + " " + user.getLastName());
     }
+
+    private void runBackgroundService(){
+        if (!WebSocketService.isServiceRunning()) {
+            Log.i("WebSocket", "OVDE");
+            Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
+            Bundle args = new Bundle();
+            args.putString("email", user.getEmail());
+            serviceIntent.putExtras(args);
+            startForegroundService(serviceIntent);
+        }
+    }
+
+    private void stopBackgroundService(){
+        Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
+        stopService(serviceIntent);  // Prekida servis
+    }
+
+    private void checkForNotifications(){
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
+      //  if (!areNotificationsEnabled) {
+        Intent notIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+        notIntent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());  // Postavite paket aplikacije
+        startActivity(notIntent);  // Otvorite postavke
+        //}
+    }
+
 
 }
