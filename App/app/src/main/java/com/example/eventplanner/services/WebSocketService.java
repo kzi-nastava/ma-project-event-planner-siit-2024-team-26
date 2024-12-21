@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
 import com.example.eventplanner.utils.NotificationSender;
@@ -53,7 +54,7 @@ public class WebSocketService extends Service {
 
     @SuppressLint("CheckResult")
     private void startWebSocketConnection(String email) {
-        String serverUrl = "http://192.168.1.6:8080/socket/websocket";
+        String serverUrl = "http://" + BuildConfig.IP_ADDR + ":8080/socket/websocket";
 
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, serverUrl);
 

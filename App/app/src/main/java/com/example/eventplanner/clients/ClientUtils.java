@@ -63,7 +63,7 @@ public class ClientUtils {
 
 
         Interceptor tokenInterceptor = chain -> {
-            String token = getTokenManager().getToken();
+            String token = getToken();
             Request originalRequest = chain.request();
             // Proveri da li postoji token
             if (token != null && !token.isEmpty()) {
