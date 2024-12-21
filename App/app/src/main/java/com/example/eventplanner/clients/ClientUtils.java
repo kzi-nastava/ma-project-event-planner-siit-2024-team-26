@@ -1,6 +1,7 @@
 package com.example.eventplanner.clients;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.clients.authorization.TokenManager;
@@ -36,7 +37,10 @@ public class ClientUtils {
     }
 
     public static TokenManager getTokenManager(){
-        return new TokenManager(givenContext);
+        if (tokenManager == null) {
+            return new TokenManager(givenContext);
+        }
+        return tokenManager;
     }
 
     //TOKEN
@@ -56,6 +60,7 @@ public class ClientUtils {
     public static OkHttpClient test(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
 
         Interceptor tokenInterceptor = chain -> {
             String token = getToken();

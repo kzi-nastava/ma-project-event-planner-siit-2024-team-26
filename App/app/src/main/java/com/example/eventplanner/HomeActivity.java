@@ -1,11 +1,14 @@
 package com.example.eventplanner;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,6 +33,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.services.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
@@ -76,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
+        Log.i("GRESKA", getApplicationContext().toString());
         FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
@@ -96,6 +104,7 @@ public class HomeActivity extends AppCompatActivity {
 
         currentSelectedBottomIcon = R.id.home;
 
+        checkForNotifications();
 
     }
 
@@ -171,6 +180,7 @@ public class HomeActivity extends AppCompatActivity {
                             .setMessage("Are you sure you want to log out?")
                             .setPositiveButton("YES", (dialog, which) -> {
                                 ClientUtils.removeToken(); // Removes token from SharedPreferences
+                                stopBackgroundService(); // Stops foreground service ( WEBSOCKET )
                                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -277,27 +287,29 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setUser(){
-        TokenManager tokenManager = ClientUtils.getTokenManager();
-        String email = tokenManager.getEmail(tokenManager.getToken());
+        if (getApplicationContext() != null) {
+            TokenManager tokenManager = ClientUtils.getTokenManager();
+            String email = tokenManager.getEmail(tokenManager.getToken());
 
-        Call<GetAuthenticatedUserDTO> call = ClientUtils.authenticatedUserService.getUserByEmail(email);
-        call.enqueue(new Callback<GetAuthenticatedUserDTO>() {
+            Call<GetAuthenticatedUserDTO> call = ClientUtils.authenticatedUserService.getUserByEmail(email);
+            call.enqueue(new Callback<GetAuthenticatedUserDTO>() {
 
-            @Override
-            public void onResponse(Call<GetAuthenticatedUserDTO> call, Response<GetAuthenticatedUserDTO> response) {
-                if (response.isSuccessful()) {
-                    user = response.body();
-                    setNameInDrawerMenu();
+                @Override
+                public void onResponse(Call<GetAuthenticatedUserDTO> call, Response<GetAuthenticatedUserDTO> response) {
+                    if (response.isSuccessful()) {
+                        user = response.body();
+                        setNameInDrawerMenu();
+                        runBackgroundService();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<GetAuthenticatedUserDTO> call, Throwable t) {
-                Log.i("POZIV", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<GetAuthenticatedUserDTO> call, Throwable t) {
+                    Log.i("POZIV", t.getMessage());
+                }
+            });
 
-
+        }
     }
 
     private void setNameInDrawerMenu(){
@@ -306,5 +318,34 @@ public class HomeActivity extends AppCompatActivity {
         TextView drawerNameTextView = headerView.findViewById(R.id.drawerName); // R.id.drawerName je ID vašeg TextView-a u nav_header.xml
         drawerNameTextView.setText(user.getFirstName() + " " + user.getLastName());
     }
+
+    private void runBackgroundService(){
+        if (!WebSocketService.isServiceRunning()) {
+            Log.i("WebSocket", "Service is not running, starting...");
+            Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
+            Bundle args = new Bundle();
+            args.putString("email", user.getEmail());
+            serviceIntent.putExtras(args);
+            startForegroundService(serviceIntent);
+        }
+        else{
+            Log.i("WebSocket", "Service is already running!");
+        }
+    }
+
+    private void stopBackgroundService(){
+        Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
+        stopService(serviceIntent);  // Prekida servis
+    }
+
+    private void checkForNotifications(){
+        // Request notification permission if not already granted
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 123);
+        }
+    }
+
 
 }

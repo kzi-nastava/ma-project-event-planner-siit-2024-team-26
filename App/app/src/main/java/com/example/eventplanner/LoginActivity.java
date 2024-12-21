@@ -1,6 +1,8 @@
 package com.example.eventplanner;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -113,18 +117,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
                 Log.i("POZIV", t.getMessage());
-                Toast.makeText(LoginActivity.this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Invalid credentials! BRUDA", Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
-//    private AuthenticatedUser doesExists(String email, String password){
-//        for (AuthenticatedUser user: users){
-//            if (user.getEmail().equals(email) && user.getPassword().equals(password)){
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
+
 }

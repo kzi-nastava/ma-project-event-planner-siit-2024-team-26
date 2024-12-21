@@ -3,6 +3,7 @@ package com.example.eventplanner;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.services.WebSocketService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,4 +70,5 @@ public class MainActivity extends AppCompatActivity {
         };
         transitionTimer.schedule(transitionTask, 1000);
     }
+
 }
