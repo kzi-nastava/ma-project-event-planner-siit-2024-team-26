@@ -30,13 +30,13 @@ public class NotificationSender {
             Gson gson = new Gson();
             InvitationNotificationDTO invitationNotificationDTO = gson.fromJson(topicMessage.getPayload(), InvitationNotificationDTO.class);
 
-            NotificationChannel channel = new NotificationChannel("0", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("1", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("OPIS");
 
             NotificationManager notificationManager = getSystemService(context, NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "0")
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "1")
                     .setSmallIcon(R.drawable.baseline_notifications_24)
                     .setContentTitle(invitationNotificationDTO.getTitle())
                     .setContentText(invitationNotificationDTO.getDescription())

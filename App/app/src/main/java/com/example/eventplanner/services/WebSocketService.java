@@ -48,6 +48,7 @@ public class WebSocketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
     }
 
     @SuppressLint("CheckResult")
@@ -86,27 +87,6 @@ public class WebSocketService extends Service {
                 });
     }
 
-    // Method to send a notification
-    private void sendNotification(InvitationNotificationDTO messageBody) {
-
-        NotificationChannel channel = new NotificationChannel("0", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
-        channel.setDescription("OPIS");
-
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0")
-                .setSmallIcon(R.drawable.baseline_notifications_24)
-                .setContentTitle(messageBody.getTitle())
-                .setContentText(messageBody.getDescription())
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-            notificationManager.notify(0, builder.build());
-        }else{
-            Log.e("WebSocket", "OVDE");
-        }
-    }
 
     @Nullable
     @Override
@@ -128,10 +108,12 @@ public class WebSocketService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForegroundService();
-        Bundle bundle = intent.getExtras();
-        String email = bundle.getString("email");
-        startWebSocketConnection(email);
+        startForegroundServiceMethod();
+        if (intent != null){
+            Bundle bundle = intent.getExtras();
+            String email = bundle.getString("email");
+            startWebSocketConnection(email);
+        }
         isServiceRunning = true;
         return START_STICKY;
     }
@@ -141,7 +123,7 @@ public class WebSocketService extends Service {
     }
 
     // Metoda koja pokreće foreground servis sa notifikacijom
-    private void startForegroundService() {
+    private void startForegroundServiceMethod() {
         NotificationChannel channel = new NotificationChannel("0", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
         channel.setDescription("Channel for event notifications");
 

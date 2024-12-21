@@ -71,5 +71,4 @@ public class MainActivity extends AppCompatActivity {
         transitionTimer.schedule(transitionTask, 1000);
     }
 
-
 }
