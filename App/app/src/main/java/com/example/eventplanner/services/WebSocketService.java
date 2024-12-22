@@ -82,7 +82,8 @@ public class WebSocketService extends Service {
                     Log.d("WebSocket", "Received message: " + topicMessage.getPayload());
 
                     Context context = getApplicationContext();
-                    NotificationSender.sendInvitationNotification(topicMessage, context);
+                    NotificationSender notificationSender = new NotificationSender(context, topicMessage);
+                    notificationSender.sendInvitationNotification();
                 }, throwable -> {
                     Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
                 });
