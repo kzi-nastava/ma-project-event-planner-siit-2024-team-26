@@ -12,7 +12,16 @@ import com.example.eventplanner.clients.service.EventService;
 import com.example.eventplanner.clients.service.ProductService;
 import com.example.eventplanner.clients.service.ServiceProductService;
 import com.example.eventplanner.clients.service.ServiceService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -83,14 +92,23 @@ public class ClientUtils {
                 .writeTimeout(120, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .addInterceptor(tokenInterceptor)
+                .pingInterval(30, TimeUnit.SECONDS)
                 .build();
 
         return client;
     }
 
+
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
+                        @Override
+                        public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
+                            return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                        }
+                    })
+                    .create()))
             .client(test())
             .build();
 

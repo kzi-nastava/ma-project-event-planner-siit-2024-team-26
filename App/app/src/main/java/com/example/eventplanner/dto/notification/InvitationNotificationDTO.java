@@ -1,18 +1,30 @@
 package com.example.eventplanner.dto.notification;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class InvitationNotificationDTO {
 
+    private Integer receiverId;
     private String title;
     private String description;
-
 
     public InvitationNotificationDTO(){
 
     }
 
-    public InvitationNotificationDTO(String description, String title) {
-        this.description = description;
+    public InvitationNotificationDTO(Integer userId, String title, String description) {
+        this.receiverId = userId;
         this.title = title;
+        this.description = description;
+    }
+
+    public Integer getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(Integer userId) {
+        this.receiverId = userId;
     }
 
     public String getTitle() {
