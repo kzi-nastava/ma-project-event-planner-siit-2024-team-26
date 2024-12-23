@@ -18,6 +18,8 @@ import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.notification.GetNotificationDTO;
+import com.example.eventplanner.dto.notification.UpdateNotificationDTO;
+import com.example.eventplanner.dto.notification.UpdatedNotificationDTO;
 import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
 import com.example.eventplanner.model.ServiceProductType;
 import com.example.eventplanner.utils.DateStringFormatter;
@@ -89,6 +91,7 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
                 notifyItemChanged(holder.getAdapterPosition());
                 if (!notification.isRead()){
                     notification.setRead(true);
+                    updateNotification(notification);
                     notifyItemChanged(holder.getAdapterPosition());
                 }
             }
@@ -127,22 +130,24 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
         }
     }
 
-//    private void updateNotification(){
-//        Call<GetNotificationDTO> call = ClientUtils.authenticatedUserService.getUserByEmail(email);
-//        call.enqueue(new Callback<GetNotificationDTO>() {
-//
-//            @Override
-//            public void onResponse(Call<GetNotificationDTO> call, Response<GetNotificationDTO> response) {
-//                if (response.isSuccessful()) {
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GetNotificationDTO> call, Throwable t) {
-//                Log.i("POZIV", t.getMessage());
-//            }
-//        });
-//    }
+    private void updateNotification(GetNotificationDTO notification){
+        UpdateNotificationDTO updateNotificationDTO = new UpdateNotificationDTO(notification);
+        Log.i("POZIV", String.valueOf(updateNotificationDTO.isRead()));
+        Call<UpdatedNotificationDTO> call = ClientUtils.notificationService.updateNotification(updateNotificationDTO, notification.getId());
+        call.enqueue(new Callback<UpdatedNotificationDTO>() {
+
+            @Override
+            public void onResponse(Call<UpdatedNotificationDTO> call, Response<UpdatedNotificationDTO> response) {
+                if (response.isSuccessful()) {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdatedNotificationDTO> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
+    }
 
     private void deleteNotification(Integer id){
         Call<GetNotificationDTO> call = ClientUtils.notificationService.deleteNotification(id);

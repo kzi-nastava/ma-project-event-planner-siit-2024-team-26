@@ -1,33 +1,24 @@
 package com.example.eventplanner.dto.notification;
 
+import com.example.eventplanner.utils.DateStringFormatter;
+
 import java.time.LocalDateTime;
 
-public class GetNotificationDTO {
-
-    private Integer id;
-    private Integer receiverId;
+public class UpdateNotificationDTO {
     private String title;
     private String text;
     private String timeStamp;
     private boolean read;
     private boolean deleted;
 
-    public GetNotificationDTO(){super();}
+    public UpdateNotificationDTO(){super();}
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(Integer receiverId) {
-        this.receiverId = receiverId;
+    public UpdateNotificationDTO(GetNotificationDTO notification){
+        this.title = notification.getTitle();
+        this.text = notification.getText();
+        this.timeStamp = notification.getTimeStamp();
+        this.read = notification.isRead();
+        this.deleted = notification.isDeleted();
     }
 
     public String getTitle() {
@@ -59,7 +50,7 @@ public class GetNotificationDTO {
     }
 
     public void setRead(boolean read) {
-        this.read = read;
+        read = read;
     }
 
     public boolean isDeleted() {
@@ -67,6 +58,6 @@ public class GetNotificationDTO {
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        deleted = deleted;
     }
 }

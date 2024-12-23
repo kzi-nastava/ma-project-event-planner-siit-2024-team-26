@@ -2,17 +2,16 @@ package com.example.eventplanner.dto.notification;
 
 import java.time.LocalDateTime;
 
-public class GetNotificationDTO {
+public class UpdatedNotificationDTO {
 
     private Integer id;
-    private Integer receiverId;
     private String title;
     private String text;
     private String timeStamp;
-    private boolean read;
-    private boolean deleted;
+    private boolean isRead;
+    private boolean isDeleted;
 
-    public GetNotificationDTO(){super();}
+    public UpdatedNotificationDTO(){super();}
 
     public Integer getId() {
         return id;
@@ -20,14 +19,6 @@ public class GetNotificationDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(Integer receiverId) {
-        this.receiverId = receiverId;
     }
 
     public String getTitle() {
@@ -55,18 +46,18 @@ public class GetNotificationDTO {
     }
 
     public boolean isRead() {
-        return read;
+        return isRead;
     }
 
     public void setRead(boolean read) {
-        this.read = read;
+        isRead = read;
     }
 
     public boolean isDeleted() {
-        return deleted;
+        return isDeleted;
     }
 
     public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        isDeleted = deleted;
     }
 }
