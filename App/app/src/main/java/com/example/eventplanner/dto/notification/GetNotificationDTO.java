@@ -8,7 +8,7 @@ public class GetNotificationDTO {
     private Integer receiverId;
     private String title;
     private String text;
-    private LocalDateTime timeStamp;
+    private String timeStamp;
     private boolean isRead;
     private boolean isDeleted;
 
@@ -46,11 +46,11 @@ public class GetNotificationDTO {
         this.text = text;
     }
 
-    public LocalDateTime getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDateTime timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
 

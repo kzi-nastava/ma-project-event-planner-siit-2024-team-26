@@ -102,14 +102,7 @@ public class ClientUtils {
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
-                    .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
-                        @Override
-                        public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
-                            return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-                        }
-                    })
-                    .create()))
+            .addConverterFactory(GsonConverterFactory.create())
             .client(test())
             .build();
 

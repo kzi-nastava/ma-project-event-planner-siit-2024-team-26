@@ -78,7 +78,6 @@ public class NotificationsFragment extends Fragment {
                     userNotifications = response.body();
                     notificationAdapter = new NotificationAdapter(userNotifications, getContext());
                     recyclerView.setAdapter(notificationAdapter);
-
                 }
             }
 
@@ -91,7 +90,7 @@ public class NotificationsFragment extends Fragment {
 
     private void setUpRecyclerView(View view){
         recyclerView = view.findViewById(R.id.notificationRecyclerView);
-        LinearLayoutManager layoutManagerServiceProduct = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManagerServiceProduct);
+        LinearLayoutManager layoutManagerNotification= new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManagerNotification);
     }
 }
