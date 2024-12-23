@@ -48,6 +48,9 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
     public int getItemViewType(int position) {
         GetNotificationDTO notifaction = this.notifications.get(position);
         if (!itemExpandedState[position]){
+            if (notifaction.isRead()){
+                return 3;
+            }
             return 1;
         }else{
             return 2;
@@ -65,6 +68,9 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
             case 2:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_card_expanded, parent, false);
                 return new NotificationAdapter.MyViewHolder(view);
+            case 3:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_card_read, parent, false);
+                return new NotificationAdapter.MyViewHolder(view);
             default:
                 throw new IllegalArgumentException("Unknown view type");
         }
@@ -81,9 +87,10 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
             public void onClick(View v) {
                 itemExpandedState[holder.getAdapterPosition()] = !itemExpandedState[holder.getAdapterPosition()];  // Prebacujemo stanje između proširenog i skraćenog
                 notifyItemChanged(holder.getAdapterPosition());
-//                if (!notification.isRead()){
-//                    updateNotification();
-//                }
+                if (!notification.isRead()){
+                    notification.setRead(true);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
             }
         });
 
