@@ -105,6 +105,11 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (notification.isRead()){
+                    if (itemExpandedState[holder.getAdapterPosition()]) {
+                        itemExpandedState[holder.getAdapterPosition()] = !itemExpandedState[holder.getAdapterPosition()];
+                    }
+                }
                 deleteNotification(notification.getId());
                 notifications.remove(notification);
                 notifyItemRemoved(holder.getAdapterPosition());
