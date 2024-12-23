@@ -41,6 +41,7 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
     private boolean[] itemExpandedState;
     private TextView notificationNumberTextView;
 
+
     public NotificationAdapter(ArrayList<GetNotificationDTO> notifications, Context context, TextView notificationNumberTextView) {
         this.notifications = notifications;
         this.context = context;
@@ -111,8 +112,8 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
                     }
                 }
                 deleteNotification(notification.getId());
-                notifications.remove(notification);
                 notifyItemRemoved(holder.getAdapterPosition());
+                notifications.remove(notification);
                 setNotificationNumberText();
             }
         });
