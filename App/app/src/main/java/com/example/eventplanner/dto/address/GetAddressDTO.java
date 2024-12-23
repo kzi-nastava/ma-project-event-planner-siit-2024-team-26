@@ -1,9 +1,12 @@
 package com.example.eventplanner.dto.address;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.eventplanner.dto.location.GetLocationDTO;
 import com.example.eventplanner.model.Address;
 
-public class GetAddressDTO {
+public class GetAddressDTO implements Parcelable {
 
     private Integer id;
     private String country;
@@ -63,4 +66,49 @@ public class GetAddressDTO {
     public void setLocation(GetLocationDTO location) {
         this.location = location;
     }
+
+    protected GetAddressDTO(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        country = in.readString();
+        city = in.readString();
+        street = in.readString();
+        number = in.readInt();
+        location = in.readParcelable(GetLocationDTO.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(country);
+        dest.writeString(city);
+        dest.writeString(street);
+        dest.writeInt(number);
+        dest.writeParcelable(location, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GetAddressDTO> CREATOR = new Creator<GetAddressDTO>() {
+        @Override
+        public GetAddressDTO createFromParcel(Parcel in) {
+            return new GetAddressDTO(in);
+        }
+
+        @Override
+        public GetAddressDTO[] newArray(int size) {
+            return new GetAddressDTO[size];
+        }
+    };
 }

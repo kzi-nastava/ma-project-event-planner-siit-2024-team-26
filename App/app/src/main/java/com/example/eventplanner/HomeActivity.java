@@ -2,6 +2,7 @@ package com.example.eventplanner;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,6 +34,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
 import com.example.eventplanner.services.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
@@ -196,6 +198,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // HANDLING BOTTOM TOOLBAR
         bottomNavigationView = findViewById(R.id.bottomNavigationView2);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -210,6 +213,11 @@ public class HomeActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.home){
                     FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.home;
+                    return true;
+                }
+                if (item.getItemId() == R.id.notifications){
+                    FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                    currentSelectedBottomIcon = R.id.notifications;
                     return true;
                 }
                 return false;

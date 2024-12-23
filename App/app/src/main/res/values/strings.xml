@@ -84,4 +84,7 @@
 
     <string name="quickRegistrationText">To use additional features promote account to Service Product Provider or Event Organizer!</string>
 
+    <string name="viewMore">View more</string>
+    <string name="delete">Delete</string>
+
 </resources>
