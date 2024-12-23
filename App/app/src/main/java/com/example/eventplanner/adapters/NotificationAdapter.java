@@ -41,18 +41,32 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
     private boolean[] itemExpandedState;
     private TextView notificationNumberTextView;
 
+    private ArrayList<Integer> unreadIndexes;
+
 
     public NotificationAdapter(ArrayList<GetNotificationDTO> notifications, Context context, TextView notificationNumberTextView) {
         this.notifications = notifications;
         this.context = context;
         this.itemExpandedState = new boolean[notifications.size()];  // Početno sve stavke su srušene
         this.notificationNumberTextView = notificationNumberTextView;
+        unreadIndexes = new ArrayList<>();
         setNotificationNumberText();
+        setUnreadIndexes();
     }
 
     @Override
     public int getItemViewType(int position) {
         GetNotificationDTO notifaction = this.notifications.get(position);
+
+        String x = "";
+        for (int i : unreadIndexes){
+            x += String.valueOf(i) + " ";
+        }
+        Log.i("index", x);
+
+        if (unreadIndexes.contains(position)){
+            return 1;
+        }
         if (!itemExpandedState[position]){
             if (notifaction.isRead()){
                 return 3;
@@ -92,14 +106,15 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
         holder.viewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 itemExpandedState[holder.getAdapterPosition()] = !itemExpandedState[holder.getAdapterPosition()];  // Prebacujemo stanje između proširenog i skraćenog
-                notifyItemChanged(holder.getAdapterPosition());
                 if (!notification.isRead()){
                     notification.setRead(true);
+                    removeFromUdnreadIndexes(holder.getAdapterPosition());
                     updateNotification(notification);
-                    notifyItemChanged(holder.getAdapterPosition());
                     setNotificationNumberText();
                 }
+                notifyItemChanged(holder.getAdapterPosition());
             }
         });
 
@@ -111,6 +126,9 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
                         itemExpandedState[holder.getAdapterPosition()] = !itemExpandedState[holder.getAdapterPosition()];
                     }
                 }
+
+
+                updateUnreadIndexes(holder.getAdapterPosition());
                 deleteNotification(notification.getId());
                 notifyItemRemoved(holder.getAdapterPosition());
                 notifications.remove(notification);
@@ -195,6 +213,33 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
         }
         else{
             notificationNumberTextView.setText("You have " + numUnreadNotifications + " unread notifications!");
+        }
+
+    }
+
+    private void setUnreadIndexes(){
+        for (int i = 0; i < notifications.size(); i++){
+            if (!notifications.get(i).isRead()){
+                unreadIndexes.add(i);
+            }
+        }
+    }
+
+    private void updateUnreadIndexes(int index){
+        removeFromUdnreadIndexes(index);
+        int listIndex = -1;
+        for (int i : unreadIndexes) {
+            listIndex += 1;
+            if (i > index) {
+                unreadIndexes.set(listIndex, i - 1);
+            }
+        }
+    }
+
+    private void removeFromUdnreadIndexes(int index){
+        if (unreadIndexes.contains(index)){
+            int x = unreadIndexes.indexOf(index);
+            unreadIndexes.remove(x);
         }
     }
 }
