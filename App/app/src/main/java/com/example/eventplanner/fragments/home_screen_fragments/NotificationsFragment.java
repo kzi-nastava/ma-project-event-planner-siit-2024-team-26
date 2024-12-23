@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.NotificationAdapter;
@@ -35,6 +36,7 @@ public class NotificationsFragment extends Fragment {
     private ArrayList<GetNotificationDTO> userNotifications;
     private NotificationAdapter notificationAdapter;
     private RecyclerView recyclerView;
+    private TextView notificationNumberTextView;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -63,6 +65,8 @@ public class NotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
+        notificationNumberTextView = view.findViewById(R.id.notificationNumber);
+
         setUpRecyclerView(view);
         loadNotifications();
         return view;
@@ -76,7 +80,7 @@ public class NotificationsFragment extends Fragment {
             public void onResponse(Call<ArrayList<GetNotificationDTO>> call, Response<ArrayList<GetNotificationDTO>> response) {
                 if (response.isSuccessful()) {
                     userNotifications = response.body();
-                    notificationAdapter = new NotificationAdapter(userNotifications, getContext());
+                    notificationAdapter = new NotificationAdapter(userNotifications, getContext(), notificationNumberTextView);
                     recyclerView.setAdapter(notificationAdapter);
                 }
             }
@@ -93,4 +97,6 @@ public class NotificationsFragment extends Fragment {
         LinearLayoutManager layoutManagerNotification= new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManagerNotification);
     }
+
+
 }

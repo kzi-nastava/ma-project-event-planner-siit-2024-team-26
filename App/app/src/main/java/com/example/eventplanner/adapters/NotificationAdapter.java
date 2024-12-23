@@ -39,11 +39,14 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
     private View mainView;
     private ViewGroup parent;
     private boolean[] itemExpandedState;
+    private TextView notificationNumberTextView;
 
-    public NotificationAdapter(ArrayList<GetNotificationDTO> notifications, Context context) {
+    public NotificationAdapter(ArrayList<GetNotificationDTO> notifications, Context context, TextView notificationNumberTextView) {
         this.notifications = notifications;
         this.context = context;
         this.itemExpandedState = new boolean[notifications.size()];  // Početno sve stavke su srušene
+        this.notificationNumberTextView = notificationNumberTextView;
+        setNotificationNumberText();
     }
 
     @Override
@@ -83,6 +86,7 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
         GetNotificationDTO notification = notifications.get(position);
         holder.notificationTitle.setText(notification.getTitle());
         holder.notificationText.setText(notification.getText());
+        holder.notificationTimeStamp.setText(DateStringFormatter.format(notification.getTimeStamp(), "dd.MM.yyyy. HH:mm"));
 
         holder.viewMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +97,7 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
                     notification.setRead(true);
                     updateNotification(notification);
                     notifyItemChanged(holder.getAdapterPosition());
+                    setNotificationNumberText();
                 }
             }
         });
@@ -103,6 +108,7 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
                 deleteNotification(notification.getId());
                 notifications.remove(notification);
                 notifyItemRemoved(holder.getAdapterPosition());
+                setNotificationNumberText();
             }
         });
     }
@@ -121,12 +127,15 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
         Button viewMoreButton;
         Button deleteButton;
 
+        TextView notificationTimeStamp;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             notificationTitle = itemView.findViewById(R.id.notificationTitle);
             notificationText = itemView.findViewById(R.id.notificationText);
             viewMoreButton = itemView.findViewById(R.id.notificationViewMoreButton);
             deleteButton = itemView.findViewById(R.id.notificationDeleteButton);
+            notificationTimeStamp = itemView.findViewById(R.id.notificationTimeStamp);
         }
     }
 
@@ -162,5 +171,24 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
                 Log.i("POZIV", t.getMessage());
             }
         });
+    }
+
+    private void setNotificationNumberText(){
+        int numUnreadNotifications = 0;
+        for (GetNotificationDTO notificationDTO : notifications){
+            if (!notificationDTO.isRead()){
+                numUnreadNotifications += 1;
+            }
+        }
+        if (notifications.size() == 0){
+            notificationNumberTextView.setText("You have no notifications!");
+        }else if (numUnreadNotifications == 0){
+            notificationNumberTextView.setText("You have read all notifications!");
+        }else if (numUnreadNotifications == 1){
+            notificationNumberTextView.setText("You have " + numUnreadNotifications + " unread notification!");
+        }
+        else{
+            notificationNumberTextView.setText("You have " + numUnreadNotifications + " unread notifications!");
+        }
     }
 }
