@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
+import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.notification.GetNotificationDTO;
 import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
@@ -24,6 +26,10 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder>{
     private ArrayList<GetNotificationDTO> notifications;
@@ -40,6 +46,7 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
 
     @Override
     public int getItemViewType(int position) {
+        GetNotificationDTO notifaction = this.notifications.get(position);
         if (!itemExpandedState[position]){
             return 1;
         }else{
@@ -74,6 +81,18 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
             public void onClick(View v) {
                 itemExpandedState[holder.getAdapterPosition()] = !itemExpandedState[holder.getAdapterPosition()];  // Prebacujemo stanje između proširenog i skraćenog
                 notifyItemChanged(holder.getAdapterPosition());
+//                if (!notification.isRead()){
+//                    updateNotification();
+//                }
+            }
+        });
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteNotification(notification.getId());
+                notifications.remove(notification);
+                notifyItemRemoved(holder.getAdapterPosition());
             }
         });
     }
@@ -99,5 +118,37 @@ public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapt
             viewMoreButton = itemView.findViewById(R.id.notificationViewMoreButton);
             deleteButton = itemView.findViewById(R.id.notificationDeleteButton);
         }
+    }
+
+//    private void updateNotification(){
+//        Call<GetNotificationDTO> call = ClientUtils.authenticatedUserService.getUserByEmail(email);
+//        call.enqueue(new Callback<GetNotificationDTO>() {
+//
+//            @Override
+//            public void onResponse(Call<GetNotificationDTO> call, Response<GetNotificationDTO> response) {
+//                if (response.isSuccessful()) {
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetNotificationDTO> call, Throwable t) {
+//                Log.i("POZIV", t.getMessage());
+//            }
+//        });
+//    }
+
+    private void deleteNotification(Integer id){
+        Call<GetNotificationDTO> call = ClientUtils.notificationService.deleteNotification(id);
+        call.enqueue(new Callback<GetNotificationDTO>() {
+
+            @Override
+            public void onResponse(Call<GetNotificationDTO> call, Response<GetNotificationDTO> response) {
+            }
+
+            @Override
+            public void onFailure(Call<GetNotificationDTO> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
     }
 }
