@@ -9,6 +9,7 @@ import com.example.eventplanner.clients.authorization.TokenResponse;
 import com.example.eventplanner.clients.service.AuthenticatedUserService;
 import com.example.eventplanner.clients.service.AuthenticationService;
 import com.example.eventplanner.clients.service.EventService;
+import com.example.eventplanner.clients.service.NotificationService;
 import com.example.eventplanner.clients.service.ProductService;
 import com.example.eventplanner.clients.service.ServiceProductService;
 import com.example.eventplanner.clients.service.ServiceService;
@@ -101,14 +102,7 @@ public class ClientUtils {
 
     public static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(SERVICE_API_PATH)
-            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
-                    .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
-                        @Override
-                        public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
-                            return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-                        }
-                    })
-                    .create()))
+            .addConverterFactory(GsonConverterFactory.create())
             .client(test())
             .build();
 
@@ -118,5 +112,6 @@ public class ClientUtils {
     public static ServiceProductService serviceProductService = retrofit.create(ServiceProductService.class);
     public static AuthenticatedUserService authenticatedUserService = retrofit.create(AuthenticatedUserService.class);
     public static AuthenticationService authenticationService = retrofit.create(AuthenticationService.class);
+    public static NotificationService notificationService = retrofit.create(NotificationService.class);
 
 }

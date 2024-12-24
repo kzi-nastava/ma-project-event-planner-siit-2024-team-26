@@ -9,4 +9,5 @@
     <color name="neutral">#575755</color>
     <color name="secondary">#B27572</color>
     <color name="primary">#B8473D</color>
+    <color name="accentDark">#6e5d45</color>
 </resources>

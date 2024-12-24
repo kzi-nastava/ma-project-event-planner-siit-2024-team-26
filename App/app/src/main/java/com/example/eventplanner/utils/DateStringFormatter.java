@@ -2,6 +2,9 @@ package com.example.eventplanner.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateStringFormatter {
@@ -18,5 +21,10 @@ public class DateStringFormatter {
             e.printStackTrace();
         }
         return foramttedString;
+    }
+    
+    public static LocalDateTime convertISOFormatToLocalDateTime(String givenString){
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        return LocalDateTime.parse(givenString, formatter);
     }
 }
