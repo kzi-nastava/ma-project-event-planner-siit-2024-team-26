@@ -85,7 +85,6 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        Log.i("GRESKA", getApplicationContext().toString());
         FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);

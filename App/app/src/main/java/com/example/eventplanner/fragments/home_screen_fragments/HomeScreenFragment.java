@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.eventplanner.HomeActivity;
 import com.example.eventplanner.R;
+import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 
 
@@ -50,6 +51,7 @@ public class HomeScreenFragment extends Fragment {
         //Put fragment on opening this activity
         trendingText.setTextColor(getResources().getColor(R.color.neutral));
         FragmentTransition.to(TopListsTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
+
 
         eventsText.setOnClickListener(new View.OnClickListener() {
             @Override
