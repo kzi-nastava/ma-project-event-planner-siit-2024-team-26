@@ -134,7 +134,7 @@ public class WebSocketService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0")
                 .setSmallIcon(R.drawable.baseline_notifications_24)  // Dodajte odgovarajuću ikonu
-                .setContentTitle("Notifications")
+                .setContentTitle("Event planner")
                 .setContentText("You are logged in!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setOngoing(true);  // Označite notifikaciju kao "neprekinutu"
