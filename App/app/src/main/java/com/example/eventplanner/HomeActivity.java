@@ -34,6 +34,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
 import com.example.eventplanner.services.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
@@ -217,6 +218,11 @@ public class HomeActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.notifications){
                     FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.notifications;
+                    return true;
+                }
+                if (item.getItemId() == R.id.create && user.getRole() == Role.EVENT_ORGANIZER){
+                    FragmentTransition.to(EventCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    currentSelectedBottomIcon = R.id.create;
                     return true;
                 }
                 return false;
