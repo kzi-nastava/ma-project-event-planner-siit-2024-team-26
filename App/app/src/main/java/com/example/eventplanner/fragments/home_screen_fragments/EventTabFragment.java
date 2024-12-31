@@ -313,7 +313,7 @@ public class EventTabFragment extends Fragment {
                     foundEvents = response.body().getContent();
                     totalPages = response.body().getTotalPages();
                     ArrayList<EventCardDTO> foundEventsArrayList = new ArrayList<>(foundEvents);
-                    eventAdapter = new EventSearchAdapter(foundEventsArrayList, getContext());
+                    eventAdapter = new EventSearchAdapter(foundEventsArrayList, getContext(), getActivity());
                     recyclerView.setAdapter(eventAdapter);
                     setUpPageButtonsAvailability();
                 }

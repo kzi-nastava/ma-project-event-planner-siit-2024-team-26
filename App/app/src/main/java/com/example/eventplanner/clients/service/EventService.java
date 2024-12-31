@@ -1,6 +1,7 @@
 package com.example.eventplanner.clients.service;
 
 import com.example.eventplanner.dto.event.EventCardDTO;
+import com.example.eventplanner.dto.event.GetEventDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.model.Event;
 import com.example.eventplanner.model.Page;
@@ -10,9 +11,13 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface EventService {
+
+    @GET("events/{id}")
+    Call<GetEventDTO> getById(@Path("id") Integer id);
 
     @GET("events/top")
     Call<ArrayList<TopEventDTO>> getTopEvents();

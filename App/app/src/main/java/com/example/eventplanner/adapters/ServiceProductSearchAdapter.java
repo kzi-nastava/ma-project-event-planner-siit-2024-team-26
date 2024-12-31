@@ -4,14 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
+import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.details.ServiceDetailsFragment;
 import com.example.eventplanner.model.ServiceProductType;
 
 import java.util.List;
@@ -21,9 +25,12 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
     private List<ServiceProductCardDTO> serviceProducts;
     private Context context;
 
-    public ServiceProductSearchAdapter(List<ServiceProductCardDTO> serviceProducts, Context context) {
+    private FragmentActivity fragmentActivity;
+
+    public ServiceProductSearchAdapter(List<ServiceProductCardDTO> serviceProducts, Context context, FragmentActivity fragmentActivity) {
         this.serviceProducts = serviceProducts;
         this.context = context;
+        this.fragmentActivity = fragmentActivity;
     }
 
     @Override
@@ -59,7 +66,7 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         if (serviceProduct.getType() == ServiceProductType.PRODUCT){
             ProductViewHolder productHolder = (ProductViewHolder) holder;
             productHolder.productName.setText(serviceProduct.getName());
-            productHolder.productPrice.setText(String.valueOf(serviceProduct.getPrice()));
+            productHolder.productPrice.setText(String.valueOf(serviceProduct.getPrice()) + "€");
             Glide.with(this.context)
                     .load(serviceProduct.getImage()) // URL slike
                     .into(productHolder.productImage);
@@ -67,10 +74,17 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         else{
             ServiceViewHolder serviceHolder = (ServiceViewHolder) holder;
             serviceHolder.serviceName.setText(serviceProduct.getName());
-            serviceHolder.servicePrice.setText(String.valueOf(serviceProduct.getPrice()));
+            serviceHolder.servicePrice.setText(String.valueOf(serviceProduct.getPrice()) + "€");
             Glide.with(this.context)
                     .load(serviceProduct.getImage()) // URL slike
                     .into(serviceHolder.serviceImage);
+
+            serviceHolder.serviceMoreInformationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                }
+            });
         }
     }
 
@@ -95,11 +109,14 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         TextView serviceName, servicePrice;
         ImageView serviceImage;
 
+        Button serviceMoreInformationButton;
+
         public ServiceViewHolder(View itemView) {
             super(itemView);
             serviceName = itemView.findViewById(R.id.serviceName);
             servicePrice = itemView.findViewById(R.id.servicePrice);
             serviceImage = itemView.findViewById(R.id.serviceImage);
+            serviceMoreInformationButton = itemView.findViewById(R.id.moreInformationButton);
         }
     }
 }
