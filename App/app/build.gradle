@@ -68,4 +68,8 @@ dependencies {
 // RxAndroid za glavnu nit (Android operacije)
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
+    // Za mape
+    implementation 'org.osmdroid:osmdroid-android:6.1.14'
+    implementation 'org.osmdroid:osmdroid-geopackage:6.1.14'
+
 }

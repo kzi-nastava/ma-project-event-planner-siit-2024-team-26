@@ -103,7 +103,7 @@ public class ServiceDetailsFragment extends Fragment {
         LinearLayoutManager layoutManagerEvents = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         imagesListView.setLayoutManager(layoutManagerEvents);
         imagesListView.setAdapter(imageAdapter);
-        makeReservationButton = v.findViewById(R.id.makeReservationButton);
+      //  makeReservationButton = v.findViewById(R.id.makeReservationButton);
         addToFavouritesButton = v.findViewById(R.id.addToFavourites);
         TextView nameTextView = v.findViewById(R.id.serviceName);
         nameTextView.setText(foundService.getName());

@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
                 Log.i("POZIV", t.getMessage());
-                Toast.makeText(LoginActivity.this, "Somehing went wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Somehing went wrong! Check connecting IP", Toast.LENGTH_SHORT).show();
 
             }
         });
