@@ -14,7 +14,14 @@ import com.example.eventplanner.R;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.event.GetEventDTO;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
 import java.io.IOException;
+import java.util.IdentityHashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +40,7 @@ public class EventDetailsFragment extends Fragment {
     private GetEventDTO foundEvent;
 
     private View mainView;
+    private MapView mapView;
 
     public EventDetailsFragment() {
         // Required empty public constructor
@@ -74,6 +82,7 @@ public class EventDetailsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     foundEvent = response.body();
                     setAttributes();
+                    setMap();
                 }
             }
 
@@ -85,7 +94,28 @@ public class EventDetailsFragment extends Fragment {
     }
 
     private void setAttributes(){
-        TextView eventNameTextView = mainView.findViewById(R.id.eventName);
-        eventNameTextView.setText(foundEvent.getName());
+
+    }
+
+    private void setMap(){
+        Configuration.getInstance().setUserAgentValue(requireContext().getOpPackageName());
+        mapView = mainView.findViewById(R.id.eventMap);
+        mapView.setMultiTouchControls(true);
+
+        GeoPoint eventLocation = new GeoPoint(foundEvent.getAddress().getLocation().getLatitude(), foundEvent.getAddress().getLocation().getLongitude());
+
+        //Map positioning
+        IMapController mapController = mapView.getController();
+        mapController.setZoom(18.0);
+        mapController.setCenter(eventLocation);
+
+        // Drawing marker on the map
+        Marker marker = new Marker(mapView);
+        marker.setPosition(eventLocation);
+        marker.setTitle("Event location!");
+        mapView.getOverlays().add(marker);
+
+        //Updating the map
+        mapView.invalidate();
     }
 }
