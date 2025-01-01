@@ -92,5 +92,7 @@
     <string name="createEvent">Create event</string>
     <string name="invitations">Invitations</string>
 
+    <string name="yourChats">Your chats</string>
+
 
 </resources>

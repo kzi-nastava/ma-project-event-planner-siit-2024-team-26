@@ -228,7 +228,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 if (item.getItemId() == R.id.chat){
-                    FragmentTransition.to(ChatTabFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    FragmentTransition.to(ChatTabFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.chat;
                     return true;
                 }

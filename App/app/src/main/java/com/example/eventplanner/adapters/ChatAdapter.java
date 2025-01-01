@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.fragments.FragmentTransition;
@@ -26,20 +27,22 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
 
     private List<GetChatDTO> userChats;
     private Context context;
+    private GetAuthenticatedUserDTO currentUser;
 
     private FragmentActivity fragmentActivity;
 
-    public ChatAdapter(List<GetChatDTO> userChats, Context context, FragmentActivity fragmentActivity) {
+    public ChatAdapter(List<GetChatDTO> userChats, Context context, FragmentActivity fragmentActivity, GetAuthenticatedUserDTO currentUser) {
         this.userChats = userChats;
         this.context = context;
         this.fragmentActivity = fragmentActivity;
+        this.currentUser = currentUser;
     }
 
     @NonNull
     @Override
     public ChatAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.event_card, parent, false);
+                .inflate(R.layout.chat_card, parent, false);
         return new ChatAdapter.MyViewHolder(view);
     }
 
@@ -47,9 +50,17 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
     public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
         GetChatDTO chat = userChats.get(position);
 
-//        Glide.with(this.context)
-//                .load(cha.getImages().get(0)) // URL slike
-//                .into(holder.eventImage);
+        if (currentUser.getId() == chat.getEventOrganizer().getId()){
+            holder.userFirstAndLastName.setText(chat.getAuthenticatedUser().getFirstName() + " " + chat.getAuthenticatedUser().getLastName());
+            Glide.with(this.context)
+                    .load(chat.getAuthenticatedUser().getImage()) // URL slike
+                    .into(holder.userImage);
+        }else{
+            holder.userFirstAndLastName.setText(chat.getEventOrganizer().getFirstName() + " " + chat.getEventOrganizer().getLastName());
+            Glide.with(this.context)
+                    .load(chat.getEventOrganizer().getImage()) // URL slike
+                    .into(holder.userImage);
+        }
 
     }
 
@@ -61,10 +72,14 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
+        TextView userFirstAndLastName;
+        ImageView userImage;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
-
+            userFirstAndLastName = itemView.findViewById(R.id.userFirstAndLastName);
+            userImage = itemView.findViewById(R.id.userImage);
         }
     }
 }
