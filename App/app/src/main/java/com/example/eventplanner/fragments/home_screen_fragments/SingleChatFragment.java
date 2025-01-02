@@ -95,6 +95,7 @@ public class SingleChatFragment extends Fragment {
                     userMessages = response.body();
                     messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
                     recyclerView.setAdapter(messageAdapter);
+
                 }
             }
 
@@ -120,6 +121,7 @@ public class SingleChatFragment extends Fragment {
                 message = messageInputEditText.getText().toString();
                     if (message != null && !message.equals("")){
                         sendMessage();
+                        messageInputEditText.setText("");
                     }
             }
         });
@@ -143,6 +145,7 @@ public class SingleChatFragment extends Fragment {
 
         CreateMessageDTO messageToSend = new CreateMessageDTO(eventOganizerDTO, authenticatedUserDTO, message, isFromUser1);
         WebSocketService.sendMessage(messageToSend);
-        Log.i("RADILI", "OVDE");
+        messageAdapter.addItem(new GetMessageDTO(messageToSend));
+        recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
     }
 }

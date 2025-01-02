@@ -1,6 +1,10 @@
 package com.example.eventplanner.dto.message;
 
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+import com.example.eventplanner.utils.DateStringFormatter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class GetMessageDTO {
 
@@ -13,6 +17,14 @@ public class GetMessageDTO {
 
     public GetMessageDTO(){super();}
 
+    public GetMessageDTO(CreateMessageDTO messageDTO){
+        this.id = null;
+        this.eventOrganizer = messageDTO.getEventOrganizer();
+        this.authenticatedUser = messageDTO.getAuthenticatedUser();
+        this.fromUser1 = messageDTO.isFromUser1();
+        this.text = messageDTO.getText();
+        this.timeStamp = DateStringFormatter.LocalDateTimeToString(LocalDateTime.now(), "iso");
+    }
     public Integer getId() {
         return id;
     }

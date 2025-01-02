@@ -131,4 +131,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    public void addItem(GetMessageDTO item) {
+        messages.add(item);
+        notifyItemInserted(messages.size() - 1);  // Obaveštava adapter da je stavka dodata
+    }
+
 }
