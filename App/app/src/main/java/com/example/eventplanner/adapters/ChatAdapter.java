@@ -1,6 +1,7 @@
 package com.example.eventplanner.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.details.EventDetailsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
 import com.example.eventplanner.utils.DateStringFormatter;
 
 import java.util.List;
@@ -28,8 +31,8 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
     private List<GetChatDTO> userChats;
     private Context context;
     private GetAuthenticatedUserDTO currentUser;
-
     private FragmentActivity fragmentActivity;
+    private ChatAuthenticatedUserDTO otherUser;
 
     public ChatAdapter(List<GetChatDTO> userChats, Context context, FragmentActivity fragmentActivity, GetAuthenticatedUserDTO currentUser) {
         this.userChats = userChats;
@@ -43,7 +46,7 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
     public ChatAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.chat_card, parent, false);
-        return new ChatAdapter.MyViewHolder(view);
+        return new ChatAdapter.MyViewHolder(view, fragmentActivity);
     }
 
     @Override
@@ -55,12 +58,22 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
             Glide.with(this.context)
                     .load(chat.getAuthenticatedUser().getImage()) // URL slike
                     .into(holder.userImage);
+            otherUser = chat.getAuthenticatedUser();
         }else{
             holder.userFirstAndLastName.setText(chat.getEventOrganizer().getFirstName() + " " + chat.getEventOrganizer().getLastName());
             Glide.with(this.context)
                     .load(chat.getEventOrganizer().getImage()) // URL slike
                     .into(holder.userImage);
+            otherUser = chat.getEventOrganizer();
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("nesto", otherUser.getFirstName());
+                FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser), fragmentActivity, true, R.id.mainScreenFragment);
+            }
+        });
 
     }
 
@@ -75,11 +88,12 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
         TextView userFirstAndLastName;
         ImageView userImage;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView, FragmentActivity fragmentActivity) {
             super(itemView);
-
             userFirstAndLastName = itemView.findViewById(R.id.userFirstAndLastName);
             userImage = itemView.findViewById(R.id.userImage);
+
         }
     }
+
 }
