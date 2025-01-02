@@ -146,7 +146,7 @@ public class WebSocketService extends Service {
             Gson gson = new Gson();
             String convertedToJson = gson.toJson(messageToSend);
             Log.i("websocket", convertedToJson);
-            instance.stompClient.send("/socket-subscriber/send/message", convertedToJson);
+            instance.stompClient.send("/socket-subscriber/send/message", convertedToJson).subscribe();
         }
 
     }
