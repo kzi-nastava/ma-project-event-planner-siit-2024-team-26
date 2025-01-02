@@ -21,6 +21,7 @@ import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.details.ServiceDetailsFragment;
 import com.example.eventplanner.model.Role;
 import com.example.eventplanner.model.ServiceProductType;
+import com.example.eventplanner.utils.DateStringFormatter;
 
 import java.util.List;
 
@@ -85,11 +86,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 // Rad sa ViewHolder za prijavljenog korisnika
                 LoggedInUserMessageViewHolder loggedInHolder = (LoggedInUserMessageViewHolder) holder;
                 loggedInHolder.userMessage.setText(message.getText()); // Primer rada sa View
+                loggedInHolder.messageDate.setText(DateStringFormatter.format(message.getTimeStamp(), "HH:mm"));
                 break;
             case 2:
                 // Rad sa ViewHolder za drugog korisnika
                 OtherUserMessageViewHolder otherUserHolder = (OtherUserMessageViewHolder) holder;
                 otherUserHolder.userMessage.setText(message.getText()); // Primer rada sa View
+                otherUserHolder.messageDate.setText(DateStringFormatter.format(message.getTimeStamp(), "HH:mm"));
                 Glide.with(this.context)
                     .load(otherUser.getImage()) // URL slike
                     .into(otherUserHolder.userImage);
@@ -108,22 +111,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class LoggedInUserMessageViewHolder extends RecyclerView.ViewHolder {
-        TextView userMessage;
+        TextView userMessage, messageDate;
 
         public LoggedInUserMessageViewHolder(View itemView) {
             super(itemView);
             userMessage = itemView.findViewById(R.id.userMessage);
+            messageDate = itemView.findViewById(R.id.messageDate);
         }
     }
 
     public static class OtherUserMessageViewHolder extends RecyclerView.ViewHolder {
-        TextView userMessage;
+        TextView userMessage, messageDate;
         ImageView userImage;
 
         public OtherUserMessageViewHolder(View itemView) {
             super(itemView);
             userMessage = itemView.findViewById(R.id.userMessage);
             userImage = itemView.findViewById(R.id.userImage);
+            messageDate = itemView.findViewById(R.id.messageDate);
         }
     }
 
