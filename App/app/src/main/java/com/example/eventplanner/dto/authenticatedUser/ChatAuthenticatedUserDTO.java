@@ -13,6 +13,14 @@ public class ChatAuthenticatedUserDTO implements Parcelable {
 
     public ChatAuthenticatedUserDTO(){super();}
 
+    public ChatAuthenticatedUserDTO(GetAuthenticatedUserDTO user){
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+        this.image = user.getImage();
+    }
+
     public Integer getId() {
         return id;
     }

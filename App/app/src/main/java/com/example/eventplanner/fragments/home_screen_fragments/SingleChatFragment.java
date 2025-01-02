@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.ChatAdapter;
@@ -18,9 +20,12 @@ import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.chat.GetChatDTO;
+import com.example.eventplanner.dto.message.CreateMessageDTO;
 import com.example.eventplanner.dto.message.GetMessageDTO;
 import com.example.eventplanner.model.id.ChatId;
+import com.example.eventplanner.services.WebSocketService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -40,16 +45,21 @@ public class SingleChatFragment extends Fragment {
     private ChatAuthenticatedUserDTO otherUser;
     private ArrayList<GetMessageDTO> userMessages;
     private MessageAdapter messageAdapter;
+    private ImageButton sendButton;
+    private boolean isAuthenticatedUser;
+
+    private String message;
 
     public SingleChatFragment() {
         // Required empty public constructor
     }
 
-    public static SingleChatFragment newInstance(GetAuthenticatedUserDTO currentUser, ChatAuthenticatedUserDTO otherUser) {
+    public static SingleChatFragment newInstance(GetAuthenticatedUserDTO currentUser, ChatAuthenticatedUserDTO otherUser, boolean isAuthenticatedUser) {
         SingleChatFragment fragment = new SingleChatFragment();
         Bundle args = new Bundle();
         args.putParcelable("currentUser", currentUser);
         args.putParcelable("otherUser", otherUser);
+        args.putBoolean("isAuthenticatedUser", isAuthenticatedUser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +70,7 @@ public class SingleChatFragment extends Fragment {
         if (getArguments() != null) {
             currentUser = getArguments().getParcelable("currentUser");
             otherUser = getArguments().getParcelable("otherUser");
+            isAuthenticatedUser = getArguments().getBoolean("isAuthenticatedUser");
         }
         userMessages = new ArrayList<>();
     }
@@ -68,6 +79,7 @@ public class SingleChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single_chat, container, false);
+        setUpAttributes(view);
         setUpRecyclerView(view);
         loadMessages();
         return view;
@@ -96,5 +108,41 @@ public class SingleChatFragment extends Fragment {
         recyclerView = view.findViewById(R.id.messagesRecycleView);
         LinearLayoutManager layoutManagerMessages= new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManagerMessages);
+    }
+
+    private void setUpAttributes(View view){
+        EditText messageInputEditText = view.findViewById(R.id.messageInput);
+
+        sendButton = view.findViewById(R.id.sendButton);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                message = messageInputEditText.getText().toString();
+                    if (message != null && !message.equals("")){
+                        sendMessage();
+                    }
+            }
+        });
+    }
+
+
+    private void sendMessage(){
+        ChatAuthenticatedUserDTO authenticatedUserDTO;
+        ChatAuthenticatedUserDTO eventOganizerDTO;
+        boolean isFromUser1 = false;
+        if (isAuthenticatedUser){
+            authenticatedUserDTO = new ChatAuthenticatedUserDTO(currentUser);
+            eventOganizerDTO = otherUser;
+            isFromUser1 = false;
+        }
+        else{
+            authenticatedUserDTO = otherUser;
+            eventOganizerDTO = new ChatAuthenticatedUserDTO(currentUser);
+            isFromUser1 = true;
+        }
+
+        CreateMessageDTO messageToSend = new CreateMessageDTO(eventOganizerDTO, authenticatedUserDTO, message, isFromUser1);
+        WebSocketService.sendMessage(messageToSend);
+        Log.i("RADILI", "OVDE");
     }
 }

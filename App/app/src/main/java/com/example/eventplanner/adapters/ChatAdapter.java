@@ -53,25 +53,28 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
         GetChatDTO chat = userChats.get(position);
 
         ChatAuthenticatedUserDTO otherUser;
+        boolean isAuthenticatedUser;
         if (currentUser.getId() == chat.getEventOrganizer().getId()){
             holder.userFirstAndLastName.setText(chat.getAuthenticatedUser().getFirstName() + " " + chat.getAuthenticatedUser().getLastName());
             Glide.with(this.context)
                     .load(chat.getAuthenticatedUser().getImage()) // URL slike
                     .into(holder.userImage);
             otherUser = chat.getAuthenticatedUser();
+            isAuthenticatedUser = false; //  Is current user authenticateduser_idau in database table column
         }else{
             holder.userFirstAndLastName.setText(chat.getEventOrganizer().getFirstName() + " " + chat.getEventOrganizer().getLastName());
             Glide.with(this.context)
                     .load(chat.getEventOrganizer().getImage()) // URL slike
                     .into(holder.userImage);
             otherUser = chat.getEventOrganizer();
+            isAuthenticatedUser = true;
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("nesto", otherUser.getFirstName());
-                FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser), fragmentActivity, true, R.id.mainScreenFragment);
+                FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), fragmentActivity, true, R.id.mainScreenFragment);
             }
         });
 

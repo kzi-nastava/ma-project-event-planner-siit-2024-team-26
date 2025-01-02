@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.message.CreateMessageDTO;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
 import com.example.eventplanner.utils.NotificationSender;
 import com.google.gson.Gson;
@@ -49,10 +50,12 @@ public class WebSocketService extends Service {
 
     private static boolean isServiceRunning = false;
 
+    private static WebSocketService instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        instance = this;
     }
 
     @SuppressLint("CheckResult")
@@ -136,6 +139,16 @@ public class WebSocketService extends Service {
 
     public static boolean isServiceRunning() {
         return isServiceRunning;
+    }
+
+    public static void sendMessage(CreateMessageDTO messageToSend){
+        if (instance != null && instance.stompClient != null){
+            Gson gson = new Gson();
+            String convertedToJson = gson.toJson(messageToSend);
+            Log.i("websocket", convertedToJson);
+            instance.stompClient.send("/socket-subscriber/send/message", convertedToJson);
+        }
+
     }
 
     // Metoda koja pokreće foreground servis sa notifikacijom

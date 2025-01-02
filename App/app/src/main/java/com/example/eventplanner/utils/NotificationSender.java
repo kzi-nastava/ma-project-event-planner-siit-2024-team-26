@@ -78,7 +78,7 @@ public class NotificationSender {
             CreateMessageDTO messageDTO = gson.fromJson(this.topicMessage.getPayload(), CreateMessageDTO.class);
 
             NotificationChannel channel = new NotificationChannel("2", "Message notification", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("OPIS");
+            channel.setDescription("Message");
 
             NotificationManager notificationManager = getSystemService(this.context, NotificationManager.class);
             notificationManager.createNotificationChannel(channel);

@@ -10,16 +10,14 @@ public class CreateMessageDTO {
     private ChatAuthenticatedUserDTO authenticatedUser;
     private String text;
     private boolean fromUser1;
-    private LocalDateTime timeStamp;
 
     public CreateMessageDTO(){super();}
 
-    public CreateMessageDTO(ChatAuthenticatedUserDTO eventOrganizer, ChatAuthenticatedUserDTO authenticatedUser, String text, boolean fromUser1, LocalDateTime timeStamp) {
+    public CreateMessageDTO(ChatAuthenticatedUserDTO eventOrganizer, ChatAuthenticatedUserDTO authenticatedUser, String text, boolean fromUser1) {
         this.eventOrganizer = eventOrganizer;
         this.authenticatedUser = authenticatedUser;
         this.text = text;
         this.fromUser1 = fromUser1;
-        this.timeStamp = timeStamp;
     }
 
     public ChatAuthenticatedUserDTO getEventOrganizer() {
@@ -54,11 +52,11 @@ public class CreateMessageDTO {
         this.fromUser1 = fromUser1;
     }
 
-    public LocalDateTime getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(LocalDateTime timeStamp) {
-        this.timeStamp = timeStamp;
-    }
+//    public LocalDateTime getTimeStamp() {
+//        return timeStamp;
+//    }
+//
+//    public void setTimeStamp(LocalDateTime timeStamp) {
+//        this.timeStamp = timeStamp;
+//    }
 }
