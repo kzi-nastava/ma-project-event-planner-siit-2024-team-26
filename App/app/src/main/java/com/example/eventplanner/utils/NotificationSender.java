@@ -51,13 +51,13 @@ public class NotificationSender {
             Gson gson = new Gson();
             InvitationNotificationDTO invitationNotificationDTO = gson.fromJson(this.topicMessage.getPayload(), InvitationNotificationDTO.class);
 
-            NotificationChannel channel = new NotificationChannel("1", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("2", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("OPIS");
 
             NotificationManager notificationManager = getSystemService(this.context, NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, "1")
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, "2")
                     .setSmallIcon(R.drawable.baseline_notifications_24)
                     .setContentTitle(invitationNotificationDTO.getTitle())
                     .setContentText(invitationNotificationDTO.getDescription())
@@ -65,7 +65,7 @@ public class NotificationSender {
 
 
             if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                notificationManager.notify(1, builder.build());
+                notificationManager.notify(2, builder.build());
             }else{
                 Log.e("WebSocket", "OVDE");
             }
@@ -77,7 +77,7 @@ public class NotificationSender {
             Gson gson = new Gson();
             CreateMessageDTO messageDTO = gson.fromJson(this.topicMessage.getPayload(), CreateMessageDTO.class);
 
-            NotificationChannel channel = new NotificationChannel("2", "Message notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("3", "Message notification", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("Message");
 
             NotificationManager notificationManager = getSystemService(this.context, NotificationManager.class);
@@ -101,8 +101,8 @@ public class NotificationSender {
                 }
             }
 
-            messageTitle = "Message from: " + firstName + " " + lastName;
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, "1")
+            messageTitle = "Event planner: Message from " + firstName + " " + lastName;
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, "3")
                     .setSmallIcon(R.drawable.baseline_chat_24)
                     .setContentTitle(messageTitle)
                     .setContentText(messageDTO.getText())
@@ -111,7 +111,7 @@ public class NotificationSender {
 
             if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                 if (sendNotification) {
-                    notificationManager.notify(2, builder.build());
+                    notificationManager.notify(3, builder.build());
                 }
             }else{
                 Log.e("WebSocket", "OVDE");

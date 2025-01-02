@@ -95,6 +95,7 @@ public class SingleChatFragment extends Fragment {
                     userMessages = response.body();
                     messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
                     recyclerView.setAdapter(messageAdapter);
+                    recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
 
                 }
             }

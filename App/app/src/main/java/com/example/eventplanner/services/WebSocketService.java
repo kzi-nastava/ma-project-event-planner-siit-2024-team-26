@@ -100,6 +100,7 @@ public class WebSocketService extends Service {
 
                     Context context = getApplicationContext();
                     NotificationSender notificationSender = new NotificationSender(context, topicMessage);
+                    Log.i("notifications", "primio");
                     notificationSender.sendMessageNotification(currentUser);
                 }, throwable -> {
                     Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
@@ -153,13 +154,13 @@ public class WebSocketService extends Service {
 
     // Metoda koja pokreće foreground servis sa notifikacijom
     private void startForegroundServiceMethod() {
-        NotificationChannel channel = new NotificationChannel("0", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel("1", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
         channel.setDescription("Channel for event notifications");
 
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "0")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
                 .setSmallIcon(R.drawable.baseline_notifications_24)  // Dodajte odgovarajuću ikonu
                 .setContentTitle("Event planner")
                 .setContentText("You are logged in!")
