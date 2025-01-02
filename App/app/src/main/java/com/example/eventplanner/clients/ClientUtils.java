@@ -8,8 +8,10 @@ import com.example.eventplanner.clients.authorization.TokenManager;
 import com.example.eventplanner.clients.authorization.TokenResponse;
 import com.example.eventplanner.clients.service.AuthenticatedUserService;
 import com.example.eventplanner.clients.service.AuthenticationService;
+import com.example.eventplanner.clients.service.ChatService;
 import com.example.eventplanner.clients.service.EventService;
 import com.example.eventplanner.clients.service.InvitationService;
+import com.example.eventplanner.clients.service.MessageService;
 import com.example.eventplanner.clients.service.NotificationService;
 import com.example.eventplanner.clients.service.ProductService;
 import com.example.eventplanner.clients.service.ServiceProductService;
@@ -115,5 +117,7 @@ public class ClientUtils {
     public static AuthenticationService authenticationService = retrofit.create(AuthenticationService.class);
     public static NotificationService notificationService = retrofit.create(NotificationService.class);
     public static InvitationService invitationService = retrofit.create(InvitationService.class);
+    public static ChatService chatService = retrofit.create(ChatService.class);
+    public static MessageService messageService = retrofit.create(MessageService.class);
 
 }

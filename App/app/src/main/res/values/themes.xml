@@ -26,4 +26,10 @@
         <item name="android:windowExitAnimation">@anim/slide_out_animation</item>
     </style>
 
+    <style name="CustomCircle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+
 </resources>
