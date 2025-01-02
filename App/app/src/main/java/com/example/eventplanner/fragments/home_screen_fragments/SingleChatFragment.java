@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.ChatAdapter;
@@ -47,6 +48,7 @@ public class SingleChatFragment extends Fragment {
     private MessageAdapter messageAdapter;
     private ImageButton sendButton;
     private boolean isAuthenticatedUser;
+    private TextView chatWithTextView;
 
     private String message;
 
@@ -114,6 +116,8 @@ public class SingleChatFragment extends Fragment {
 
     private void setUpAttributes(View view){
         EditText messageInputEditText = view.findViewById(R.id.messageInput);
+        chatWithTextView = view.findViewById(R.id.userFirstAndLastName);
+        chatWithTextView.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
 
         sendButton = view.findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {

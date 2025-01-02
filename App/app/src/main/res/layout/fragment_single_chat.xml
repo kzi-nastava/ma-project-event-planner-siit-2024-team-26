@@ -11,10 +11,10 @@
         android:id="@+id/messagesRecycleView"
         android:layout_width="match_parent"
         android:layout_height="450dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/logged_in_user_message_card"
-        android:layout_marginTop="100dp"/>
+        tools:listitem="@layout/logged_in_user_message_card" />
 
     <EditText
         android:id="@+id/messageInput"
@@ -51,6 +51,23 @@
         android:src="@drawable/block_sign_red"
         app:layout_constraintBottom_toBottomOf="@id/messageInput"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/userFirstAndLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="57dp"
+        android:text="User"
+        android:textColor="@color/blackreversable"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/messagesRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.166" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
