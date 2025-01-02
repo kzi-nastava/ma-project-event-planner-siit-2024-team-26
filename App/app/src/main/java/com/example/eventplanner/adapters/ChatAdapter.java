@@ -32,7 +32,6 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
     private Context context;
     private GetAuthenticatedUserDTO currentUser;
     private FragmentActivity fragmentActivity;
-    private ChatAuthenticatedUserDTO otherUser;
 
     public ChatAdapter(List<GetChatDTO> userChats, Context context, FragmentActivity fragmentActivity, GetAuthenticatedUserDTO currentUser) {
         this.userChats = userChats;
@@ -53,6 +52,7 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
     public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
         GetChatDTO chat = userChats.get(position);
 
+        ChatAuthenticatedUserDTO otherUser;
         if (currentUser.getId() == chat.getEventOrganizer().getId()){
             holder.userFirstAndLastName.setText(chat.getAuthenticatedUser().getFirstName() + " " + chat.getAuthenticatedUser().getLastName());
             Glide.with(this.context)
