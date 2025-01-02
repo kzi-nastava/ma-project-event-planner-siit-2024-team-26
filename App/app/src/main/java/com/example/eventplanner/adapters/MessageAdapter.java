@@ -38,7 +38,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public MessageAdapter(List<GetMessageDTO> messages, Context context, GetAuthenticatedUserDTO currentUser, ChatAuthenticatedUserDTO otherUser) {
         this.messages = messages;
         this.context = context;
-
         this.currentUser = currentUser;
         this.otherUser = otherUser;
     }
@@ -47,13 +46,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemViewType(int position) {
         GetMessageDTO messageDTO = this.messages.get(position);
         if (currentUser.getRole() == Role.EVENT_ORGANIZER) {
-            if (currentUser.getId() == messageDTO.getEventOrganizerId() && messageDTO.isFromUser1()){
+            if (currentUser.getId() == messageDTO.getEventOrganizer().getId() && messageDTO.isFromUser1()){
                 return 1;
             }else{
                 return 2;
             }
         } else  {
-            if (currentUser.getId() == messageDTO.getAuthenticatedUserId() && !messageDTO.isFromUser1()){
+            if (currentUser.getId() == messageDTO.getAuthenticatedUser().getId() && !messageDTO.isFromUser1()){
                 return 1;
             }else{
                 return 2;

@@ -344,7 +344,7 @@ public class HomeActivity extends AppCompatActivity {
             Log.i("WebSocket", "Service is not running, starting...");
             Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
             Bundle args = new Bundle();
-            args.putString("email", user.getEmail());
+            args.putParcelable("currentUser", user);
             serviceIntent.putExtras(args);
             startForegroundService(serviceIntent);
         }

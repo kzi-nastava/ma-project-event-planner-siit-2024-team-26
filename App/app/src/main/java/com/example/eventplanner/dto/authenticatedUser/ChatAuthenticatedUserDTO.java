@@ -8,6 +8,7 @@ public class ChatAuthenticatedUserDTO implements Parcelable {
     private Integer id;
     private String firstName;
     private String lastName;
+    private String email;
     private String image;
 
     public ChatAuthenticatedUserDTO(){super();}
@@ -44,12 +45,21 @@ public class ChatAuthenticatedUserDTO implements Parcelable {
         this.image = image;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     // Constructor for parceling
     protected ChatAuthenticatedUserDTO(Parcel in) {
         id = in.readInt();
         firstName = in.readString();
         lastName = in.readString();
         image = in.readString();
+        email = in.readString();
     }
 
     @Override
@@ -63,6 +73,7 @@ public class ChatAuthenticatedUserDTO implements Parcelable {
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(image);
+        dest.writeString(email);
     }
 
     public static final Parcelable.Creator<ChatAuthenticatedUserDTO> CREATOR = new Parcelable.Creator<ChatAuthenticatedUserDTO>() {

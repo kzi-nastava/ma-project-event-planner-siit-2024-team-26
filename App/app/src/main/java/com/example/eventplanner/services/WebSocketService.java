@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.R;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
 import com.example.eventplanner.utils.NotificationSender;
 import com.google.gson.Gson;
@@ -44,6 +45,8 @@ public class WebSocketService extends Service {
 
     private Context context;
 
+    private GetAuthenticatedUserDTO currentUser;
+
     private static boolean isServiceRunning = false;
 
     @Override
@@ -53,7 +56,7 @@ public class WebSocketService extends Service {
     }
 
     @SuppressLint("CheckResult")
-    private void startWebSocketConnection(String email) {
+    private void startWebSocketConnection() {
         String serverUrl = "http://" + BuildConfig.IP_ADDR + ":8080/socket/websocket";
 
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, serverUrl);
@@ -77,13 +80,24 @@ public class WebSocketService extends Service {
         stompClient.connect();
 
         // Subscribe to the topic based on the provided email
-        topicSubscription = stompClient.topic("/socket-publisher/" + email)  // Topic to subscribe to
+        topicSubscription = stompClient.topic("/socket-publisher/" + currentUser.getEmail())  // Topic to subscribe to
                 .subscribe(topicMessage -> {
                     Log.d("WebSocket", "Received message: " + topicMessage.getPayload());
 
                     Context context = getApplicationContext();
                     NotificationSender notificationSender = new NotificationSender(context, topicMessage);
                     notificationSender.sendInvitationNotification();
+                }, throwable -> {
+                    Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
+                });
+
+        topicSubscription = stompClient.topic("/socket-publisher/messages/" + currentUser.getEmail())  // Topic to subscribe to
+                .subscribe(topicMessage -> {
+                    Log.d("WebSocket", "Received message: " + topicMessage.getPayload());
+
+                    Context context = getApplicationContext();
+                    NotificationSender notificationSender = new NotificationSender(context, topicMessage);
+                    notificationSender.sendMessageNotification(currentUser);
                 }, throwable -> {
                     Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
                 });
@@ -113,8 +127,8 @@ public class WebSocketService extends Service {
         startForegroundServiceMethod();
         if (intent != null){
             Bundle bundle = intent.getExtras();
-            String email = bundle.getString("email");
-            startWebSocketConnection(email);
+            currentUser = bundle.getParcelable("currentUser");
+            startWebSocketConnection();
         }
         isServiceRunning = true;
         return START_STICKY;

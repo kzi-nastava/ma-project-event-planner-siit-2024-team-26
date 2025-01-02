@@ -16,8 +16,11 @@ import androidx.core.content.ContextCompat;
 import com.example.eventplanner.R;
 
 
-
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.message.CreateMessageDTO;
+import com.example.eventplanner.dto.message.GetMessageDTO;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
+import com.example.eventplanner.model.Role;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -62,7 +65,54 @@ public class NotificationSender {
 
 
             if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                notificationManager.notify(0, builder.build());
+                notificationManager.notify(1, builder.build());
+            }else{
+                Log.e("WebSocket", "OVDE");
+            }
+        }
+    }
+
+    public void sendMessageNotification(GetAuthenticatedUserDTO currentUser){
+        if (this.areNotificationsEnabled()) {
+            Gson gson = new Gson();
+            CreateMessageDTO messageDTO = gson.fromJson(this.topicMessage.getPayload(), CreateMessageDTO.class);
+
+            NotificationChannel channel = new NotificationChannel("2", "Message notification", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("OPIS");
+
+            NotificationManager notificationManager = getSystemService(this.context, NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            String messageTitle;
+            boolean sendNotification = false;
+            String firstName = "";
+            String lastName = "";
+            if (currentUser.getRole() == Role.EVENT_ORGANIZER) {
+                if (currentUser.getId() == messageDTO.getEventOrganizer().getId() && !messageDTO.isFromUser1()){
+                    sendNotification = true;
+                    firstName = messageDTO.getAuthenticatedUser().getFirstName();
+                    lastName = messageDTO.getAuthenticatedUser().getLastName();
+                }
+            } else {
+                if (currentUser.getId() == messageDTO.getAuthenticatedUser().getId() && messageDTO.isFromUser1()) {
+                    sendNotification = true;
+                    firstName = messageDTO.getEventOrganizer().getFirstName();
+                    lastName = messageDTO.getEventOrganizer().getLastName();
+                }
+            }
+
+            messageTitle = "Message from: " + firstName + " " + lastName;
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, "1")
+                    .setSmallIcon(R.drawable.baseline_chat_24)
+                    .setContentTitle(messageTitle)
+                    .setContentText(messageDTO.getText())
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+            if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                if (sendNotification) {
+                    notificationManager.notify(2, builder.build());
+                }
             }else{
                 Log.e("WebSocket", "OVDE");
             }

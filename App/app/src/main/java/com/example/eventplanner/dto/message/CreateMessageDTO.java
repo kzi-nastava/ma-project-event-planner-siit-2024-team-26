@@ -2,23 +2,24 @@ package com.example.eventplanner.dto.message;
 
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 
-public class GetMessageDTO {
+import java.time.LocalDateTime;
 
-    private Integer id;
+public class CreateMessageDTO {
+
     private ChatAuthenticatedUserDTO eventOrganizer;
     private ChatAuthenticatedUserDTO authenticatedUser;
     private String text;
     private boolean fromUser1;
-    private String timeStamp;
+    private LocalDateTime timeStamp;
 
-    public GetMessageDTO(){super();}
+    public CreateMessageDTO(){super();}
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public CreateMessageDTO(ChatAuthenticatedUserDTO eventOrganizer, ChatAuthenticatedUserDTO authenticatedUser, String text, boolean fromUser1, LocalDateTime timeStamp) {
+        this.eventOrganizer = eventOrganizer;
+        this.authenticatedUser = authenticatedUser;
+        this.text = text;
+        this.fromUser1 = fromUser1;
+        this.timeStamp = timeStamp;
     }
 
     public ChatAuthenticatedUserDTO getEventOrganizer() {
@@ -53,11 +54,11 @@ public class GetMessageDTO {
         this.fromUser1 = fromUser1;
     }
 
-    public String getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 }
