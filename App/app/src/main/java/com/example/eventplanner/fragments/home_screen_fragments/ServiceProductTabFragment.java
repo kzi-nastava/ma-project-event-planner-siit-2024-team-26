@@ -256,9 +256,9 @@ public class ServiceProductTabFragment extends Fragment {
 
     }
     private void setUpPageButtonsAvailability(){
-        if (currentPage == 0){ previousButton.setAlpha(0.5f); canPrevious = false; }
+        if (currentPage == 0 || totalPages == 0){ previousButton.setAlpha(0.5f); canPrevious = false; }
         else{ previousButton.setAlpha(1); canPrevious = true; }
-        if (currentPage == totalPages - 1){ nextButton.setAlpha(0.5f); canNext = false;}
+        if (currentPage == totalPages - 1 || totalPages == 0){ nextButton.setAlpha(0.5f); canNext = false;}
         else{ nextButton.setAlpha(1); canNext = true;}
     }
 
