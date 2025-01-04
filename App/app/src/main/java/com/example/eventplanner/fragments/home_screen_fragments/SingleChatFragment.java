@@ -1,5 +1,7 @@
 package com.example.eventplanner.fragments.home_screen_fragments;
 
+import static io.reactivex.internal.operators.flowable.FlowableReplay.observeOn;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,6 +31,8 @@ import com.example.eventplanner.services.WebSocketService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.subjects.BehaviorSubject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,6 +79,8 @@ public class SingleChatFragment extends Fragment {
             isAuthenticatedUser = getArguments().getBoolean("isAuthenticatedUser");
         }
         userMessages = new ArrayList<>();
+
+        connectToSignal();
     }
 
     @Override
@@ -152,5 +158,22 @@ public class SingleChatFragment extends Fragment {
         WebSocketService.sendMessage(messageToSend);
         messageAdapter.addItem(new GetMessageDTO(messageToSend));
         recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
+    private void receiveMessage(GetMessageDTO receivedMessage){
+        messageAdapter.addItem(receivedMessage);
+        recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
+    private void connectToSignal(){
+        WebSocketService.messageSignal
+                .observeOn(AndroidSchedulers.mainThread()).
+                subscribe(receivedMessage ->{
+                            receiveMessage(receivedMessage);
+                        },
+                        throwable -> {
+                            // Obradi grešku
+                            Log.e("RXJavaError", "Greška u BehaviorSubject: ", throwable);
+                        });
     }
 }

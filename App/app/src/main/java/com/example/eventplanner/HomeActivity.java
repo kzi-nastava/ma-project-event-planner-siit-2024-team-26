@@ -212,22 +212,26 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }
                 if (item.getItemId() == R.id.home){
+                    removeAllFromBackStack();
                     FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.home;
                     return true;
                 }
                 if (item.getItemId() == R.id.notifications){
+                    removeAllFromBackStack();
                     FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.notifications;
                     return true;
                 }
                 if (item.getItemId() == R.id.create && user.getRole() == Role.EVENT_ORGANIZER){
+                    removeAllFromBackStack();
                     FragmentTransition.to(EventCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.create;
                     return true;
                 }
 
                 if (item.getItemId() == R.id.chat){
+                    removeAllFromBackStack();
                     FragmentTransition.to(ChatTabFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.chat;
                     return true;
@@ -236,7 +240,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
+    }
+    private void removeAllFromBackStack(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        }
     }
 
     private void handleBackButtonClicked() {

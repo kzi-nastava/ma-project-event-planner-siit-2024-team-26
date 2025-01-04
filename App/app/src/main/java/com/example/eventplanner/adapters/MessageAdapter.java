@@ -86,6 +86,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 LoggedInUserMessageViewHolder loggedInHolder = (LoggedInUserMessageViewHolder) holder;
                 loggedInHolder.userMessage.setText(message.getText()); // Primer rada sa View
                 loggedInHolder.messageDate.setText(DateStringFormatter.format(message.getTimeStamp(), "HH:mm"));
+                loggedInHolder.dateText.setVisibility(View.GONE);
+                if (position == 0){
+                    loggedInHolder.dateText.setVisibility(View.VISIBLE);
+                    loggedInHolder.dateText.setText(DateStringFormatter.format(message.getTimeStamp(), "dd.MM.yyyy."));
+                }else{
+                    String previousMessageTimestamp = DateStringFormatter.format(this.messages.get(position - 1).getTimeStamp(), "dd.MM.yyyy.");
+                    String currentMessageTimestamp = DateStringFormatter.format(message.getTimeStamp(), "dd.MM.yyyy.");
+                    if (!previousMessageTimestamp.equals(currentMessageTimestamp)){
+                        loggedInHolder.dateText.setVisibility(View.VISIBLE);
+                        loggedInHolder.dateText.setText(DateStringFormatter.format(message.getTimeStamp(), "dd.MM.yyyy."));
+                    }
+                }
                 break;
             case 2:
                 // Rad sa ViewHolder za drugog korisnika
@@ -95,6 +107,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 Glide.with(this.context)
                     .load(otherUser.getImage()) // URL slike
                     .into(otherUserHolder.userImage);
+                otherUserHolder.dateText.setVisibility(View.GONE);
+                if (position == 0){
+                    otherUserHolder.dateText.setVisibility(View.VISIBLE);
+                    otherUserHolder.dateText.setText(DateStringFormatter.format(message.getTimeStamp(), "dd.MM.yyyy."));
+                }else{
+                    String previousMessageTimestamp = DateStringFormatter.format(this.messages.get(position - 1).getTimeStamp(), "dd.MM.yyyy.");
+                    String currentMessageTimestamp = DateStringFormatter.format(message.getTimeStamp(), "dd.MM.yyyy.");
+                    if (!previousMessageTimestamp.equals(currentMessageTimestamp)){
+                        otherUserHolder.dateText.setVisibility(View.VISIBLE);
+                        otherUserHolder.dateText.setText(DateStringFormatter.format(message.getTimeStamp(), "dd.MM.yyyy."));
+                    }
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Unknown view type");
@@ -110,17 +134,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class LoggedInUserMessageViewHolder extends RecyclerView.ViewHolder {
-        TextView userMessage, messageDate;
+        TextView userMessage, messageDate, dateText;
 
         public LoggedInUserMessageViewHolder(View itemView) {
             super(itemView);
             userMessage = itemView.findViewById(R.id.userMessage);
             messageDate = itemView.findViewById(R.id.messageDate);
+            dateText = itemView.findViewById(R.id.dateText);
         }
     }
 
     public static class OtherUserMessageViewHolder extends RecyclerView.ViewHolder {
-        TextView userMessage, messageDate;
+        TextView userMessage, messageDate, dateText;
         ImageView userImage;
 
         public OtherUserMessageViewHolder(View itemView) {
@@ -128,6 +153,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             userMessage = itemView.findViewById(R.id.userMessage);
             userImage = itemView.findViewById(R.id.userImage);
             messageDate = itemView.findViewById(R.id.messageDate);
+            dateText = itemView.findViewById(R.id.dateText);
         }
     }
 

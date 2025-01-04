@@ -29,11 +29,13 @@ import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.message.CreateMessageDTO;
+import com.example.eventplanner.dto.message.GetMessageDTO;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
 import com.example.eventplanner.utils.NotificationSender;
 import com.google.gson.Gson;
 
 import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.BehaviorSubject;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompMessage;
@@ -52,10 +54,13 @@ public class WebSocketService extends Service {
 
     private static WebSocketService instance;
 
+    public static BehaviorSubject<GetMessageDTO> messageSignal;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        messageSignal = BehaviorSubject.create();
     }
 
     @SuppressLint("CheckResult")
@@ -96,12 +101,13 @@ public class WebSocketService extends Service {
 
         topicSubscription = stompClient.topic("/socket-publisher/messages/" + currentUser.getEmail())  // Topic to subscribe to
                 .subscribe(topicMessage -> {
-                    Log.d("WebSocket", "Received message: " + topicMessage.getPayload());
-
                     Context context = getApplicationContext();
                     NotificationSender notificationSender = new NotificationSender(context, topicMessage);
-                    Log.i("notifications", "primio");
                     notificationSender.sendMessageNotification(currentUser);
+
+                    Gson gson = new Gson();
+                    CreateMessageDTO messageDTO = gson.fromJson(topicMessage.getPayload(), CreateMessageDTO.class);
+                    messageSignal.onNext(new GetMessageDTO(messageDTO));
                 }, throwable -> {
                     Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
                 });
