@@ -27,6 +27,7 @@ import com.example.eventplanner.adapters.EventAdapter;
 import com.example.eventplanner.adapters.EventSearchAdapter;
 import com.example.eventplanner.adapters.ServiceAdapter;
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.event.EventCardDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.service.TopServiceDTO;
@@ -51,6 +52,7 @@ import retrofit2.Response;
 
 public class EventTabFragment extends Fragment {
 
+    private GetAuthenticatedUserDTO currentUser;
 
     private EventSearchAdapter eventAdapter;
     private List<EventCardDTO> foundEvents;
@@ -78,10 +80,10 @@ public class EventTabFragment extends Fragment {
     }
 
 
-    public static EventTabFragment newInstance() {
+    public static EventTabFragment newInstance(GetAuthenticatedUserDTO user) {
         EventTabFragment fragment = new EventTabFragment();
         Bundle args = new Bundle();
-
+        args.putParcelable("currentUser", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,6 +91,11 @@ public class EventTabFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null){
+            currentUser = getArguments().getParcelable("currentUser");
+        }
+
         this.totalPages = 0;
         this.currentPage = 0;
 
@@ -313,7 +320,7 @@ public class EventTabFragment extends Fragment {
                     foundEvents = response.body().getContent();
                     totalPages = response.body().getTotalPages();
                     ArrayList<EventCardDTO> foundEventsArrayList = new ArrayList<>(foundEvents);
-                    eventAdapter = new EventSearchAdapter(foundEventsArrayList, getContext(), getActivity());
+                    eventAdapter = new EventSearchAdapter(foundEventsArrayList, getContext(), getActivity(), currentUser);
                     recyclerView.setAdapter(eventAdapter);
                     setUpPageButtonsAvailability();
                 }

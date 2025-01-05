@@ -1,5 +1,7 @@
 package com.example.eventplanner.dto.event;
 
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+
 import java.time.LocalDateTime;
 
 public class EventCardDTO {
@@ -8,6 +10,8 @@ public class EventCardDTO {
     private String name;
     private String image;
     private String starts;
+
+    private ChatAuthenticatedUserDTO eventOrganizer;
 
     public EventCardDTO(){}
 
@@ -41,5 +45,13 @@ public class EventCardDTO {
 
     public void setStarts(String starts) {
         this.starts = starts;
+    }
+
+    public ChatAuthenticatedUserDTO getEventOrganizer() {
+        return eventOrganizer;
+    }
+
+    public void setEventOrganizer(ChatAuthenticatedUserDTO eventOrganizer) {
+        this.eventOrganizer = eventOrganizer;
     }
 }
