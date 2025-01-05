@@ -22,6 +22,7 @@ import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
 import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.details.ProductDetailsFragment;
 import com.example.eventplanner.fragments.details.ServiceDetailsFragment;
 import com.example.eventplanner.model.ServiceProductType;
 
@@ -87,6 +88,12 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
             Glide.with(this.context)
                     .load(serviceProduct.getImage()) // URL slike
                     .into(productHolder.productImage);
+            productHolder.moreInforamtionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkIsBlockedUser(holder, serviceProduct);
+                }
+            });
         }
         else{
             ServiceViewHolder serviceHolder = (ServiceViewHolder) holder;
@@ -113,12 +120,14 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView productName, productPrice;
         ImageView productImage;
+        Button moreInforamtionButton;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.productNameSearch);
             productPrice = itemView.findViewById(R.id.productPriceSearch);
             productImage = itemView.findViewById(R.id.productImageSearch);
+            moreInforamtionButton = itemView.findViewById(R.id.moreInformationButton);
         }
     }
 
@@ -137,17 +146,21 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    private void checkIsBlockedUser(RecyclerView.ViewHolder holder, ServiceProductCardDTO service){
+    private void checkIsBlockedUser(RecyclerView.ViewHolder holder, ServiceProductCardDTO serviceProduct){
         if (this.currentUser != null){
-            loadChat(holder, service);
+            loadChat(holder, serviceProduct);
         }else{
-            FragmentTransition.to(ServiceDetailsFragment.newInstance(service.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            }else{
+                FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            }
         }
     }
 
-    private void loadChat(RecyclerView.ViewHolder holder, ServiceProductCardDTO service){
+    private void loadChat(RecyclerView.ViewHolder holder, ServiceProductCardDTO serviceProduct){
 
-        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), service.getServiceProductProvider().getId());
+        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), serviceProduct.getServiceProductProvider().getId());
         call.enqueue(new Callback<GetChatDTO>() {
 
             @Override
@@ -156,33 +169,45 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
                     chat = response.body();
                     if (currentUser.getId() == chat.getEventOrganizer().getId()){
                         if (chat.isUser_1_blocked()){
-                            reason = "You can't see more information because service product provider " + service.getServiceProductProvider().getFirstName() +
-                                    " " + service.getServiceProductProvider().getLastName() + " has blocked you!";
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " has blocked you!";
                             showBlockedDialog();
                         } else if (chat.isUser_2_blocked()){
-                            reason = "You can't see more information because service product provider " + service.getServiceProductProvider().getFirstName() +
-                                    " " + service.getServiceProductProvider().getLastName() + " is blocked!";
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " is blocked!";
                             showBlockedDialog();
                         }else{
-                            FragmentTransition.to(ServiceDetailsFragment.newInstance(service.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                                FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }else{
+                                FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }
                         }
 
                     }else{ // If user is Authenticated user in chat table
                         if (chat.isUser_2_blocked()){
-                            reason = "You can't see more information because service product provider " + service.getServiceProductProvider().getFirstName() +
-                                    " " + service.getServiceProductProvider().getLastName() + " has blocked you!";
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " has blocked you!";
                             showBlockedDialog();
                         } else if (chat.isUser_1_blocked()) {
-                            reason = "You can't see more information because service product provider " + service.getServiceProductProvider().getFirstName() +
-                                    " " + service.getServiceProductProvider().getLastName() + " is blocked!";
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " is blocked!";
                             showBlockedDialog();
                         } else{
-                            FragmentTransition.to(ServiceDetailsFragment.newInstance(service.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                                FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }else{
+                                FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }
                         }
                     }
                 }else{
                     if (response.code() == 404){
-                        FragmentTransition.to(ServiceDetailsFragment.newInstance(service.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                            FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        }else{
+                            FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        }
                     }
                 }
             }
