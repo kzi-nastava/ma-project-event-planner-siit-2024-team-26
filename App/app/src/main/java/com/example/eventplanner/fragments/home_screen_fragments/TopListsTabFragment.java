@@ -141,7 +141,7 @@ public class TopListsTabFragment extends Fragment {
             public void onResponse(Call<ArrayList<TopProductDTO>> call, Response<ArrayList<TopProductDTO>> response) {
                 if (response.isSuccessful()) {
                     topProducts = response.body();
-                    productAdapter = new ProductAdapter(topProducts, getContext());
+                    productAdapter = new ProductAdapter(topProducts, getContext(), getActivity(), currentUser);
                     topProductsView.setAdapter(productAdapter);
                 }
             }
