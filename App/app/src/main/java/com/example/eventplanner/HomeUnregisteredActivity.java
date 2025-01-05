@@ -45,7 +45,7 @@ public class HomeUnregisteredActivity extends AppCompatActivity {
             return insets;
         });
 
-        FragmentTransition.to(HomeScreenFragment.newInstance(), HomeUnregisteredActivity.this, false, R.id.mainScreenFragment);
+        FragmentTransition.to(HomeScreenFragment.newInstance(null), HomeUnregisteredActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout_unregistered);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
         setSupportActionBar(toolbar);

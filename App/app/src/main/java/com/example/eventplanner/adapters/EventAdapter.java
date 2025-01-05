@@ -92,7 +92,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             eventStarts = itemView.findViewById(R.id.eventStartingDate);
             eventImage = itemView.findViewById(R.id.eventImage);
             moreInformationButton = itemView.findViewById(R.id.moreInformationButton);
-
         }
     }
 

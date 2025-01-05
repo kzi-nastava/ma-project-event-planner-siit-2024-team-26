@@ -16,6 +16,7 @@ import com.example.eventplanner.adapters.EventAdapter;
 import com.example.eventplanner.adapters.ProductAdapter;
 import com.example.eventplanner.adapters.ServiceAdapter;
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.dto.product.TopProductDTO;
 import com.example.eventplanner.dto.service.TopServiceDTO;
@@ -28,6 +29,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TopListsTabFragment extends Fragment {
+
+    private GetAuthenticatedUserDTO currentUser;
 
     private ArrayList<TopEventDTO> topEvents;
     private ArrayList<TopServiceDTO> topServices;
@@ -47,9 +50,10 @@ public class TopListsTabFragment extends Fragment {
     }
 
 
-    public static TopListsTabFragment newInstance() {
+    public static TopListsTabFragment newInstance(GetAuthenticatedUserDTO user) {
         TopListsTabFragment fragment = new TopListsTabFragment();
         Bundle args = new Bundle();
+        args.putParcelable("currentUser", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +61,9 @@ public class TopListsTabFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null){
+            currentUser = getArguments().getParcelable("currentUser");
+        }
         showTopEvents();
         showTopServices();
         showTopProducts();
