@@ -109,17 +109,7 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void loadChat(){
-        Integer eventOrganzierId;
-        Integer authenticatedUserId;
-        if (isAuthenticatedUser){
-            authenticatedUserId = currentUser.getId();
-            eventOrganzierId = otherUser.getId();
-        } else{
-            eventOrganzierId = currentUser.getId();
-            authenticatedUserId = otherUser.getId();
-        }
-
-        Call<GetChatDTO> call = ClientUtils.chatService.getChat(eventOrganzierId, authenticatedUserId);
+        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), otherUser.getId());
         call.enqueue(new Callback<GetChatDTO>() {
 
             @Override

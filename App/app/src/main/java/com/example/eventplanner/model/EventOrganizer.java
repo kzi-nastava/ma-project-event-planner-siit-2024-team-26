@@ -3,8 +3,8 @@ package com.example.eventplanner.model;
 import android.os.Parcel;
 
 public class EventOrganizer extends AuthenticatedUser{
-    public EventOrganizer(String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
-        super(email, password, isActive, role, firstName, lastName, phoneNumber, address);
+    public EventOrganizer(Integer id, String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
+        super(id, email, password, isActive, role, firstName, lastName, phoneNumber, address);
     }
 
     protected EventOrganizer(Parcel in) {

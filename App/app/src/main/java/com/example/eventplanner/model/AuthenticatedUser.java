@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class AuthenticatedUser implements Parcelable {
+
+    private Integer id;
     private String email;
     private String password;
     private Boolean isActive;
@@ -13,7 +15,8 @@ public class AuthenticatedUser implements Parcelable {
     private String phoneNumber;
     private Address address;
 
-    public AuthenticatedUser(String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
+    public AuthenticatedUser(Integer id, String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.isActive = isActive;
@@ -22,6 +25,14 @@ public class AuthenticatedUser implements Parcelable {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -89,6 +100,7 @@ public class AuthenticatedUser implements Parcelable {
     }
 
     protected AuthenticatedUser(Parcel in) {
+        id = in.readInt();
         email = in.readString();
         password = in.readString();
         byte tmpIsActive = in.readByte();
@@ -102,6 +114,7 @@ public class AuthenticatedUser implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(email);
         dest.writeString(password);
         dest.writeByte((byte) (isActive == null ? 0 : isActive ? 1 : 2));

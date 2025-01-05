@@ -1,6 +1,8 @@
 package com.example.eventplanner.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.event.GetEventDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.details.EventDetailsFragment;
 import com.example.eventplanner.model.Event;
+import com.example.eventplanner.model.Role;
 import com.example.eventplanner.utils.DateStringFormatter;
 
 import java.text.SimpleDateFormat;
@@ -33,15 +38,20 @@ import retrofit2.Response;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
+    private GetAuthenticatedUserDTO currentUser;
+
     private List<TopEventDTO> topEvents;
     private Context context;
 
     private FragmentActivity fragmentActivity;
 
-    public EventAdapter(List<TopEventDTO> events, Context context, FragmentActivity fragmentActivity) {
+    // Used to check if user can navigate to event details tab ( if he is not blocked )
+
+    public EventAdapter(List<TopEventDTO> events, Context context, FragmentActivity fragmentActivity, GetAuthenticatedUserDTO user) {
         this.topEvents = events;
         this.context = context;
         this.fragmentActivity = fragmentActivity;
+        this.currentUser = user;
     }
 
     @NonNull
@@ -62,10 +72,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 .load(event.getImages().get(0)) // URL slike
                 .into(holder.eventImage);
 
+        checkIsBlockedUser(holder, event);
+
         holder.moreInformationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                if (holder.canAccessDetails){
+                    FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                }else{
+                    showBlockedDialog();
+                }
             }
         });
 
@@ -84,6 +100,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         ImageView eventImage;
 
         Button moreInformationButton;
+        GetChatDTO chat;
+
+        boolean canAccessDetails;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -95,4 +114,64 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         }
     }
 
+    //Checks if user can open selected event details tab
+    private void checkIsBlockedUser(MyViewHolder holder, TopEventDTO event){
+        if (this.currentUser != null){
+            loadChat(holder, event);
+        }else{
+            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+        }
+    }
+
+    private void loadChat(MyViewHolder holder, TopEventDTO event){
+
+        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), event.getEventOrganizer().getId());
+        call.enqueue(new Callback<GetChatDTO>() {
+
+            @Override
+            public void onResponse(Call<GetChatDTO> call, Response<GetChatDTO> response) {
+                if (response.isSuccessful()) {
+                    holder.chat = response.body();
+                    if (currentUser.getId() == holder.chat.getEventOrganizer().getId() && holder.chat.isUser_1_blocked()){
+                        holder.canAccessDetails = false;
+                    }else if (currentUser.getId() == holder.chat.getAuthenticatedUser().getId()){
+                        if (holder.chat.isUser_1_blocked()){
+                            holder.canAccessDetails = false;
+                        } else if (holder.chat.isUser_2_blocked()) {
+                            topEvents.remove(event);
+                            notifyItemRemoved(topEvents.indexOf(event));
+                        } else{
+                            holder.canAccessDetails = true;
+                        }
+                    }
+                }else{
+                    if (response.code() == 404){
+                        holder.canAccessDetails = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetChatDTO> call, Throwable t) {
+                Log.i("ChatEventAdapter", t.getMessage());
+            }
+        });
+    }
+
+    private void showBlockedDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(fragmentActivity);
+
+        builder.setTitle("Access denied")
+                .setMessage("You can't see more information because you blocked organizer of this event!");
+
+        builder.setPositiveButton("I Understand", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

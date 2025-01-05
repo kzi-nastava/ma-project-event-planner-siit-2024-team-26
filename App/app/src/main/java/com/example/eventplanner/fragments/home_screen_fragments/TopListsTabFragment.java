@@ -101,7 +101,7 @@ public class TopListsTabFragment extends Fragment {
                     // Logovanje JSON odgovora
                     Log.d("JSON_RESPONSE", jsonResponse);
                     topEvents = response.body();
-                    eventAdapter = new EventAdapter(topEvents, getContext(), getActivity());
+                    eventAdapter = new EventAdapter(topEvents, getContext(), getActivity(), currentUser);
                     topEventsView.setAdapter(eventAdapter);
                 }
             }
