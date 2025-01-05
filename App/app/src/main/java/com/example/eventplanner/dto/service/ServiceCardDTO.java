@@ -1,10 +1,13 @@
 package com.example.eventplanner.dto.service;
 
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+
 public class ServiceCardDTO {
     private Integer id;
     private String name;
     private String image;
     private double price;
+    private ChatAuthenticatedUserDTO serviceProductProvider;
 
     public ServiceCardDTO() {
         super();
@@ -40,5 +43,13 @@ public class ServiceCardDTO {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public ChatAuthenticatedUserDTO getServiceProductProvider() {
+        return serviceProductProvider;
+    }
+
+    public void setServiceProductProvider(ChatAuthenticatedUserDTO serviceProductProvider) {
+        this.serviceProductProvider = serviceProductProvider;
     }
 }

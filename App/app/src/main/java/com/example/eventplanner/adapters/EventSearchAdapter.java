@@ -37,8 +37,9 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
     private GetAuthenticatedUserDTO currentUser;
     private List<EventCardDTO> foundEvents;
     private Context context;
-
     private FragmentActivity fragmentActivity;
+    private String reason;
+    private GetChatDTO chat;
 
     public EventSearchAdapter(List<EventCardDTO> events, Context context, FragmentActivity fragmentActivity, GetAuthenticatedUserDTO user) {
         this.foundEvents = events;
@@ -64,16 +65,11 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
                 .load(event.getImage()) // URL slike
                 .into(holder.eventImage);
 
-        checkIsBlockedUser(holder, event);
 
         holder.moreInformationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.canAccessDetails){
-                    FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
-                }else{
-                    showBlockedDialog();
-                }
+                checkIsBlockedUser(holder, event);
             }
         });
 
@@ -91,10 +87,6 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
         ImageView eventImage;
 
         Button moreInformationButton;
-
-        GetChatDTO chat;
-
-        boolean canAccessDetails;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -121,23 +113,36 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
             @Override
             public void onResponse(Call<GetChatDTO> call, Response<GetChatDTO> response) {
                 if (response.isSuccessful()) {
-                    holder.chat = response.body();
-                    if (currentUser.getId() == holder.chat.getEventOrganizer().getId() && holder.chat.isUser_1_blocked()){
-                        holder.canAccessDetails = false;
-                    }else if (currentUser.getId() == holder.chat.getAuthenticatedUser().getId()){
-                        if (holder.chat.isUser_2_blocked()){
-                            int index = foundEvents.indexOf(event);
-                            foundEvents.remove(event);
-                            notifyItemRemoved(index);
-                        } else if (holder.chat.isUser_1_blocked()) {
-                            holder.canAccessDetails = false;
+                    chat = response.body();
+                    if (currentUser.getId() == chat.getEventOrganizer().getId()){
+                        if (chat.isUser_1_blocked()){
+                            reason = "You can't see more information because organizer " + event.getEventOrganizer().getFirstName() +
+                                    " " + event.getEventOrganizer().getLastName() + " has blocked you!";
+                            showBlockedDialog();
+                        } else if (chat.isUser_2_blocked()){
+                            reason = "You can't see more information because organizer " + event.getEventOrganizer().getFirstName() +
+                                    " " + event.getEventOrganizer().getLastName() + " is blocked!";
+                            showBlockedDialog();
+                        }else{
+                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        }
+
+                    }else{ // If user is Authenticated user in chat table
+                        if (chat.isUser_2_blocked()){
+                            reason = "You can't see more information because organizer " + event.getEventOrganizer().getFirstName() +
+                                    " " + event.getEventOrganizer().getLastName() + " has blocked you!";
+                            showBlockedDialog();
+                        } else if (chat.isUser_1_blocked()) {
+                            reason = "You can't see more information because organizer " + event.getEventOrganizer().getFirstName() +
+                                    " " + event.getEventOrganizer().getLastName() + " is blocked!";
+                            showBlockedDialog();
                         } else{
-                            holder.canAccessDetails = true;
+                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
                         }
                     }
                 }else{
                     if (response.code() == 404){
-                        holder.canAccessDetails = true;
+                        FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
                     }
                 }
             }
@@ -153,7 +158,7 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
         AlertDialog.Builder builder = new AlertDialog.Builder(fragmentActivity);
 
         builder.setTitle("Access denied")
-                .setMessage("You can't see more information because you blocked organizer of this event!");
+                .setMessage(reason);
 
         builder.setPositiveButton("I Understand", new DialogInterface.OnClickListener() {
             @Override

@@ -1,5 +1,7 @@
 package com.example.eventplanner.dto.service;
 
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+
 import java.util.List;
 
 public class TopServiceDTO {
@@ -8,6 +10,7 @@ public class TopServiceDTO {
     private String description;
     private double price;
     private List<String> images;
+    private ChatAuthenticatedUserDTO serviceProductProvider;
 
     public TopServiceDTO(){}
 
@@ -49,5 +52,13 @@ public class TopServiceDTO {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public ChatAuthenticatedUserDTO getServiceProductProvider() {
+        return serviceProductProvider;
+    }
+
+    public void setServiceProductProvider(ChatAuthenticatedUserDTO serviceProductProvider) {
+        this.serviceProductProvider = serviceProductProvider;
     }
 }
