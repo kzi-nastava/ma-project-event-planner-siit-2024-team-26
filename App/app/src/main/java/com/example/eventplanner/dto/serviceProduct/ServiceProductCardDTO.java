@@ -1,5 +1,6 @@
 package com.example.eventplanner.dto.serviceProduct;
 
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.model.ServiceProductType;
 
 public class ServiceProductCardDTO {
@@ -8,6 +9,7 @@ public class ServiceProductCardDTO {
     private String image;
     private double price;
     private ServiceProductType type;
+    private ChatAuthenticatedUserDTO serviceProductProvider;
 
     public ServiceProductCardDTO(){
         super();
@@ -51,5 +53,13 @@ public class ServiceProductCardDTO {
 
     public void setType(ServiceProductType type) {
         this.type = type;
+    }
+
+    public ChatAuthenticatedUserDTO getServiceProductProvider() {
+        return serviceProductProvider;
+    }
+
+    public void setServiceProductProvider(ChatAuthenticatedUserDTO serviceProductProvider) {
+        this.serviceProductProvider = serviceProductProvider;
     }
 }

@@ -87,7 +87,6 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
         setSupportActionBar(toolbar);
@@ -213,7 +212,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.home){
                     removeAllFromBackStack();
-                    FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                     currentSelectedBottomIcon = R.id.home;
                     return true;
                 }
@@ -296,7 +295,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                        if (!selected[0]){
-                           FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                           FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                             bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
                        }
                     }
@@ -330,6 +329,7 @@ public class HomeActivity extends AppCompatActivity {
                         user = response.body();
                         setNameInDrawerMenu();
                         runBackgroundService();
+                        FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                     }
                 }
 

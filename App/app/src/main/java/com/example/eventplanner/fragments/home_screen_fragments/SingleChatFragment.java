@@ -2,6 +2,8 @@ package com.example.eventplanner.fragments.home_screen_fragments;
 
 import static io.reactivex.internal.operators.flowable.FlowableReplay.observeOn;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,8 +26,11 @@ import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.chat.GetChatDTO;
+import com.example.eventplanner.dto.chat.UpdateChatDTO;
+import com.example.eventplanner.dto.chat.UpdatedChatDTO;
 import com.example.eventplanner.dto.message.CreateMessageDTO;
 import com.example.eventplanner.dto.message.GetMessageDTO;
+import com.example.eventplanner.model.Role;
 import com.example.eventplanner.model.id.ChatId;
 import com.example.eventplanner.services.WebSocketService;
 
@@ -51,10 +57,17 @@ public class SingleChatFragment extends Fragment {
     private ArrayList<GetMessageDTO> userMessages;
     private MessageAdapter messageAdapter;
     private ImageButton sendButton;
+    private ImageButton blockUserButton;
     private boolean isAuthenticatedUser;
     private TextView chatWithTextView;
 
     private String message;
+
+    private GetChatDTO currentChat;
+
+    private EditText messageInputEditText;
+
+    private View mainView;
 
     public SingleChatFragment() {
         // Required empty public constructor
@@ -87,10 +100,31 @@ public class SingleChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single_chat, container, false);
+        mainView = view;
+        loadChat();
         setUpAttributes(view);
         setUpRecyclerView(view);
         loadMessages();
         return view;
+    }
+
+    private void loadChat(){
+        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), otherUser.getId());
+        call.enqueue(new Callback<GetChatDTO>() {
+
+            @Override
+            public void onResponse(Call<GetChatDTO> call, Response<GetChatDTO> response) {
+                if (response.isSuccessful()) {
+                    currentChat = response.body();
+                    setMessageInput();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetChatDTO> call, Throwable t) {
+                Log.i("Chat", t.getMessage());
+            }
+        });
     }
 
     private void loadMessages(){ // setUpRecyclerView must be called before this method
@@ -104,7 +138,6 @@ public class SingleChatFragment extends Fragment {
                     messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
                     recyclerView.setAdapter(messageAdapter);
                     recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
-
                 }
             }
 
@@ -120,8 +153,21 @@ public class SingleChatFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManagerMessages);
     }
 
+    private void setMessageInput(){
+        messageInputEditText = mainView.findViewById(R.id.messageInput);
+        if ((isAuthenticatedUser && currentChat.isUser_1_blocked()) || (!isAuthenticatedUser && currentChat.isUser_2_blocked())){
+            messageInputEditText.setEnabled(false);
+            messageInputEditText.setHint("This user is blocked!");
+        }else if ((isAuthenticatedUser && currentChat.isUser_2_blocked()) || (!isAuthenticatedUser && currentChat.isUser_1_blocked())){
+            messageInputEditText.setEnabled(false);
+            messageInputEditText.setHint("User has blocked you!");
+        }else{
+            messageInputEditText.setEnabled(true);
+            messageInputEditText.setHint("Enter text");
+        }
+
+    }
     private void setUpAttributes(View view){
-        EditText messageInputEditText = view.findViewById(R.id.messageInput);
         chatWithTextView = view.findViewById(R.id.userFirstAndLastName);
         chatWithTextView.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
 
@@ -134,6 +180,14 @@ public class SingleChatFragment extends Fragment {
                         sendMessage();
                         messageInputEditText.setText("");
                     }
+            }
+        });
+
+        blockUserButton = view.findViewById(R.id.blockUserButton);
+        blockUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBlockingDialog();
             }
         });
     }
@@ -175,5 +229,75 @@ public class SingleChatFragment extends Fragment {
                             // Obradi grešku
                             Log.e("RXJavaError", "Greška u BehaviorSubject: ", throwable);
                         });
+    }
+
+    private void showBlockingDialog(){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            String dialogMessage = setDialogMessage();
+
+            builder.setTitle("User blocking")
+                    .setMessage(dialogMessage);
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    blockUnblockUser();
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+    }
+
+    private String setDialogMessage(){
+        String dialogMessage;
+        if (isAuthenticatedUser){
+            if (!currentChat.isUser_1_blocked()){
+                dialogMessage = "Are you sure you want to block this user?";
+            }else{
+                dialogMessage = "Are you sure you want to unblock this user?";
+            }
+        }else{
+            if (!currentChat.isUser_2_blocked()){
+                dialogMessage = "Are you sure you want to block this user?";
+            }else{
+                dialogMessage = "Are you sure you want to unblock this user?";
+            }
+        }
+        return dialogMessage;
+    }
+
+    private void blockUnblockUser(){
+        if (isAuthenticatedUser){
+            currentChat.setUser_1_blocked(!currentChat.isUser_1_blocked());
+        }else{
+            currentChat.setUser_2_blocked(!currentChat.isUser_2_blocked());
+        }
+        setMessageInput();
+
+        UpdateChatDTO updatedChat = new UpdateChatDTO(currentChat.getEventOrganizer(), currentChat.getAuthenticatedUser(), currentChat.isUser_1_blocked(), currentChat.isUser_2_blocked());
+
+        Call<UpdatedChatDTO> call = ClientUtils.chatService.updateChat(updatedChat, currentChat.getEventOrganizer().getId(), currentChat.getAuthenticatedUser().getId());
+        call.enqueue(new Callback<UpdatedChatDTO>() {
+
+            @Override
+            public void onResponse(Call<UpdatedChatDTO> call, Response<UpdatedChatDTO> response) {
+                if (response.isSuccessful()) {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdatedChatDTO> call, Throwable t) {
+                Log.i("Chat", t.getMessage());
+            }
+        });
     }
 }

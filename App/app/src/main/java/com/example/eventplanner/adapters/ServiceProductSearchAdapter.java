@@ -1,6 +1,9 @@
 package com.example.eventplanner.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +16,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventplanner.R;
+import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.GetChatDTO;
+import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
 import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.details.ProductDetailsFragment;
 import com.example.eventplanner.fragments.details.ServiceDetailsFragment;
 import com.example.eventplanner.model.ServiceProductType;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private GetAuthenticatedUserDTO currentUser;
 
     private List<ServiceProductCardDTO> serviceProducts;
     private Context context;
 
     private FragmentActivity fragmentActivity;
 
-    public ServiceProductSearchAdapter(List<ServiceProductCardDTO> serviceProducts, Context context, FragmentActivity fragmentActivity) {
+    private String reason;
+    private GetChatDTO chat;
+
+    public ServiceProductSearchAdapter(List<ServiceProductCardDTO> serviceProducts, Context context, FragmentActivity fragmentActivity, GetAuthenticatedUserDTO user) {
         this.serviceProducts = serviceProducts;
         this.context = context;
         this.fragmentActivity = fragmentActivity;
+        this.currentUser = user;
     }
 
     @Override
@@ -70,6 +88,12 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
             Glide.with(this.context)
                     .load(serviceProduct.getImage()) // URL slike
                     .into(productHolder.productImage);
+            productHolder.moreInforamtionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkIsBlockedUser(holder, serviceProduct);
+                }
+            });
         }
         else{
             ServiceViewHolder serviceHolder = (ServiceViewHolder) holder;
@@ -82,7 +106,7 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
             serviceHolder.serviceMoreInformationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                    checkIsBlockedUser(holder, serviceProduct);
                 }
             });
         }
@@ -96,12 +120,14 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView productName, productPrice;
         ImageView productImage;
+        Button moreInforamtionButton;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.productNameSearch);
             productPrice = itemView.findViewById(R.id.productPriceSearch);
             productImage = itemView.findViewById(R.id.productImageSearch);
+            moreInforamtionButton = itemView.findViewById(R.id.moreInformationButton);
         }
     }
 
@@ -118,5 +144,95 @@ public class ServiceProductSearchAdapter extends RecyclerView.Adapter<RecyclerVi
             serviceImage = itemView.findViewById(R.id.serviceImage);
             serviceMoreInformationButton = itemView.findViewById(R.id.moreInformationButton);
         }
+    }
+
+    private void checkIsBlockedUser(RecyclerView.ViewHolder holder, ServiceProductCardDTO serviceProduct){
+        if (this.currentUser != null){
+            loadChat(holder, serviceProduct);
+        }else{
+            if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            }else{
+                FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            }
+        }
+    }
+
+    private void loadChat(RecyclerView.ViewHolder holder, ServiceProductCardDTO serviceProduct){
+
+        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), serviceProduct.getServiceProductProvider().getId());
+        call.enqueue(new Callback<GetChatDTO>() {
+
+            @Override
+            public void onResponse(Call<GetChatDTO> call, Response<GetChatDTO> response) {
+                if (response.isSuccessful()) {
+                    chat = response.body();
+                    if (currentUser.getId() == chat.getEventOrganizer().getId()){
+                        if (chat.isUser_1_blocked()){
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " has blocked you!";
+                            showBlockedDialog();
+                        } else if (chat.isUser_2_blocked()){
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " is blocked!";
+                            showBlockedDialog();
+                        }else{
+                            if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                                FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }else{
+                                FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }
+                        }
+
+                    }else{ // If user is Authenticated user in chat table
+                        if (chat.isUser_2_blocked()){
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " has blocked you!";
+                            showBlockedDialog();
+                        } else if (chat.isUser_1_blocked()) {
+                            reason = "You can't see more information because service product provider " + serviceProduct.getServiceProductProvider().getFirstName() +
+                                    " " + serviceProduct.getServiceProductProvider().getLastName() + " is blocked!";
+                            showBlockedDialog();
+                        } else{
+                            if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                                FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }else{
+                                FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            }
+                        }
+                    }
+                }else{
+                    if (response.code() == 404){
+                        if (serviceProduct.getType() == ServiceProductType.SERVICE) {
+                            FragmentTransition.to(ServiceDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        }else{
+                            FragmentTransition.to(ProductDetailsFragment.newInstance(serviceProduct.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetChatDTO> call, Throwable t) {
+                Log.i("ChatEventAdapter", t.getMessage());
+            }
+        });
+    }
+
+    private void showBlockedDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(fragmentActivity);
+
+        builder.setTitle("Access denied")
+                .setMessage(reason);
+
+        builder.setPositiveButton("I Understand", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

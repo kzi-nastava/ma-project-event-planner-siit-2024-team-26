@@ -25,6 +25,7 @@ import com.example.eventplanner.adapters.ProductSearchAdapter;
 import com.example.eventplanner.adapters.ServiceProductSearchAdapter;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.product.ProductCardDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.dto.serviceProduct.ServiceProductCardDTO;
@@ -45,6 +46,8 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class ServiceProductTabFragment extends Fragment {
+
+    private GetAuthenticatedUserDTO currentUser;
 
     List<ServiceProductCardDTO> foundServicesProducts;
     List<ServiceCardDTO> foundServices;
@@ -77,9 +80,10 @@ public class ServiceProductTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ServiceProductTabFragment newInstance() {
+    public static ServiceProductTabFragment newInstance(GetAuthenticatedUserDTO user) {
         ServiceProductTabFragment fragment = new ServiceProductTabFragment();
         Bundle args = new Bundle();
+        args.putParcelable("currentUser", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,6 +91,10 @@ public class ServiceProductTabFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            currentUser = getArguments().getParcelable("currentUser");
+        }
+
         this.totalPages = 0;
         this.currentPage = 0;
 
@@ -275,7 +283,7 @@ public class ServiceProductTabFragment extends Fragment {
 
                     totalPages = response.body().getTotalPages();
                     ArrayList<ServiceProductCardDTO> foundServicesProductsArrayList = new ArrayList<>(foundServicesProducts);
-                    serviceProductAdapter = new ServiceProductSearchAdapter(foundServicesProductsArrayList, getContext(), getActivity());
+                    serviceProductAdapter = new ServiceProductSearchAdapter(foundServicesProductsArrayList, getContext(), getActivity(), currentUser);
                     recyclerView.setAdapter(serviceProductAdapter);
                     setUpPageButtonsAvailability();
                 }
@@ -300,7 +308,7 @@ public class ServiceProductTabFragment extends Fragment {
 
                     totalPages = response.body().getTotalPages();
                     ArrayList<ServiceCardDTO> foundServicesArrayList = new ArrayList<>(foundServices);
-                    serviceAdapter = new ServiceSearchAdapter(foundServicesArrayList, getContext(), getActivity());
+                    serviceAdapter = new ServiceSearchAdapter(foundServicesArrayList, getContext(), getActivity(), currentUser);
                     recyclerView.setAdapter(serviceAdapter);
                     setUpPageButtonsAvailability();
                 }
@@ -323,7 +331,7 @@ public class ServiceProductTabFragment extends Fragment {
                     foundProducts = response.body().getContent();
                     totalPages = response.body().getTotalPages();
                     ArrayList<ProductCardDTO> foundProductsArrayList = new ArrayList<>(foundProducts);
-                    productAdapter = new ProductSearchAdapter(foundProductsArrayList, getContext());
+                    productAdapter = new ProductSearchAdapter(foundProductsArrayList, getContext(), getActivity(), currentUser);
                     recyclerView.setAdapter(productAdapter);
                     setUpPageButtonsAvailability();
                 }
