@@ -97,7 +97,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         }
     }
 
-    //Checks if user can open selected service details tab
+    //Checks if user can open selected product details tab
     private void checkIsBlockedUser(ProductAdapter.MyViewHolder holder, TopProductDTO product){
         if (this.currentUser != null){
             loadChat(holder, product);
