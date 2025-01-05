@@ -82,7 +82,7 @@ public class HomeScreenFragment extends Fragment {
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
                 servicesProductText.setTextColor(getResources().getColor(R.color.neutral));
-                FragmentTransition.to(ServiceProductTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
+                FragmentTransition.to(ServiceProductTabFragment.newInstance(currentUser), getActivity(), false, R.id.homeScreenFragment);
             }
         });
     }
