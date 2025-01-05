@@ -67,6 +67,7 @@ public class SingleChatFragment extends Fragment {
 
     private EditText messageInputEditText;
 
+    private View mainView;
 
     public SingleChatFragment() {
         // Required empty public constructor
@@ -99,6 +100,7 @@ public class SingleChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_single_chat, container, false);
+        mainView = view;
         loadChat();
         setUpAttributes(view);
         setUpRecyclerView(view);
@@ -124,6 +126,7 @@ public class SingleChatFragment extends Fragment {
             public void onResponse(Call<GetChatDTO> call, Response<GetChatDTO> response) {
                 if (response.isSuccessful()) {
                     currentChat = response.body();
+                    setMessageInput();
                 }
             }
 
@@ -145,7 +148,6 @@ public class SingleChatFragment extends Fragment {
                     messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
                     recyclerView.setAdapter(messageAdapter);
                     recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
-
                 }
             }
 
@@ -161,14 +163,21 @@ public class SingleChatFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManagerMessages);
     }
 
-    private void setUpAttributes(View view){
-        messageInputEditText = view.findViewById(R.id.messageInput);
-        if (currentChat != null){
-            if ((isAuthenticatedUser && currentChat.isUser_1_blocked()) || (!isAuthenticatedUser && currentChat.isUser_2_blocked())){
-                messageInputEditText.setEnabled(false);
-            }
+    private void setMessageInput(){
+        messageInputEditText = mainView.findViewById(R.id.messageInput);
+        if ((isAuthenticatedUser && currentChat.isUser_1_blocked()) || (!isAuthenticatedUser && currentChat.isUser_2_blocked())){
+            messageInputEditText.setEnabled(false);
+            messageInputEditText.setHint("This user is blocked!");
+        }else if ((isAuthenticatedUser && currentChat.isUser_2_blocked()) || (!isAuthenticatedUser && currentChat.isUser_1_blocked())){
+            messageInputEditText.setEnabled(false);
+            messageInputEditText.setHint("User has blocked you!");
+        }else{
+            messageInputEditText.setEnabled(true);
+            messageInputEditText.setHint("Enter text");
         }
 
+    }
+    private void setUpAttributes(View view){
         chatWithTextView = view.findViewById(R.id.userFirstAndLastName);
         chatWithTextView.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
 
@@ -277,16 +286,14 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void blockUnblockUser(){
-        boolean user1Blocked = currentChat.isUser_1_blocked();
-        boolean user2Blocked = currentChat.isUser_2_blocked();
         if (isAuthenticatedUser){
-            user1Blocked = !currentChat.isUser_1_blocked();
+            currentChat.setUser_1_blocked(!currentChat.isUser_1_blocked());
         }else{
-            user2Blocked = !currentChat.isUser_2_blocked();
+            currentChat.setUser_2_blocked(!currentChat.isUser_2_blocked());
         }
-        messageInputEditText.setEnabled(!messageInputEditText.isEnabled());
+        setMessageInput();
 
-        UpdateChatDTO updatedChat = new UpdateChatDTO(currentChat.getEventOrganizer(), currentChat.getAuthenticatedUser(), user1Blocked, user2Blocked);
+        UpdateChatDTO updatedChat = new UpdateChatDTO(currentChat.getEventOrganizer(), currentChat.getAuthenticatedUser(), currentChat.isUser_1_blocked(), currentChat.isUser_2_blocked());
 
         Call<UpdatedChatDTO> call = ClientUtils.chatService.updateChat(updatedChat, currentChat.getEventOrganizer().getId(), currentChat.getAuthenticatedUser().getId());
         call.enqueue(new Callback<UpdatedChatDTO>() {
