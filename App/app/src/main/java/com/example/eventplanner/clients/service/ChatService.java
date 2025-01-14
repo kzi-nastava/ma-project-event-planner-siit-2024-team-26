@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 
 public interface ChatService {
 
-    @GET("chats/{id}")
+    @GET("chats/user/{id}")
     Call<ArrayList<GetChatDTO>> getByUserId(@Path("id") Integer id);
 
     @PUT("chats/{eventOrganizerId}/{authenticatedUserId}")
