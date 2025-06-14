@@ -123,6 +123,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 otherUserHolder.messageDate.setText(DateStringFormatter.format(message.getTimeStamp(), "HH:mm"));
                 Glide.with(this.context)
                     .load(otherUser.getImage())
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                Log.e("Glide", "Image load failed for URL: " + otherUser.getImage(), e);
+                                otherUserHolder.userImage.setVisibility(View.GONE); // Sakrij ako failuje učitavanje
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false; // Glide će postaviti sliku sam
+                            }
+                        })
                     .into(otherUserHolder.userImage);
                 otherUserHolder.dateText.setVisibility(View.GONE);
                 if (position == 0){

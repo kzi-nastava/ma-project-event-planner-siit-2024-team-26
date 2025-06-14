@@ -214,6 +214,18 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void receiveMessage(GetMessageDTO receivedMessage){
+        if(!isAuthenticatedUser && otherUser.getId() == receivedMessage.getAuthenticatedUser().getId()){
+            if(otherUser.getId() == receivedMessage.getAuthenticatedUser().getId()){
+                showReceivedMessage(receivedMessage);
+            }
+        }else{
+            if(otherUser.getId() == receivedMessage.getEventOrganizer().getId()){
+                showReceivedMessage(receivedMessage);
+            }
+        }
+    }
+
+    private void showReceivedMessage(GetMessageDTO receivedMessage){
         messageAdapter.addItem(receivedMessage);
         recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
     }
