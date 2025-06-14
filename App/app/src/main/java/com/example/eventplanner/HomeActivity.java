@@ -398,6 +398,7 @@ public class HomeActivity extends AppCompatActivity {
         GetAuthenticatedUserDTO currentUser = notificationIntent.getParcelableExtra("currentUser");
         ChatAuthenticatedUserDTO otherUser = notificationIntent.getParcelableExtra("otherUser");
         boolean isAuthenticatedUser = notificationIntent.getBooleanExtra("isAuthenticatedUser", false);
+        FragmentTransition.to(ChatTabFragment.newInstance(currentUser), HomeActivity.this, false, R.id.mainScreenFragment);
         FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), HomeActivity.this, true, R.id.mainScreenFragment);
         setIntent(new Intent());
     }
