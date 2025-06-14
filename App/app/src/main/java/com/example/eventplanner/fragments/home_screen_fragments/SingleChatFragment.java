@@ -93,7 +93,6 @@ public class SingleChatFragment extends Fragment {
         }
         userMessages = new ArrayList<>();
 
-        connectToSignal();
     }
 
     @Override
@@ -138,6 +137,7 @@ public class SingleChatFragment extends Fragment {
                     messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
                     recyclerView.setAdapter(messageAdapter);
                     recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                    connectToSignal();
                 }
             }
 
@@ -223,6 +223,7 @@ public class SingleChatFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread()).
                 subscribe(receivedMessage ->{
                             receiveMessage(receivedMessage);
+                            Log.i("notifikacije", "IVDE DSA");
                         },
                         throwable -> {
                             // Obradi grešku
