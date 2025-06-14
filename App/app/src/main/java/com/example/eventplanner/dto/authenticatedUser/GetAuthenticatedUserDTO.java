@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.eventplanner.dto.address.GetAddressDTO;
+import com.example.eventplanner.model.AuthenticatedUser;
 import com.example.eventplanner.model.Role;
 
 public class GetAuthenticatedUserDTO implements Parcelable {

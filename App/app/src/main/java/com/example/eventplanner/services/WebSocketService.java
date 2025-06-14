@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 import ua.naiksoftware.stomp.dto.StompMessage;
@@ -54,13 +55,13 @@ public class WebSocketService extends Service {
 
     private static WebSocketService instance;
 
-    public static BehaviorSubject<GetMessageDTO> messageSignal;
+    public static PublishSubject<GetMessageDTO> messageSignal;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        messageSignal = BehaviorSubject.create();
+        messageSignal = PublishSubject.create();
     }
 
     @SuppressLint("CheckResult")

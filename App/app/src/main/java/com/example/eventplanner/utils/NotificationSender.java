@@ -5,7 +5,9 @@ import static androidx.core.content.ContextCompat.getSystemService;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
@@ -13,9 +15,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.eventplanner.MainActivity;
 import com.example.eventplanner.R;
 
 
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.message.CreateMessageDTO;
 import com.example.eventplanner.dto.message.GetMessageDTO;
@@ -87,27 +91,40 @@ public class NotificationSender {
             boolean sendNotification = false;
             String firstName = "";
             String lastName = "";
+            ChatAuthenticatedUserDTO otherUser = null;
+            boolean isAuthenticatedUser = false;
             if (currentUser.getRole() == Role.EVENT_ORGANIZER) {
-                if (currentUser.getId() == messageDTO.getEventOrganizer().getId() && !messageDTO.isFromUser1()){
+                if (currentUser.getId() == messageDTO.getEventOrganizer().getId()){
                     sendNotification = true;
                     firstName = messageDTO.getAuthenticatedUser().getFirstName();
                     lastName = messageDTO.getAuthenticatedUser().getLastName();
-                }
-            } else {
-                if (currentUser.getId() == messageDTO.getAuthenticatedUser().getId() && messageDTO.isFromUser1()) {
+                    otherUser = messageDTO.getAuthenticatedUser();
+                    isAuthenticatedUser = false;
+
+                }else{ // If current user is authenitaced_user_idau in chat table
                     sendNotification = true;
                     firstName = messageDTO.getEventOrganizer().getFirstName();
                     lastName = messageDTO.getEventOrganizer().getLastName();
-                }
-            }
+                    otherUser = messageDTO.getEventOrganizer();
+                    isAuthenticatedUser = true;
 
+                }
+            } else {
+                    sendNotification = true;
+                    firstName = messageDTO.getEventOrganizer().getFirstName();
+                    lastName = messageDTO.getEventOrganizer().getLastName();
+                    otherUser = messageDTO.getEventOrganizer();
+                    isAuthenticatedUser = true;
+            }
+            PendingIntent notificationIntent = setIntent(currentUser, otherUser, isAuthenticatedUser);
             messageTitle = "Event planner: Message from " + firstName + " " + lastName;
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this.context, "3")
                     .setSmallIcon(R.drawable.baseline_chat_24)
                     .setContentTitle(messageTitle)
                     .setContentText(messageDTO.getText())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(notificationIntent)
+                    .setAutoCancel(true);
 
             if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                 if (sendNotification) {
@@ -116,6 +133,9 @@ public class NotificationSender {
             }else{
                 Log.e("WebSocket", "OVDE");
             }
+
+            //Click on notification should open chat
+
         }
     }
     
@@ -133,5 +153,19 @@ public class NotificationSender {
 
     public void setTopicMessage(StompMessage topicMessage) {
         this.topicMessage = topicMessage;
+    }
+
+    public PendingIntent setIntent(GetAuthenticatedUserDTO currentUser, ChatAuthenticatedUserDTO otherUser, boolean isAuthenticatedUser){
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        intent.putExtra("currentUser", currentUser);
+        intent.putExtra("otherUser", otherUser);
+        intent.putExtra("isAuthenticatedUser", isAuthenticatedUser);
+        intent.putExtra("fromNotification", true);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        return pendingIntent;
     }
 }
