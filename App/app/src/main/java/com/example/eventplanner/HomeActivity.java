@@ -34,9 +34,11 @@ import androidx.fragment.app.FragmentManager;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
 import com.example.eventplanner.services.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
@@ -107,6 +109,11 @@ public class HomeActivity extends AppCompatActivity {
         currentSelectedBottomIcon = R.id.home;
 
         checkForNotifications();
+
+        Intent intent = getIntent();
+        if (intent != null && intent.getBooleanExtra("isFromNotification", false)){
+            transitionToSingleChatFragment(intent);
+        }
 
     }
 
@@ -377,5 +384,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
+    private void transitionToSingleChatFragment(Intent notificationIntent){
+        GetAuthenticatedUserDTO currentUser = notificationIntent.getParcelableExtra("currentUser");
+        ChatAuthenticatedUserDTO otherUser = notificationIntent.getParcelableExtra("otherUser");
+        boolean isAuthenticatedUser = notificationIntent.getBooleanExtra("isAuthenticatedUser", false);
+        FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), HomeActivity.this, true, R.id.mainScreenFragment);
+    }
 }

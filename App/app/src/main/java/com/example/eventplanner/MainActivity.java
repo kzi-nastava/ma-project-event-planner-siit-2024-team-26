@@ -14,6 +14,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
 import com.example.eventplanner.services.WebSocketService;
 
 import java.util.Timer;
@@ -54,13 +58,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doTransition() {
+        Intent notificationIntent = getIntent();
+        boolean isFromNotification = notificationIntent.getBooleanExtra("fromNotification", false);
         Timer transitionTimer = new Timer();
         TimerTask transitionTask = new TimerTask() {
             @Override
             public void run() {
                 if (ClientUtils.getTokenManager().getToken() != null){
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
+                    if (notificationIntent != null && isFromNotification){
+                       tranistionToHomeActivityWithNotificationIntent(notificationIntent);
+                    }else{
+                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
                 }else{
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -71,4 +81,15 @@ public class MainActivity extends AppCompatActivity {
         transitionTimer.schedule(transitionTask, 1000);
     }
 
+    public void tranistionToHomeActivityWithNotificationIntent(Intent notificationIntent){
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        GetAuthenticatedUserDTO currentUser = notificationIntent.getParcelableExtra("currentUser");
+        ChatAuthenticatedUserDTO otherUser = notificationIntent.getParcelableExtra("otherUser");
+        boolean isAuthenticatedUser = notificationIntent.getBooleanExtra("isAuthenticatedUser", false);
+        intent.putExtra("currentUser", currentUser);
+        intent.putExtra("otherUser", otherUser);
+        intent.putExtra("isAuthenticatedUser", isAuthenticatedUser);
+        intent.putExtra("fromNotification", true);
+        startActivity(intent);
+    }
 }
