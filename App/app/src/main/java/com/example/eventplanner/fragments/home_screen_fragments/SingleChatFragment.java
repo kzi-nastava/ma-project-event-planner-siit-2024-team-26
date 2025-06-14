@@ -207,7 +207,6 @@ public class SingleChatFragment extends Fragment {
             eventOganizerDTO = new ChatAuthenticatedUserDTO(currentUser);
             isFromUser1 = true;
         }
-
         CreateMessageDTO messageToSend = new CreateMessageDTO(eventOganizerDTO, authenticatedUserDTO, message, isFromUser1);
         WebSocketService.sendMessage(messageToSend);
         messageAdapter.addItem(new GetMessageDTO(messageToSend));
