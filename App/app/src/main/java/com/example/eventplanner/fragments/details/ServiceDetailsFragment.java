@@ -122,7 +122,6 @@ public class ServiceDetailsFragment extends Fragment {
         specificitiesTextView.setText("Specificities: "+foundService.getSpecificity());
         companyButton = v.findViewById(R.id.serviceCompany);
         providerButton = v.findViewById(R.id.serviceProductProvideButton);
-        chatWithProviderButton = v.findViewById(R.id.chatWithProviderButton);
         addReviewButton = v.findViewById(R.id.reviewButton);
 
     }

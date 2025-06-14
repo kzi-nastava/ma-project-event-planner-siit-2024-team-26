@@ -77,6 +77,8 @@ public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     int currentSelectedBottomIcon;
 
+    boolean isFromNotification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,16 +106,18 @@ public class HomeActivity extends AppCompatActivity {
 
         handleBackButtonClicked(); // When back button is pressed
 
+        Intent intent = getIntent();
+        isFromNotification = intent.getBooleanExtra("fromNotification", false);
+        if (isFromNotification){
+            currentSelectedBottomIcon = R.id.chat;
+        }else{
+            currentSelectedBottomIcon = R.id.home;
+        }
+
+        bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
         setUser();
 
-        currentSelectedBottomIcon = R.id.home;
-
         checkForNotifications();
-
-        Intent intent = getIntent();
-        if (intent != null && intent.getBooleanExtra("isFromNotification", false)){
-            transitionToSingleChatFragment(intent);
-        }
 
     }
 
@@ -210,38 +214,39 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == currentSelectedBottomIcon){
-                    return true;
-                }
-                if (item.getItemId() == R.id.create && user.getRole() == Role.SERVICE_PRODUCT_PROVIDER) {
-                    showCreateDialogSpp();
-                    return true;
-                }
-                if (item.getItemId() == R.id.home){
-                    removeAllFromBackStack();
-                    FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
-                    currentSelectedBottomIcon = R.id.home;
-                    return true;
-                }
-                if (item.getItemId() == R.id.notifications){
-                    removeAllFromBackStack();
-                    FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
-                    currentSelectedBottomIcon = R.id.notifications;
-                    return true;
-                }
-                if (item.getItemId() == R.id.create && user.getRole() == Role.EVENT_ORGANIZER){
-                    removeAllFromBackStack();
-                    FragmentTransition.to(EventCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
-                    currentSelectedBottomIcon = R.id.create;
-                    return true;
-                }
+                    if (item.getItemId() == currentSelectedBottomIcon) {
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.create && user.getRole() == Role.SERVICE_PRODUCT_PROVIDER) {
+                        showCreateDialogSpp();
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.home) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.home;
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.notifications) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.notifications;
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.create && user.getRole() == Role.EVENT_ORGANIZER) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(EventCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.create;
+                        return true;
+                    }
 
-                if (item.getItemId() == R.id.chat){
-                    removeAllFromBackStack();
-                    FragmentTransition.to(ChatTabFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
-                    currentSelectedBottomIcon = R.id.chat;
-                    return true;
-                }
+                    if (item.getItemId() == R.id.chat) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(ChatTabFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.chat;
+                        return true;
+                    }
+
                 return false;
             }
         });
@@ -323,6 +328,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setUser(){
+        Intent intent = getIntent();
         if (getApplicationContext() != null) {
             TokenManager tokenManager = ClientUtils.getTokenManager();
             String email = tokenManager.getEmail(tokenManager.getToken());
@@ -336,7 +342,11 @@ public class HomeActivity extends AppCompatActivity {
                         user = response.body();
                         setNameInDrawerMenu();
                         runBackgroundService();
-                        FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        if (intent != null && isFromNotification){
+                            transitionToSingleChatFragment(intent);
+                        }else{
+                            FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        }
                     }
                 }
 
@@ -389,5 +399,6 @@ public class HomeActivity extends AppCompatActivity {
         ChatAuthenticatedUserDTO otherUser = notificationIntent.getParcelableExtra("otherUser");
         boolean isAuthenticatedUser = notificationIntent.getBooleanExtra("isAuthenticatedUser", false);
         FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), HomeActivity.this, true, R.id.mainScreenFragment);
+        setIntent(new Intent());
     }
 }

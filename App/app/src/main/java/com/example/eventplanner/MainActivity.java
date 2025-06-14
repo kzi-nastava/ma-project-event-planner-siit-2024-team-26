@@ -52,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(newIntent);
                 finish();
             }
-        }else{
+        }else if (ClientUtils.getTokenManager().getToken() != null && intent.getBooleanExtra("fromNotification", false)){
+            tranistionToHomeActivityWithNotificationIntent(intent);
+        }
+        else{
             doTransition();
         }
     }
@@ -60,17 +63,15 @@ public class MainActivity extends AppCompatActivity {
     private void doTransition() {
         Intent notificationIntent = getIntent();
         boolean isFromNotification = notificationIntent.getBooleanExtra("fromNotification", false);
+
         Timer transitionTimer = new Timer();
         TimerTask transitionTask = new TimerTask() {
             @Override
             public void run() {
                 if (ClientUtils.getTokenManager().getToken() != null){
-                    if (notificationIntent != null && isFromNotification){
-                       tranistionToHomeActivityWithNotificationIntent(notificationIntent);
-                    }else{
-                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+
                 }else{
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
