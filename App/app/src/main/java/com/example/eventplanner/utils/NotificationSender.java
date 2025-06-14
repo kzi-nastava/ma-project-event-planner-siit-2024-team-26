@@ -94,21 +94,27 @@ public class NotificationSender {
             ChatAuthenticatedUserDTO otherUser = null;
             boolean isAuthenticatedUser = false;
             if (currentUser.getRole() == Role.EVENT_ORGANIZER) {
-                if (currentUser.getId() == messageDTO.getEventOrganizer().getId() && !messageDTO.isFromUser1()){
+                if (currentUser.getId() == messageDTO.getEventOrganizer().getId()){
                     sendNotification = true;
                     firstName = messageDTO.getAuthenticatedUser().getFirstName();
                     lastName = messageDTO.getAuthenticatedUser().getLastName();
                     otherUser = messageDTO.getAuthenticatedUser();
                     isAuthenticatedUser = false;
-                }
-            } else {
-                if (currentUser.getId() == messageDTO.getAuthenticatedUser().getId() && messageDTO.isFromUser1()) {
+
+                }else{ // If current user is authenitaced_user_idau in chat table
                     sendNotification = true;
                     firstName = messageDTO.getEventOrganizer().getFirstName();
                     lastName = messageDTO.getEventOrganizer().getLastName();
                     otherUser = messageDTO.getEventOrganizer();
                     isAuthenticatedUser = true;
+
                 }
+            } else {
+                    sendNotification = true;
+                    firstName = messageDTO.getEventOrganizer().getFirstName();
+                    lastName = messageDTO.getEventOrganizer().getLastName();
+                    otherUser = messageDTO.getEventOrganizer();
+                    isAuthenticatedUser = true;
             }
             PendingIntent notificationIntent = setIntent(currentUser, otherUser, isAuthenticatedUser);
             messageTitle = "Event planner: Message from " + firstName + " " + lastName;

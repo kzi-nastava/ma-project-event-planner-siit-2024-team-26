@@ -92,5 +92,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("isAuthenticatedUser", isAuthenticatedUser);
         intent.putExtra("fromNotification", true);
         startActivity(intent);
+        finish();
     }
 }

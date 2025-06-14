@@ -223,7 +223,6 @@ public class SingleChatFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread()).
                 subscribe(receivedMessage ->{
                             receiveMessage(receivedMessage);
-                            Log.i("notifikacije", "IVDE DSA");
                         },
                         throwable -> {
                             // Obradi grešku

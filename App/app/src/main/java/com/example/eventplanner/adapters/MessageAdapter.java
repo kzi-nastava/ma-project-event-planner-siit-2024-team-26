@@ -1,6 +1,7 @@
 package com.example.eventplanner.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
@@ -23,6 +28,8 @@ import com.example.eventplanner.fragments.details.ServiceDetailsFragment;
 import com.example.eventplanner.model.Role;
 import com.example.eventplanner.model.ServiceProductType;
 import com.example.eventplanner.utils.DateStringFormatter;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -115,7 +122,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 otherUserHolder.userMessage.setText(message.getText()); // Primer rada sa View
                 otherUserHolder.messageDate.setText(DateStringFormatter.format(message.getTimeStamp(), "HH:mm"));
                 Glide.with(this.context)
-                    .load(otherUser.getImage()) // URL slike
+                    .load(otherUser.getImage())
                     .into(otherUserHolder.userImage);
                 otherUserHolder.dateText.setVisibility(View.GONE);
                 if (position == 0){
