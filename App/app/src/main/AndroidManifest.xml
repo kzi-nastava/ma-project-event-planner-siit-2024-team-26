@@ -52,6 +52,9 @@
                 <data android:scheme="http"
                     android:host="event-planner"
                     android:pathPrefix="/quick-registration" />
+                <data android:scheme="http"
+                    android:host="event-planner"
+                    android:pathPrefix="/login" />
             </intent-filter>
             <intent-filter>
 
