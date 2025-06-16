@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(newIntent);
                 finish();
             }
-        }else if (ClientUtils.getTokenManager().getToken() != null && intent.getBooleanExtra("fromNotification", false)){
+        }
+        if (ClientUtils.getTokenManager().getToken() != null && intent.getBooleanExtra("fromNotification", false)){
             tranistionToHomeActivityWithNotificationIntent(intent);
         }
         else{

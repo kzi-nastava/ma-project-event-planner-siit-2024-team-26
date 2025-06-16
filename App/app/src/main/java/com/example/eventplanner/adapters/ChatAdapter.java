@@ -73,7 +73,7 @@ public class ChatAdapter  extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("nesto", currentUser.getFirstName() + " " + otherUser.getFirstName());
+                Log.i("nesto", currentUser.getFirstName() + " " + otherUser.getImage());
                 FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), fragmentActivity, true, R.id.mainScreenFragment);
             }
         });
