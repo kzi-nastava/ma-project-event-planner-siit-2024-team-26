@@ -24,11 +24,16 @@ public class UpdateReportDTO {
         this.bannedUntil = bannedUntil;
     }
 
-    public  UpdateReportDTO(ReportDTO report){
+    public  UpdateReportDTO(ReportDTO report, State newState){
         this.text = report.getText();
-        this.state = report.getState();
-        LocalDateTime bannedUntilDateTime = LocalDateTime.now().plusDays(3).truncatedTo(ChronoUnit.SECONDS);
-        this.bannedUntil = bannedUntilDateTime.toString();
+        this.state = newState;
+        if (newState == State.APPROVED) {
+            LocalDateTime bannedUntilDateTime = LocalDateTime.now().plusDays(3).truncatedTo(ChronoUnit.SECONDS);
+            this.bannedUntil = bannedUntilDateTime.toString();
+        }
+        if (newState == State.DISAPPROVED){
+            this.bannedUntil = null;
+        }
     }
 
     public String getText() {

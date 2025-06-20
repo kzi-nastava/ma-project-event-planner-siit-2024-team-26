@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,8 +90,25 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                     }
                 }
                 for (ReportDTO report: reportsToRemove){
-                    approveReport(report);
+                    updateReport(report, State.APPROVED);
                 }
+                String toastText = String.format("Report approved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
+                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (ReportDTO singleReport: allReports){
+                    if (report.getGotReported().getEmail().equals(singleReport.getGotReported().getEmail())){
+                        reportsToRemove.add(singleReport);
+                    }
+                }
+                for (ReportDTO report: reportsToRemove){
+                    updateReport(report, State.DISAPPROVED);
+                }
+                String toastText = String.format("Report disapproved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
+                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -122,9 +140,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
         }
     }
 
-    private void approveReport(ReportDTO report){
-        UpdateReportDTO updateReport = new UpdateReportDTO(report);
-        updateReport.setState(State.APPROVED);
+    private void updateReport(ReportDTO report, State newState){
+        UpdateReportDTO updateReport = new UpdateReportDTO(report, newState);
+        updateReport.setState(newState);
         Call<UpdatedReportDTO> call = ClientUtils.reportService.updateReport(updateReport, report.getId());
         call.enqueue(new Callback<UpdatedReportDTO>() {
 
