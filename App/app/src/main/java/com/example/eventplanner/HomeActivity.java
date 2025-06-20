@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -38,6 +39,7 @@ import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.ReportsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
 import com.example.eventplanner.services.WebSocketService;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
@@ -205,6 +207,10 @@ public class HomeActivity extends AppCompatActivity {
                             .show();
 
                 }
+                if (item.getItemId() == R.id.usersReportsButton){
+                    FragmentTransition.to(ReportsFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 return false;
             }
         });
@@ -340,7 +346,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<GetAuthenticatedUserDTO> call, Response<GetAuthenticatedUserDTO> response) {
                     if (response.isSuccessful()) {
                         user = response.body();
-                        setNameInDrawerMenu();
+                        setNavigationDrawerMenu();
                         runBackgroundService();
                         if (intent != null && isFromNotification){
                             transitionToSingleChatFragment(intent);
@@ -359,11 +365,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void setNameInDrawerMenu(){
+    private void setNavigationDrawerMenu(){
         NavigationView navigationView = findViewById(R.id.navigation_drawer);
         View headerView = navigationView.getHeaderView(0);
         TextView drawerNameTextView = headerView.findViewById(R.id.drawerName); // R.id.drawerName je ID vašeg TextView-a u nav_header.xml
         drawerNameTextView.setText(user.getFirstName() + " " + user.getLastName());
+
+        Menu navigationMenu = navigationView.getMenu();
+        if (user.getRole() == Role.ADMINISTRATOR){
+            navigationMenu.findItem(R.id.usersReportsButton).setVisible(true);
+        }
     }
 
     private void runBackgroundService(){
