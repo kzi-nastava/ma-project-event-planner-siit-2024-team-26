@@ -93,6 +93,7 @@
     <string name="reset">Reset</string>
     <string name="createEvent">Create event</string>
     <string name="invitations">Invitations</string>
+    <string name="approve">Approve</string>
 
     <string name="yourChats">Your chats</string>
     <string name="enterText">Enter text</string>
