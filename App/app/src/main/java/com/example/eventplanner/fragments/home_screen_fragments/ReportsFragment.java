@@ -64,11 +64,11 @@ public class ReportsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
 
         setUpRecyclerView(view);
-        loadReports();
+        loadReports(view);
         return view;
     }
 
-    private void loadReports(){
+    private void loadReports(View view){
         Call<ArrayList<ReportDTO>> call = ClientUtils.reportService.getPendingReports();
         call.enqueue(new Callback<ArrayList<ReportDTO>>() {
 
@@ -76,7 +76,7 @@ public class ReportsFragment extends Fragment {
             public void onResponse(Call<ArrayList<ReportDTO>> call, Response<ArrayList<ReportDTO>> response) {
                 if (response.isSuccessful()) {
                     allReports = response.body();
-                    reportAdapter = new ReportAdapter(allReports, getContext());
+                    reportAdapter = new ReportAdapter(allReports, getContext(), view);
                     recyclerView.setAdapter(reportAdapter);
                 }
             }

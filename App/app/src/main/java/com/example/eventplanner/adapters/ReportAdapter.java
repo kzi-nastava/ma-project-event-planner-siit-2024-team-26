@@ -21,6 +21,7 @@ import com.example.eventplanner.dto.report.UpdateReportDTO;
 import com.example.eventplanner.dto.report.UpdatedReportDTO;
 import com.example.eventplanner.model.Report;
 import com.example.eventplanner.model.State;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -35,12 +36,14 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     private boolean[] itemExpandedState;
 
     private ArrayList<ReportDTO> reportsToRemove;
+    private View view;
 
-    public ReportAdapter(ArrayList<ReportDTO> allReports, Context context){
+    public ReportAdapter(ArrayList<ReportDTO> allReports, Context context, View view){
         this.allReports = allReports;
         this.context = context;
         this.itemExpandedState = new boolean[allReports.size()];
         this.reportsToRemove = new ArrayList<ReportDTO>();
+        this.view = view;
     }
 
     @Override
@@ -92,8 +95,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 for (ReportDTO report: reportsToRemove){
                     updateReport(report, State.APPROVED);
                 }
-                String toastText = String.format("Report approved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
-                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
+                reportsToRemove.clear();
+                String snackBarText = String.format("Report approved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
+                Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG).show();
             }
         });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +111,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 for (ReportDTO report: reportsToRemove){
                     updateReport(report, State.DISAPPROVED);
                 }
-                String toastText = String.format("Report disapproved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
-                Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
+                reportsToRemove.clear();
+                String snackBarText = String.format("Report disapproved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
+                Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG).show();
             }
         });
     }
