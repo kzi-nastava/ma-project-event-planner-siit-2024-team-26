@@ -21,6 +21,7 @@ import com.example.eventplanner.dto.report.UpdateReportDTO;
 import com.example.eventplanner.dto.report.UpdatedReportDTO;
 import com.example.eventplanner.model.Report;
 import com.example.eventplanner.model.State;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -97,7 +98,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 }
                 reportsToRemove.clear();
                 String snackBarText = String.format("Report approved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
-                Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG);
+                snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
+                snackbar.show();
             }
         });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +116,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 }
                 reportsToRemove.clear();
                 String snackBarText = String.format("Report disapproved! All reports of the reported user %s %s are removed!", report.getGotReported().getFirstName(), report.getGotReported().getLastName());
-                Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG);
+                snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
+                snackbar.show();
             }
         });
     }

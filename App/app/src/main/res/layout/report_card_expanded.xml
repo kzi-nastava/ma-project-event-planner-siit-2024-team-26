@@ -25,18 +25,17 @@
 
     <TextView
         android:id="@+id/reportGotReported"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Reported:"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/reportReportedBy"
         app:layout_constraintTop_toBottomOf="@id/reportReportedBy" />
 
     <Button
@@ -44,13 +43,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="6dp"
         android:backgroundTint="@color/secondary"
         android:text="@string/viewLess"
         app:cornerRadius="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reportGotReported" />
+        app:layout_constraintTop_toBottomOf="@id/reportText" />
 
     <Button
         android:id="@+id/reportDeleteButton"
@@ -76,12 +74,13 @@
 
     <TextView
         android:id="@+id/reportText"
-        android:layout_width="wrap_content"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
         android:layout_marginTop="16dp"
-        android:text="TimeStamp"
+        android:breakStrategy="simple"
+        android:ellipsize="end"
+        android:lineSpacingExtra="4dp"
+        android:text="Report text"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"

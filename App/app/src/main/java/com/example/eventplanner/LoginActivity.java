@@ -1,6 +1,7 @@
 package com.example.eventplanner;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ import com.example.eventplanner.model.Page;
 import com.example.eventplanner.model.Product;
 import com.example.eventplanner.model.ServiceProductProvider;
 import com.example.eventplanner.utils.DateStringFormatter;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -119,10 +122,13 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
                     if (responseBodyString.contains("bannedUntil=")){
+                        View view = findViewById(android.R.id.content);
                         BannedDTO bannedDTO = gson.fromJson(new Gson().toJson(response.body()), BannedDTO.class);
                         String date = DateStringFormatter.format(bannedDTO.getBannedUntil().toString(), "dd.MM.yyyy. HH:mm");
-                        String toastText = String.format("You are banned until %s !", date);
-                        Toast.makeText(LoginActivity.this, toastText, Toast.LENGTH_LONG).show();
+                        String snackBarText = String.format("You are banned until %s !", date);
+                        Snackbar snackbar = Snackbar.make(view, snackBarText, Snackbar.LENGTH_LONG);
+                        snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
+                        snackbar.show();
                     }
                 }else{
                     Toast.makeText(LoginActivity.this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
