@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:minHeight="200dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/card_background_gold">
 
 
     <TextView
-        android:id="@+id/reportReportedBy"
+        android:id="@+id/commentFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="From:"
@@ -25,66 +25,67 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <TextView
-        android:id="@+id/reportGotReported"
+        android:id="@+id/commentServiceProductName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="16dp"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:text="Reported:"
+        android:breakStrategy="simple"
+        android:lineSpacingExtra="4dp"
+        android:text="Service name:"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/reportReportedBy"
-        app:layout_constraintTop_toBottomOf="@id/reportReportedBy" />
+        app:layout_constraintStart_toStartOf="@id/commentFrom"
+        app:layout_constraintTop_toBottomOf="@id/commentFrom" />
 
     <Button
-        android:id="@+id/reportViewMoreButton"
+        android:id="@+id/commentViewMoreButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/secondary"
         android:text="@string/viewLess"
         app:cornerRadius="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reportText" />
+        app:layout_constraintTop_toBottomOf="@id/commentText" />
 
     <Button
-        android:id="@+id/reportDeleteButton"
+        android:id="@+id/commentDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:backgroundTint="@color/secondary"
         android:text="@string/delete"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toEndOf="@id/reportApproveButton"
-        app:layout_constraintTop_toTopOf="@id/reportViewMoreButton" />
+        app:layout_constraintStart_toEndOf="@id/commentApproveButton"
+        app:layout_constraintTop_toTopOf="@id/commentViewMoreButton" />
 
     <Button
-        android:id="@+id/reportApproveButton"
+        android:id="@+id/commentApproveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:backgroundTint="@color/secondary"
         android:text="@string/approve"
         app:cornerRadius="5dp"
-        app:layout_constraintStart_toEndOf="@id/reportViewMoreButton"
-        app:layout_constraintTop_toTopOf="@id/reportViewMoreButton" />
+        app:layout_constraintStart_toEndOf="@id/commentViewMoreButton"
+        app:layout_constraintTop_toTopOf="@id/commentViewMoreButton" />
 
     <TextView
-        android:id="@+id/reportText"
+        android:id="@+id/commentText"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:breakStrategy="simple"
         android:ellipsize="end"
         android:lineSpacingExtra="4dp"
-        android:text="Report text"
+        android:text="Comment text"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/reportGotReported"
-        app:layout_constraintTop_toBottomOf="@id/reportGotReported" />
+        app:layout_constraintStart_toStartOf="@id/commentServiceProductName"
+        app:layout_constraintTop_toBottomOf="@id/commentServiceProductName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@
     <string name="Chat">Chat</string>
     <string name="Notifications">Notifications</string>
     <string name="Reports">Reports</string>
+    <string name="Comments">Comments</string>
 
     <string name="PlaceholderName">Firstname Lastname</string>
     <string name="PlaceholderNotLogged">Not logged in</string>
@@ -20,7 +21,8 @@
     <string name="DrawerLogout">Log out</string>
     <string name="DrawerLogin">Log in</string>
     <string name="DrawerRegister">Register account</string>
-    <string name="DrawerReports">User reports</string>
+    <string name="DrawerReports">Users reports</string>
+    <string name="DrawerComments">Users comments</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

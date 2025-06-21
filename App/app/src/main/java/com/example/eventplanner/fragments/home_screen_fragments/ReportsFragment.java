@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.NotificationAdapter;
@@ -36,6 +37,7 @@ public class ReportsFragment extends Fragment {
     private ArrayList<ReportDTO> allReports;
     private RecyclerView recyclerView;
     private ReportAdapter reportAdapter;
+    private TextView reportsNumberTextView;
 
 
     public ReportsFragment() {
@@ -63,6 +65,8 @@ public class ReportsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
 
+        reportsNumberTextView = view.findViewById(R.id.reportNumber);
+
         setUpRecyclerView(view);
         loadReports(view);
         return view;
@@ -76,7 +80,7 @@ public class ReportsFragment extends Fragment {
             public void onResponse(Call<ArrayList<ReportDTO>> call, Response<ArrayList<ReportDTO>> response) {
                 if (response.isSuccessful()) {
                     allReports = response.body();
-                    reportAdapter = new ReportAdapter(allReports, getContext(), view);
+                    reportAdapter = new ReportAdapter(allReports, getContext(), view, reportsNumberTextView);
                     recyclerView.setAdapter(reportAdapter);
                 }
             }
