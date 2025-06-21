@@ -10,5 +10,5 @@ import retrofit2.http.POST;
 public interface AuthenticationService {
 
     @POST("auth/login")
-    Call<TokenResponse> login(@Body LoginDTO loginDTO);
+    Call<Object> login(@Body LoginDTO loginDTO);
 }

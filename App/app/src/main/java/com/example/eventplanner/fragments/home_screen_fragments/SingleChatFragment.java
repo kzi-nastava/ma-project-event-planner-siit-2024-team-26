@@ -93,7 +93,6 @@ public class SingleChatFragment extends Fragment {
         }
         userMessages = new ArrayList<>();
 
-        connectToSignal();
     }
 
     @Override
@@ -138,6 +137,7 @@ public class SingleChatFragment extends Fragment {
                     messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
                     recyclerView.setAdapter(messageAdapter);
                     recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                    connectToSignal();
                 }
             }
 
@@ -207,7 +207,6 @@ public class SingleChatFragment extends Fragment {
             eventOganizerDTO = new ChatAuthenticatedUserDTO(currentUser);
             isFromUser1 = true;
         }
-
         CreateMessageDTO messageToSend = new CreateMessageDTO(eventOganizerDTO, authenticatedUserDTO, message, isFromUser1);
         WebSocketService.sendMessage(messageToSend);
         messageAdapter.addItem(new GetMessageDTO(messageToSend));
@@ -215,6 +214,18 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void receiveMessage(GetMessageDTO receivedMessage){
+        if(!isAuthenticatedUser && otherUser.getId() == receivedMessage.getAuthenticatedUser().getId()){
+            if(otherUser.getId() == receivedMessage.getAuthenticatedUser().getId()){
+                showReceivedMessage(receivedMessage);
+            }
+        }else{
+            if(otherUser.getId() == receivedMessage.getEventOrganizer().getId()){
+                showReceivedMessage(receivedMessage);
+            }
+        }
+    }
+
+    private void showReceivedMessage(GetMessageDTO receivedMessage){
         messageAdapter.addItem(receivedMessage);
         recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
     }

@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationAdapter  extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder>{
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.MyViewHolder>{
     private ArrayList<GetNotificationDTO> notifications;
     private Context context;
     private View mainView;
