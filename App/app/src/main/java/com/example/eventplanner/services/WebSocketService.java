@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.BlockSignalDTO;
 import com.example.eventplanner.dto.message.CreateMessageDTO;
 import com.example.eventplanner.dto.message.GetMessageDTO;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
@@ -57,11 +58,14 @@ public class WebSocketService extends Service {
 
     public static PublishSubject<GetMessageDTO> messageSignal;
 
+    public static PublishSubject<BlockSignalDTO> blockSignal;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         messageSignal = PublishSubject.create();
+        blockSignal = PublishSubject.create();
     }
 
     @SuppressLint("CheckResult")
@@ -112,6 +116,13 @@ public class WebSocketService extends Service {
                 }, throwable -> {
                     Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
                 });
+
+        topicSubscription = stompClient.topic("/socket-publisher/blocking/" + currentUser.getEmail())
+                .subscribe(topicMessage -> {
+                    Gson gson = new Gson();
+                    BlockSignalDTO blockSignalDTO = gson.fromJson(topicMessage.getPayload(), BlockSignalDTO.class);
+                    blockSignal.onNext(blockSignalDTO);
+                });
     }
 
 
@@ -157,6 +168,15 @@ public class WebSocketService extends Service {
             instance.stompClient.send("/socket-subscriber/send/message", convertedToJson).subscribe();
         }
 
+    }
+
+    public static void sendBlockSignal(BlockSignalDTO blockSignalToSend){
+        if (instance != null && instance.stompClient != null){
+            Gson gson = new Gson();
+            String convertedToJson = gson.toJson(blockSignalToSend);
+            Log.i("websocket", convertedToJson);
+            instance.stompClient.send("/socket-subscriber/send/block-signal", convertedToJson).subscribe();
+        }
     }
 
     // Metoda koja pokreće foreground servis sa notifikacijom
