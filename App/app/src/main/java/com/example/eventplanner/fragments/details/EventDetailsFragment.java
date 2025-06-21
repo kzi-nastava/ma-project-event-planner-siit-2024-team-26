@@ -2,17 +2,30 @@ package com.example.eventplanner.fragments.details;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.view.MotionEvent;
+import android.graphics.Rect;
+
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.event.GetEventDTO;
+
+import com.example.eventplanner.databinding.FragmentEventDetailsBinding;
+import com.example.eventplanner.utils.DateStringFormatter;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -22,6 +35,7 @@ import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
 import java.util.IdentityHashMap;
+import java.time.format.DateTimeFormatter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +55,16 @@ public class EventDetailsFragment extends Fragment {
 
     private View mainView;
     private MapView mapView;
+
+    private FragmentEventDetailsBinding binding;
+    private boolean isExpanded = false;
+
+    private Animation fromBottomFabAnim;
+    private Animation toBottomFabAnim;
+    private Animation rotateClockWiseFabAnim;
+    private Animation rotateAntiClockWiseFabAnim;
+    private Animation fromBottomBgAnim;
+    private Animation toBottomBgAnim;
 
     public EventDetailsFragment() {
         // Required empty public constructor
@@ -64,6 +88,7 @@ public class EventDetailsFragment extends Fragment {
         }
     }
 
+    /*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,9 +96,177 @@ public class EventDetailsFragment extends Fragment {
         mainView = view;
         getEventDetails();
         return view;
+    }*/
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentEventDetailsBinding.inflate(inflater, container, false);
+        getEventDetails();
+        return binding.getRoot();
     }
 
-    private void getEventDetails(){
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Učitaj animacije
+        fromBottomFabAnim = AnimationUtils.loadAnimation(getContext(), R.anim.from_bottom_fab);
+        toBottomFabAnim = AnimationUtils.loadAnimation(getContext(), R.anim.to_bottom_fab);
+        rotateClockWiseFabAnim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_clock_wise);
+        rotateAntiClockWiseFabAnim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_anti_clock_wise);
+        fromBottomBgAnim = AnimationUtils.loadAnimation(getContext(), R.anim.from_bottom_anim);
+        toBottomBgAnim = AnimationUtils.loadAnimation(getContext(), R.anim.to_bottom_anim);
+
+        binding.fabMain.setOnClickListener(v -> {
+            if (isExpanded) {
+                shrinkFab();
+            } else {
+                expandFab();
+            }
+        });
+
+        binding.fabFavourites.setOnClickListener(v -> onFavouritesClicked());
+        binding.textFavourites.setOnClickListener(v -> onFavouritesClicked());
+
+        binding.fabGoing.setOnClickListener(v -> onGoingClicked());
+        binding.textGoing.setOnClickListener(v -> onGoingClicked());
+
+        binding.fabDownload.setOnClickListener(v -> onDownloadClicked());
+        binding.textDownload.setOnClickListener(v -> onDownloadClicked());
+
+        binding.fabOrganizer.setOnClickListener(v -> onOrganizerClicked());
+        binding.textOrganizer.setOnClickListener(v -> onOrganizerClicked());
+
+        binding.fabChat.setOnClickListener(v -> onChatClicked());
+        binding.textChat.setOnClickListener(v -> onChatClicked());
+
+        View[] views = {
+                binding.fabDownload, binding.fabGoing, binding.fabFavourites,
+                binding.fabChat, binding.fabOrganizer,
+                binding.textDownload, binding.textGoing, binding.textFavourites,
+                binding.textChat, binding.textOrganizer
+        };
+
+        for (View v : views) {
+            v.setClickable(false);
+        }
+
+        // Ostali click listeneri po potrebi
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        if (isExpanded) {
+                            // "Simuliramo" klik van FAB-a (kao u onTouchListener)
+                            shrinkFab();
+                        } else {
+                            setEnabled(false); // isključi callback, pa prosledi sistemu
+                            requireActivity().onBackPressed();
+                        }
+                    }
+                }
+        );
+    }
+
+    private void onFavouritesClicked() {
+        Toast.makeText(getContext(), "Favourites Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onGoingClicked() {
+        Toast.makeText(getContext(), "Going Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onDownloadClicked() {
+        Toast.makeText(getContext(), "Download Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onOrganizerClicked() {
+        Toast.makeText(getContext(), "Organizer Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onChatClicked() {
+        Toast.makeText(getContext(), "Chat Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void shrinkFab() {
+        binding.transparentBg.startAnimation(toBottomBgAnim);
+        binding.transparentBg.setVisibility(View.INVISIBLE);
+        binding.fabMain.startAnimation(rotateAntiClockWiseFabAnim);
+        View[] views = {
+                binding.fabDownload, binding.fabGoing, binding.fabFavourites,
+                binding.fabChat, binding.fabOrganizer,
+                binding.textDownload, binding.textGoing, binding.textFavourites,
+                binding.textChat, binding.textOrganizer
+        };
+
+        for (View view : views) {
+            view.startAnimation(toBottomFabAnim);
+            view.setVisibility(View.GONE);
+            view.setClickable(false);
+        }
+        isExpanded = false;
+    }
+
+    private void expandFab() {
+        binding.transparentBg.bringToFront();
+        binding.fabMain.bringToFront();
+        binding.fabDownload.bringToFront();
+        binding.fabGoing.bringToFront();
+        binding.fabFavourites.bringToFront();
+        binding.fabChat.bringToFront();
+        binding.fabOrganizer.bringToFront();
+        binding.textDownload.bringToFront();
+        binding.textGoing.bringToFront();
+        binding.textFavourites.bringToFront();
+        binding.textChat.bringToFront();
+        binding.textOrganizer.bringToFront();
+        binding.transparentBg.startAnimation(fromBottomBgAnim);
+        binding.transparentBg.setVisibility(View.VISIBLE);
+        binding.fabMain.startAnimation(rotateClockWiseFabAnim);
+        View[] views = {
+                binding.fabDownload, binding.fabGoing, binding.fabFavourites,
+                binding.fabChat, binding.fabOrganizer,
+                binding.textDownload, binding.textGoing, binding.textFavourites,
+                binding.textChat, binding.textOrganizer
+        };
+
+        for (View view : views) {
+            view.startAnimation(fromBottomFabAnim);
+            view.setVisibility(View.VISIBLE);
+            view.setClickable(true);
+        }
+        isExpanded = true;
+    }
+
+    // Ako želiš da hvataš dodire izvan FAB-a
+    @Override
+    public void onResume() {
+        super.onResume();
+        View view = getView();
+        if (view != null) {
+            view.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN && isExpanded) {
+                    Rect outRect = new Rect();
+                    binding.constraintLayout.getGlobalVisibleRect(outRect);
+                    if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                        v.performClick(); // Dodajemo zbog accessibility zahteva
+                        shrinkFab();
+                    }
+                }
+                return false; // vrati false da event ide dalje ako treba
+            });
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    private void getEventDetails() {
         Call<GetEventDTO> call = ClientUtils.eventService.getById(id);
         call.enqueue(new Callback<GetEventDTO>() {
 
@@ -93,29 +286,43 @@ public class EventDetailsFragment extends Fragment {
         });
     }
 
-    private void setAttributes(){
-
+    private void setAttributes() {
+        binding.eventTitle.setText(foundEvent.getName());
+        binding.description.setText(foundEvent.getDescription());
+        binding.categoryText.setText(foundEvent.getEventType().getName());
+        binding.privacyText.setText(foundEvent.getPrivacyType().toString());
+        String eoName = foundEvent.getEventOrganizer().getFirstName() + " " + foundEvent.getEventOrganizer().getLastName();
+        binding.eoText.setText(eoName);
+        String address1 = foundEvent.getAddress().getCountry() + ", " + foundEvent.getAddress().getCity();
+        binding.addressText1.setText(address1);
+        String address2 = foundEvent.getAddress().getStreet() + ", " + foundEvent.getAddress().getNumber();
+        binding.addressText2.setText(address2);
+        binding.date2Text.setText(DateStringFormatter.format(foundEvent.getStarts(), "dd.MM.yyyy HH:mm"));
+        binding.date3Text.setText(DateStringFormatter.format(foundEvent.getEnds(), "dd.MM.yyyy HH:mm"));
     }
 
-    private void setMap(){
+    private void setMap() {
         Configuration.getInstance().setUserAgentValue(requireContext().getOpPackageName());
-        mapView = mainView.findViewById(R.id.eventMap);
+        mapView = binding.eventMap;
         mapView.setMultiTouchControls(true);
 
-        GeoPoint eventLocation = new GeoPoint(foundEvent.getAddress().getLocation().getLatitude(), foundEvent.getAddress().getLocation().getLongitude());
+        GeoPoint eventLocation = new GeoPoint(
+                foundEvent.getAddress().getLocation().getLatitude(),
+                foundEvent.getAddress().getLocation().getLongitude()
+        );
 
-        //Map positioning
         IMapController mapController = mapView.getController();
         mapController.setZoom(18.0);
         mapController.setCenter(eventLocation);
 
-        // Drawing marker on the map
         Marker marker = new Marker(mapView);
         marker.setPosition(eventLocation);
         marker.setTitle("Event location!");
         mapView.getOverlays().add(marker);
 
-        //Updating the map
         mapView.invalidate();
     }
+
+
+
 }

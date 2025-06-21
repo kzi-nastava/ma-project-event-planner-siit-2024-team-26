@@ -1,10 +1,12 @@
 package com.example.eventplanner.dto.event;
 
 import com.example.eventplanner.dto.address.GetAddressDTO;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.eventType.GetEventTypeDTO;
 import com.example.eventplanner.model.PrivacyType;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class GetEventDTO {
     private Integer id;
@@ -17,6 +19,7 @@ public class GetEventDTO {
     private Integer gradeSum;
     private Integer gradeCount;
     private Integer numVisitors;
+    private GetAuthenticatedUserDTO eventOrganizer;
     private GetAddressDTO address;
     private GetEventTypeDTO eventType;
 
@@ -116,5 +119,13 @@ public class GetEventDTO {
 
     public void setEventType(GetEventTypeDTO eventType) {
         this.eventType = eventType;
+    }
+
+    public GetAuthenticatedUserDTO getEventOrganizer() {
+        return eventOrganizer;
+    }
+
+    public void setEventOrganizer(GetAuthenticatedUserDTO eventOrganizer) {
+        this.eventOrganizer = eventOrganizer;
     }
 }
