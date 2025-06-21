@@ -66,6 +66,8 @@ public class EventDetailsFragment extends Fragment {
     private Animation fromBottomBgAnim;
     private Animation toBottomBgAnim;
 
+    private boolean isChatExisting;
+
     public EventDetailsFragment() {
         // Required empty public constructor
     }
@@ -101,6 +103,7 @@ public class EventDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEventDetailsBinding.inflate(inflater, container, false);
+        isChatExisting = false;
         getEventDetails();
         return binding.getRoot();
     }
@@ -168,6 +171,9 @@ public class EventDetailsFragment extends Fragment {
                     }
                 }
         );
+
+        checkDoesChatWithOrganizerExist();
+
     }
 
     private void onFavouritesClicked() {
@@ -323,6 +329,8 @@ public class EventDetailsFragment extends Fragment {
         mapView.invalidate();
     }
 
+    private void checkDoesChatWithOrganizerExist(){
 
+    }
 
 }

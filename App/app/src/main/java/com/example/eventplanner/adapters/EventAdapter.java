@@ -134,7 +134,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                                     " " + event.getEventOrganizer().getLastName() + " is blocked!";
                             showBlockedDialog();
                         }else{
-                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, false, R.id.mainScreenFragment);
+                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
                         }
 
                     }else{ // If user is Authenticated user in chat table
@@ -147,7 +147,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                                     " " + event.getEventOrganizer().getLastName() + " is blocked!";
                             showBlockedDialog();
                         } else{
-                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, false, R.id.mainScreenFragment);
+                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
                         }
                     }
                 }else{
