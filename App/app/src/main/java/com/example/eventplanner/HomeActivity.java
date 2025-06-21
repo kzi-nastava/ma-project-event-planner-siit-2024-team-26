@@ -418,4 +418,9 @@ public class HomeActivity extends AppCompatActivity {
         FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), HomeActivity.this, true, R.id.mainScreenFragment);
         setIntent(new Intent());
     }
+
+    public void setCurrentSelectedBottomIcon(int currentSelectedBottomIcon) {
+        bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
+        this.currentSelectedBottomIcon = currentSelectedBottomIcon;
+    }
 }

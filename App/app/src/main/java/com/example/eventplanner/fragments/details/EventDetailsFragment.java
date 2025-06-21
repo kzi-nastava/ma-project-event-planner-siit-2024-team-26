@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.graphics.Rect;
 
 
+import com.example.eventplanner.HomeActivity;
 import com.example.eventplanner.R;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
@@ -215,7 +216,6 @@ public class EventDetailsFragment extends Fragment {
             snackbar.show();
         }
         else if (chat != null){
-            removeAllFromBackStack();
             if (chat.getEventOrganizer().getId() == currentUser.getId()){
                 otherUser = chat.getAuthenticatedUser();
                 isAuthenticatedUser = false;
@@ -225,8 +225,12 @@ public class EventDetailsFragment extends Fragment {
                 isAuthenticatedUser = true;
             }
 
-            FragmentTransition.to(ChatTabFragment.newInstance(currentUser), getActivity(), false, R.id.mainScreenFragment);
-            FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), getActivity(), true, R.id.mainScreenFragment);
+            HomeActivity homeActivity = (HomeActivity) getActivity();
+            if (homeActivity != null) {
+                homeActivity.setCurrentSelectedBottomIcon(R.id.chat);
+                FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), getActivity(), true, R.id.mainScreenFragment);
+            }
+
         }
         else if (chat == null){
             if (foundEvent.getEventOrganizer().getId() == currentUser.getId()){
@@ -373,12 +377,6 @@ public class EventDetailsFragment extends Fragment {
         mapView.invalidate();
     }
 
-    private void removeAllFromBackStack(){
-        FragmentManager manager = requireActivity().getSupportFragmentManager();
-        if (manager.getBackStackEntryCount() > 0) {
-            manager.popBackStackImmediate(null, manager.POP_BACK_STACK_INCLUSIVE);
-        }
-    }
 
     private void startNewChat(){
         CreateChatDTO chat = new CreateChatDTO(foundEvent.getEventOrganizer().getId(), currentUser.getId());
@@ -389,9 +387,11 @@ public class EventDetailsFragment extends Fragment {
             public void onResponse(Call<CreatedChatDTO> call, Response<CreatedChatDTO> response) {
                 if (response.isSuccessful()) {
                     CreatedChatDTO createdChat = response.body();
-                    removeAllFromBackStack();
-                    FragmentTransition.to(ChatTabFragment.newInstance(currentUser), getActivity(), false, R.id.mainScreenFragment);
-                    FragmentTransition.to(SingleChatFragment.newInstance(currentUser, createdChat.getEventOrganizer(), true), getActivity(), true, R.id.mainScreenFragment);
+                    HomeActivity homeActivity = (HomeActivity) getActivity();
+                    if (homeActivity != null) {
+                        homeActivity.setCurrentSelectedBottomIcon(R.id.chat);
+                        FragmentTransition.to(SingleChatFragment.newInstance(currentUser, createdChat.getEventOrganizer(), true), getActivity(), true, R.id.mainScreenFragment);
+                    }
                 }
             }
 
