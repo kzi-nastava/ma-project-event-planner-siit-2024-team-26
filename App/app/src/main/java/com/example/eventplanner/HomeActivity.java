@@ -264,10 +264,9 @@ public class HomeActivity extends AppCompatActivity {
 
     }
     private void removeAllFromBackStack(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
+            manager.popBackStackImmediate(null, manager.POP_BACK_STACK_INCLUSIVE);
         }
     }
 
