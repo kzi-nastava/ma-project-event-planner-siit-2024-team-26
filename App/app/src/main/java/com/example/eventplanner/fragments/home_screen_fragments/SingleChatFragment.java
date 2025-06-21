@@ -298,10 +298,15 @@ public class SingleChatFragment extends Fragment {
     }
 
     private void blockUnblockUser(){
+
+        BlockSignalDTO blockSignalDTO;
+
         if (isAuthenticatedUser){
             currentChat.setUser_1_blocked(!currentChat.isUser_1_blocked());
+            blockSignalDTO = new BlockSignalDTO(currentChat.getId(), currentChat.getEventOrganizer().getEmail(), true);
         }else{
             currentChat.setUser_2_blocked(!currentChat.isUser_2_blocked());
+            blockSignalDTO = new BlockSignalDTO(currentChat.getId(), currentChat.getAuthenticatedUser().getEmail(), false);
         }
         setMessageInput();
 
@@ -313,6 +318,7 @@ public class SingleChatFragment extends Fragment {
             @Override
             public void onResponse(Call<UpdatedChatDTO> call, Response<UpdatedChatDTO> response) {
                 if (response.isSuccessful()) {
+                    WebSocketService.sendBlockSignal(blockSignalDTO);
                 }
             }
 

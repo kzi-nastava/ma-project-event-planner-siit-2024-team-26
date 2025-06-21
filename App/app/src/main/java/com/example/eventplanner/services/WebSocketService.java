@@ -170,6 +170,15 @@ public class WebSocketService extends Service {
 
     }
 
+    public static void sendBlockSignal(BlockSignalDTO blockSignalToSend){
+        if (instance != null && instance.stompClient != null){
+            Gson gson = new Gson();
+            String convertedToJson = gson.toJson(blockSignalToSend);
+            Log.i("websocket", convertedToJson);
+            instance.stompClient.send("/socket-subscriber/send/block-signal", convertedToJson).subscribe();
+        }
+    }
+
     // Metoda koja pokreće foreground servis sa notifikacijom
     private void startForegroundServiceMethod() {
         NotificationChannel channel = new NotificationChannel("1", "Event invitations", NotificationManager.IMPORTANCE_DEFAULT);
