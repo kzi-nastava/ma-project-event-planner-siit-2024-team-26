@@ -25,6 +25,7 @@ import com.example.eventplanner.adapters.MessageAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.BlockSignalDTO;
 import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.chat.UpdateChatDTO;
 import com.example.eventplanner.dto.chat.UpdatedChatDTO;
@@ -240,6 +241,16 @@ public class SingleChatFragment extends Fragment {
                             // Obradi grešku
                             Log.e("RXJavaError", "Greška u BehaviorSubject: ", throwable);
                         });
+
+        WebSocketService.blockSignal
+                .observeOn(AndroidSchedulers.mainThread()).
+                subscribe(receiveMessage -> {
+                    changeMessageInput(receiveMessage);
+                },
+                throwable -> {
+                    // Obradi grešku
+                    Log.e("RXJavaError", "Greška u BehaviorSubject: ", throwable);
+                });
     }
 
     private void showBlockingDialog(){
@@ -310,5 +321,18 @@ public class SingleChatFragment extends Fragment {
                 Log.i("Chat", t.getMessage());
             }
         });
+    }
+
+    private void changeMessageInput(BlockSignalDTO blockSignalDTO){
+
+        if (currentChat.getId().getEventOrganizerId() == blockSignalDTO.getChatId().getEventOrganizerId()
+        && currentChat.getId().getAuthenticatedUserId() == blockSignalDTO.getChatId().getAuthenticatedUserId()){
+            if (blockSignalDTO.isUser1Changed()){
+                currentChat.setUser_1_blocked(!currentChat.isUser_1_blocked());
+            }else{
+                currentChat.setUser_2_blocked(!currentChat.isUser_2_blocked());
+            }
+            setMessageInput();
+        }
     }
 }

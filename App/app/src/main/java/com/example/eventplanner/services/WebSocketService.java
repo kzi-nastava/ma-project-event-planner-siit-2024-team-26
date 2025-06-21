@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import com.example.eventplanner.BuildConfig;
 import com.example.eventplanner.R;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.BlockSignalDTO;
 import com.example.eventplanner.dto.message.CreateMessageDTO;
 import com.example.eventplanner.dto.message.GetMessageDTO;
 import com.example.eventplanner.dto.notification.InvitationNotificationDTO;
@@ -57,11 +58,14 @@ public class WebSocketService extends Service {
 
     public static PublishSubject<GetMessageDTO> messageSignal;
 
+    public static PublishSubject<BlockSignalDTO> blockSignal;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         messageSignal = PublishSubject.create();
+        blockSignal = PublishSubject.create();
     }
 
     @SuppressLint("CheckResult")
@@ -111,6 +115,13 @@ public class WebSocketService extends Service {
                     messageSignal.onNext(new GetMessageDTO(messageDTO));
                 }, throwable -> {
                     Log.e("WebSocket", "Error during subscription: " + throwable.getMessage());
+                });
+
+        topicSubscription = stompClient.topic("/socket-publisher/blocking/" + currentUser.getEmail())
+                .subscribe(topicMessage -> {
+                    Gson gson = new Gson();
+                    BlockSignalDTO blockSignalDTO = gson.fromJson(topicMessage.getPayload(), BlockSignalDTO.class);
+                    blockSignal.onNext(blockSignalDTO);
                 });
     }
 
