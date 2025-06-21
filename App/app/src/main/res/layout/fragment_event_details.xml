@@ -1,13 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    android:tooltipText="More options"
     tools:context=".fragments.details.EventDetailsFragment">
 
-    <org.osmdroid.views.MapView
-        android:id="@+id/eventMap"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="258dp"
-        android:layout_marginTop="30dp"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:text="Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventTitle" />
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EVENT TITLE"
+            android:textAlignment="center"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eventMap" />
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/eventMap"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </org.osmdroid.views.MapView>
+
+        <TextView
+            android:id="@+id/categoryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/categoryIcon"
+            app:layout_constraintTop_toTopOf="@+id/categoryIcon" />
+
+        <TextView
+            android:id="@+id/eoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/eoIcon"
+            app:layout_constraintTop_toTopOf="@+id/eoIcon" />
+
+        <TextView
+            android:id="@+id/privacyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/privacyIcon"
+            app:layout_constraintTop_toTopOf="@+id/privacyIcon" />
+
+        <TextView
+            android:id="@+id/date2Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/dateIcon"
+            app:layout_constraintTop_toTopOf="@+id/dateIcon" />
+
+        <TextView
+            android:id="@+id/date3Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/date3Icon"
+            app:layout_constraintTop_toTopOf="@+id/date3Icon" />
+
+        <TextView
+            android:id="@+id/addressText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="Country, City Name"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/addressIcon"
+            app:layout_constraintTop_toTopOf="@+id/addressIcon" />
+
+        <TextView
+            android:id="@+id/addressText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="Street Name, ##"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/addressIcon"
+            app:layout_constraintTop_toBottomOf="@+id/addressText1" />
+
+        <ImageView
+            android:id="@+id/categoryIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_category_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:tint="@color/blackreversable" />
+
+        <ImageView
+            android:id="@+id/eoIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_person_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryIcon"
+            app:tint="@color/blackreversable"/>
+
+        <ImageView
+            android:id="@+id/privacyIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_group_add_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eoIcon"
+            app:tint="@color/blackreversable"/>
+
+        <ImageView
+            android:id="@+id/dateIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_play_arrow_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacyIcon"
+            app:tint="@color/blackreversable"/>
+
+        <ImageView
+            android:id="@+id/date3Icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_stop_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateIcon"
+            app:tint="@color/blackreversable"/>
+
+        <ImageView
+            android:id="@+id/addressIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_location_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date3Icon"
+            app:tint="@color/blackreversable"/>
+
+        <View
+            android:id="@+id/transparentBg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC3E3E3E"
+            android:backgroundTint="#CC3E3E3E"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_add_24"
+            app:backgroundTint="@color/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/addressText1"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabDownload"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_download_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabMain"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabFavourites"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_favorite_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabDownload"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabGoing"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_upcoming_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabFavourites"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabChat"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_chat_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabGoing"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabOrganizer"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_person_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabChat"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/textDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="Download as PDF with agenda"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabDownload"
+            app:layout_constraintEnd_toStartOf="@+id/fabDownload"
+            app:layout_constraintTop_toTopOf="@+id/fabDownload" />
+
+        <TextView
+            android:id="@+id/textFavourites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="Add to favourites"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabFavourites"
+            app:layout_constraintEnd_toStartOf="@+id/fabFavourites"
+            app:layout_constraintTop_toTopOf="@+id/fabFavourites" />
+
+        <TextView
+            android:id="@+id/textGoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="Add me to this event"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabGoing"
+            app:layout_constraintEnd_toStartOf="@+id/fabGoing"
+            app:layout_constraintTop_toTopOf="@+id/fabGoing" />
+
+        <TextView
+            android:id="@+id/textChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="Chat with organizer"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabChat"
+            app:layout_constraintEnd_toStartOf="@+id/fabOrganizer"
+            app:layout_constraintTop_toTopOf="@+id/fabChat" />
+
+        <TextView
+            android:id="@+id/textOrganizer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="View event organizer"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabOrganizer"
+            app:layout_constraintEnd_toStartOf="@+id/fabOrganizer"
+            app:layout_constraintTop_toTopOf="@+id/fabOrganizer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

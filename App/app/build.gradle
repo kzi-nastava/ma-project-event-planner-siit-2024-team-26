@@ -36,7 +36,9 @@ android {
 
     buildFeatures {
         buildConfig true
+        viewBinding true
     }
+
     packagingOptions {
         exclude 'META-INF/*'
 
