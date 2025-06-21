@@ -35,6 +35,8 @@ import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
 import com.example.eventplanner.utils.DateStringFormatter;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -208,7 +210,9 @@ public class EventDetailsFragment extends Fragment {
         ChatAuthenticatedUserDTO otherUser = null;
         boolean isAuthenticatedUser = false;
         if (currentUser == null){
-            Toast.makeText(getContext(), "No permission to chat with event organizer!", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), "No permission to chat with event organizer!", Snackbar.LENGTH_LONG);
+            snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
+            snackbar.show();
         }
         else if (chat != null){
             removeAllFromBackStack();
@@ -226,7 +230,9 @@ public class EventDetailsFragment extends Fragment {
         }
         else if (chat == null){
             if (foundEvent.getEventOrganizer().getId() == currentUser.getId()){
-                Toast.makeText(getContext(), "You can't start chat with yourself!", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(binding.getRoot(), "You can't start chat with yourself!", Snackbar.LENGTH_LONG);
+                snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
+                snackbar.show();
             }else{
                 startNewChat();
             }
