@@ -264,10 +264,9 @@ public class HomeActivity extends AppCompatActivity {
 
     }
     private void removeAllFromBackStack(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
+            manager.popBackStackImmediate(null, manager.POP_BACK_STACK_INCLUSIVE);
         }
     }
 
@@ -418,5 +417,10 @@ public class HomeActivity extends AppCompatActivity {
         FragmentTransition.to(ChatTabFragment.newInstance(currentUser), HomeActivity.this, false, R.id.mainScreenFragment);
         FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), HomeActivity.this, true, R.id.mainScreenFragment);
         setIntent(new Intent());
+    }
+
+    public void setCurrentSelectedBottomIcon(int currentSelectedBottomIcon) {
+        bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
+        this.currentSelectedBottomIcon = currentSelectedBottomIcon;
     }
 }

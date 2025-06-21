@@ -47,11 +47,12 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/homeScreenFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_top_lists_tab"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_top_lists_tab" />
 
 </LinearLayout>
