@@ -1,6 +1,9 @@
 package com.example.eventplanner.model.id;
 
-public class ChatId {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ChatId implements Parcelable {
 
     private Integer eventOrganizerId;
     private Integer authenticatedUserId;
@@ -25,4 +28,51 @@ public class ChatId {
     public void setAuthenticatedUserId(Integer authenticatedUserId) {
         this.authenticatedUserId = authenticatedUserId;
     }
+
+    protected ChatId(Parcel in) {
+        if (in.readByte() == 0) {
+            eventOrganizerId = null;
+        } else {
+            eventOrganizerId = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            authenticatedUserId = null;
+        } else {
+            authenticatedUserId = in.readInt();
+        }
+    }
+
+    public static final Parcelable.Creator<ChatId> CREATOR = new Parcelable.Creator<ChatId>() {
+        @Override
+        public ChatId createFromParcel(Parcel in) {
+            return new ChatId(in);
+        }
+
+        @Override
+        public ChatId[] newArray(int size) {
+            return new ChatId[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (eventOrganizerId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(eventOrganizerId);
+        }
+        if (authenticatedUserId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(authenticatedUserId);
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
 }

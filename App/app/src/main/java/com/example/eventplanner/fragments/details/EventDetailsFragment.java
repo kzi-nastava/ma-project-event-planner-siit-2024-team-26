@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,9 +23,17 @@ import android.graphics.Rect;
 
 import com.example.eventplanner.R;
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.CreateChatDTO;
+import com.example.eventplanner.dto.chat.CreatedChatDTO;
+import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.event.GetEventDTO;
 
 import com.example.eventplanner.databinding.FragmentEventDetailsBinding;
+import com.example.eventplanner.fragments.FragmentTransition;
+import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
 import com.example.eventplanner.utils.DateStringFormatter;
 
 import org.osmdroid.api.IMapController;
@@ -52,6 +61,9 @@ public class EventDetailsFragment extends Fragment {
     private Integer id;
 
     private GetEventDTO foundEvent;
+    private GetAuthenticatedUserDTO currentUser;
+
+    private GetChatDTO chat;
 
     private View mainView;
     private MapView mapView;
@@ -66,17 +78,18 @@ public class EventDetailsFragment extends Fragment {
     private Animation fromBottomBgAnim;
     private Animation toBottomBgAnim;
 
-    private boolean isChatExisting;
 
     public EventDetailsFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static EventDetailsFragment newInstance(Integer eventId) {
+    public static EventDetailsFragment newInstance(Integer eventId, GetChatDTO chat, GetAuthenticatedUserDTO currentUser) {
         EventDetailsFragment fragment = new EventDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("eventId", eventId);
+        args.putParcelable("chat", chat);
+        args.putParcelable("currentUser", currentUser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,6 +100,8 @@ public class EventDetailsFragment extends Fragment {
         if (getArguments() != null) {
             Bundle args = getArguments();
             id = args.getInt("eventId");
+            chat = args.getParcelable("chat");
+            currentUser = args.getParcelable("currentUser");
         }
     }
 
@@ -103,7 +118,6 @@ public class EventDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEventDetailsBinding.inflate(inflater, container, false);
-        isChatExisting = false;
         getEventDetails();
         return binding.getRoot();
     }
@@ -172,8 +186,6 @@ public class EventDetailsFragment extends Fragment {
                 }
         );
 
-        checkDoesChatWithOrganizerExist();
-
     }
 
     private void onFavouritesClicked() {
@@ -193,7 +205,33 @@ public class EventDetailsFragment extends Fragment {
     }
 
     private void onChatClicked() {
-        Toast.makeText(getContext(), "Chat Clicked", Toast.LENGTH_SHORT).show();
+        ChatAuthenticatedUserDTO otherUser = null;
+        boolean isAuthenticatedUser = false;
+        if (currentUser == null){
+            Toast.makeText(getContext(), "No permission to chat with event organizer!", Toast.LENGTH_SHORT).show();
+        }
+        else if (chat != null){
+            removeAllFromBackStack();
+            if (chat.getEventOrganizer().getId() == currentUser.getId()){
+                otherUser = chat.getAuthenticatedUser();
+                isAuthenticatedUser = false;
+            }
+            else{
+                otherUser = chat.getEventOrganizer();
+                isAuthenticatedUser = true;
+            }
+
+            FragmentTransition.to(ChatTabFragment.newInstance(currentUser), getActivity(), false, R.id.mainScreenFragment);
+            FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), getActivity(), true, R.id.mainScreenFragment);
+        }
+        else if (chat == null){
+            if (foundEvent.getEventOrganizer().getId() == currentUser.getId()){
+                Toast.makeText(getContext(), "You can't start chat with yourself!", Toast.LENGTH_SHORT).show();
+            }else{
+                startNewChat();
+            }
+        }
+
     }
 
     private void shrinkFab() {
@@ -329,8 +367,32 @@ public class EventDetailsFragment extends Fragment {
         mapView.invalidate();
     }
 
-    private void checkDoesChatWithOrganizerExist(){
-
+    private void removeAllFromBackStack(){
+        FragmentManager manager = requireActivity().getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() > 0) {
+            manager.popBackStackImmediate(null, manager.POP_BACK_STACK_INCLUSIVE);
+        }
     }
 
+    private void startNewChat(){
+        CreateChatDTO chat = new CreateChatDTO(foundEvent.getEventOrganizer().getId(), currentUser.getId());
+        Call<CreatedChatDTO> call = ClientUtils.chatService.createChat(chat);
+        call.enqueue(new Callback<CreatedChatDTO>() {
+
+            @Override
+            public void onResponse(Call<CreatedChatDTO> call, Response<CreatedChatDTO> response) {
+                if (response.isSuccessful()) {
+                    CreatedChatDTO createdChat = response.body();
+                    removeAllFromBackStack();
+                    FragmentTransition.to(ChatTabFragment.newInstance(currentUser), getActivity(), false, R.id.mainScreenFragment);
+                    FragmentTransition.to(SingleChatFragment.newInstance(currentUser, createdChat.getEventOrganizer(), true), getActivity(), true, R.id.mainScreenFragment);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreatedChatDTO> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
+    }
 }

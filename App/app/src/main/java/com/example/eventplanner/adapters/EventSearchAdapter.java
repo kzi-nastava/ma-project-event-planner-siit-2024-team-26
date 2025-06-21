@@ -101,7 +101,7 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
         if (this.currentUser != null){
             loadChat(holder, event);
         }else{
-            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId(), chat, currentUser), fragmentActivity, true, R.id.mainScreenFragment);
         }
     }
 
@@ -124,7 +124,7 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
                                     " " + event.getEventOrganizer().getLastName() + " is blocked!";
                             showBlockedDialog();
                         }else{
-                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId(), chat, currentUser), fragmentActivity, true, R.id.mainScreenFragment);
                         }
 
                     }else{ // If user is Authenticated user in chat table
@@ -137,12 +137,12 @@ public class EventSearchAdapter extends RecyclerView.Adapter<EventSearchAdapter.
                                     " " + event.getEventOrganizer().getLastName() + " is blocked!";
                             showBlockedDialog();
                         } else{
-                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                            FragmentTransition.to(EventDetailsFragment.newInstance(event.getId(), chat, currentUser), fragmentActivity, true, R.id.mainScreenFragment);
                         }
                     }
                 }else{
                     if (response.code() == 404){
-                        FragmentTransition.to(EventDetailsFragment.newInstance(event.getId()), fragmentActivity, true, R.id.mainScreenFragment);
+                        FragmentTransition.to(EventDetailsFragment.newInstance(event.getId(), chat, currentUser), fragmentActivity, true, R.id.mainScreenFragment);
                     }
                 }
             }
