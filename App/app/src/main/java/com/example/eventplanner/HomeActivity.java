@@ -38,6 +38,7 @@ import com.example.eventplanner.clients.authorization.TokenManager;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.CommentsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ReportsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
@@ -211,6 +212,10 @@ public class HomeActivity extends AppCompatActivity {
                     FragmentTransition.to(ReportsFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }
+                if (item.getItemId() == R.id.usersCommentsButton){
+                    FragmentTransition.to(CommentsFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 return false;
             }
         });
@@ -374,6 +379,7 @@ public class HomeActivity extends AppCompatActivity {
         Menu navigationMenu = navigationView.getMenu();
         if (user.getRole() == Role.ADMINISTRATOR){
             navigationMenu.findItem(R.id.usersReportsButton).setVisible(true);
+            navigationMenu.findItem(R.id.usersCommentsButton).setVisible(true);
         }
     }
 

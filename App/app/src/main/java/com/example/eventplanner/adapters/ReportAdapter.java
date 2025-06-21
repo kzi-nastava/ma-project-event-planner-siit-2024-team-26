@@ -39,12 +39,16 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     private ArrayList<ReportDTO> reportsToRemove;
     private View view;
 
-    public ReportAdapter(ArrayList<ReportDTO> allReports, Context context, View view){
+    private TextView reportsNumberTextView;
+
+    public ReportAdapter(ArrayList<ReportDTO> allReports, Context context, View view, TextView reportsNumberTextView){
         this.allReports = allReports;
         this.context = context;
         this.itemExpandedState = new boolean[allReports.size()];
         this.reportsToRemove = new ArrayList<ReportDTO>();
         this.view = view;
+        this.reportsNumberTextView = reportsNumberTextView;
+        setReportsNumbertext();
     }
 
     @Override
@@ -162,6 +166,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                     int i = allReports.indexOf(report);
                     allReports.remove(i);
                     notifyItemRemoved(i);
+                    setReportsNumbertext();
                 }
             }
 
@@ -170,5 +175,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 Log.i("POZIV", t.getMessage());
             }
         });
+    }
+
+    private void setReportsNumbertext(){
+        if (allReports.isEmpty()){
+            reportsNumberTextView.setText("There's no reports!");
+        }else if (allReports.size() == 1){
+            reportsNumberTextView.setText("There's 1 report!");
+        }else{
+            reportsNumberTextView.setText(String.format("There's %d reports!", allReports.size()));
+        }
     }
 }
