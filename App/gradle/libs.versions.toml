@@ -10,6 +10,7 @@ activity = "1.9.2"
 constraintlayout = "2.2.0"
 stomp = "1.4.3"
 ucrop = "2.2.8"
+recyclerview = "1.4.0"
 
 [libraries]
 jjwt = { module = "io.jsonwebtoken:jjwt", version.ref = "jjwt" }
@@ -22,6 +23,7 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 stomp = { module = "com.github.stomp-android:stomp", version.ref = "stomp" }
 ucrop = { module = "com.github.yalantis:ucrop", version.ref = "ucrop" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

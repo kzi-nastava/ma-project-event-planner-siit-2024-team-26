@@ -100,5 +100,14 @@
     <string name="yourChats">Your chats</string>
     <string name="enterText">Enter text</string>
 
+    <string name="placeholderText">Placeholder text</string>
+    <string name="placeholderNumber">##.##</string>
+    <string name="placeholderDescription">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</string>
+
+    <string name="addFavourite">Add to favourites</string>
+    <string name="viewPProvider">View product provider</string>
+
+    <string name="product_image">Image of the product</string>
+
 
 </resources>

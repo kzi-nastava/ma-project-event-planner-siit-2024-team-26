@@ -1,6 +1,8 @@
 package com.example.eventplanner.clients.service;
 
+import com.example.eventplanner.dto.event.GetEventDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
+import com.example.eventplanner.dto.product.GetProductDTO;
 import com.example.eventplanner.dto.product.ProductCardDTO;
 import com.example.eventplanner.dto.product.TopProductDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
@@ -11,9 +13,13 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ProductService {
+
+    @GET("products/{id}")
+    Call<GetProductDTO> getById(@Path("id") Integer id);
 
     @GET("products/top")
     Call<ArrayList<TopProductDTO>> getTopProducts();
