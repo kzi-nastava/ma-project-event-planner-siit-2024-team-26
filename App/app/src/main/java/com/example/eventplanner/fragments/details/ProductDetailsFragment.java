@@ -24,6 +24,7 @@ import com.example.eventplanner.clients.service.SPImageService;
 import com.example.eventplanner.databinding.FragmentProductDetailsBinding;
 import com.example.eventplanner.dto.product.GetProductDTO;
 import com.example.eventplanner.dto.serviceProductImage.GetSPImageDTO;
+import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.model.ServiceProductImage;
 import com.example.eventplanner.model.ServiceProductType;
 
@@ -123,7 +124,18 @@ public class ProductDetailsFragment extends Fragment {
     }
 
     private void onProviderClicked() {
-        Toast.makeText(getContext(), "View product provider", Toast.LENGTH_SHORT).show();
+        if (foundProduct != null && foundProduct.getSpProvider() != null) {
+            Integer providerId = foundProduct.getSpProvider().getId();
+
+            FragmentTransition.to(
+                    UserDetailsFragment.newInstance(providerId),
+                    getActivity(),
+                    true,
+                    R.id.mainScreenFragment
+            );
+        } else {
+            Toast.makeText(getContext(), "Provider not found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void expandFab() {
