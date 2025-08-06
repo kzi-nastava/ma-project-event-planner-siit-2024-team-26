@@ -41,7 +41,7 @@
         <org.osmdroid.views.MapView
             android:id="@+id/eventMap"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="140dp"
             android:background="@color/accent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

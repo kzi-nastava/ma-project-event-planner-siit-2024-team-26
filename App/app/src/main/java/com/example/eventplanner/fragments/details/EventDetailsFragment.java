@@ -204,7 +204,14 @@ public class EventDetailsFragment extends Fragment {
     }
 
     private void onOrganizerClicked() {
-        Toast.makeText(getContext(), "Organizer Clicked", Toast.LENGTH_SHORT).show();
+        Integer organizerId = foundEvent.getEventOrganizer().getId();
+
+        FragmentTransition.to(
+                UserDetailsFragment.newInstance(organizerId),
+                getActivity(),
+                true,
+                R.id.mainScreenFragment
+        );
     }
 
     private void onChatClicked() {

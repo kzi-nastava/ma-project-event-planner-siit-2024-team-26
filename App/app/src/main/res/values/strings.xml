@@ -106,8 +106,10 @@
 
     <string name="addFavourite">Add to favourites</string>
     <string name="viewPProvider">View product provider</string>
+    <string name="reportUser">Report this user</string>
+    <string name="chatUser">Chat with this user</string>
 
     <string name="product_image">Image of the product</string>
-
+    <string name="title_activity_user_details">UserDetailsActivity</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.example.eventplanner;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -32,6 +35,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.example.eventplanner.adapters.ServiceSearchAdapter;
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
@@ -216,6 +220,10 @@ public class HomeActivity extends AppCompatActivity {
                     FragmentTransition.to(CommentsFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }
+                if (item.getItemId() == R.id.profileButton) {
+                    Intent intent = new Intent(HomeActivity.this, UserDetailsActivity.class);
+                    startActivity(intent);
+                }
                 return false;
             }
         });
@@ -379,6 +387,17 @@ public class HomeActivity extends AppCompatActivity {
         if (user.getRole() == Role.ADMINISTRATOR){
             navigationMenu.findItem(R.id.usersReportsButton).setVisible(true);
             navigationMenu.findItem(R.id.usersCommentsButton).setVisible(true);
+        }
+
+        String imageUrl = user.getImage(); // primer: https://mojserver.com/slike/user123.jpg
+        ImageView piView = headerView.findViewById(R.id.imageView);
+
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.baseline_person_24) // fallback ako slika još nije učitana
+                    .error(R.drawable.baseline_person_24)           // fallback ako slika ne postoji
+                    .into(piView);
         }
     }
 
