@@ -112,4 +112,6 @@
     <string name="product_image">Image of the product</string>
     <string name="title_activity_user_details">UserDetailsActivity</string>
 
+    <string name="tap_event">Tap event for more details</string>
+
 </resources>

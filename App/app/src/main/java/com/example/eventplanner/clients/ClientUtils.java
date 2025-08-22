@@ -11,6 +11,7 @@ import com.example.eventplanner.clients.service.AuthenticationService;
 import com.example.eventplanner.clients.service.ChatService;
 import com.example.eventplanner.clients.service.CommentService;
 import com.example.eventplanner.clients.service.EventService;
+import com.example.eventplanner.clients.service.GoingToService;
 import com.example.eventplanner.clients.service.InvitationService;
 import com.example.eventplanner.clients.service.MessageService;
 import com.example.eventplanner.clients.service.NotificationService;
@@ -124,6 +125,6 @@ public class ClientUtils {
     public static MessageService messageService = retrofit.create(MessageService.class);
     public static ReportService reportService = retrofit.create(ReportService.class);
     public static CommentService commentService = retrofit.create(CommentService.class);
-
     public static SPImageService spImageService = retrofit.create(SPImageService.class);
+    public static GoingToService goingToService = retrofit.create(GoingToService.class);
 }

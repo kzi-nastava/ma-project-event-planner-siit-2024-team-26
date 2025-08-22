@@ -246,6 +246,12 @@ public class HomeActivity extends AppCompatActivity {
                         currentSelectedBottomIcon = R.id.home;
                         return true;
                     }
+                    if (item.getItemId() == R.id.calendar) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(CalendarFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.calendar;
+                        return true;
+                    }
                     if (item.getItemId() == R.id.notifications) {
                         removeAllFromBackStack();
                         FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);

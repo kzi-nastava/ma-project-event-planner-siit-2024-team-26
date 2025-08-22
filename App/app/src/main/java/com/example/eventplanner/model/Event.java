@@ -1,5 +1,11 @@
 package com.example.eventplanner.model;
 
+import android.os.Parcel;
+
+import com.example.eventplanner.dto.address.GetAddressDTO;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.eventType.GetEventTypeDTO;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -7,14 +13,10 @@ public class Event {
 
     private String name;
     private String description;
-
     private EventType eventType;
-
     private Address address;
-
     private Calendar starts;
     private Calendar ends;
-
     private int guestsLimit;
     public Event(String name, String description, EventType eventType, Address address, Calendar starts, Calendar ends, int guestsLimit) {
         this.name = name;
@@ -81,4 +83,5 @@ public class Event {
     public void setEnds(Calendar ends) {
         this.ends = ends;
     }
+
 }

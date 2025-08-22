@@ -4,8 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.eventplanner.dto.address.GetAddressDTO;
+import com.example.eventplanner.dto.event.GetEventDTO;
 import com.example.eventplanner.model.AuthenticatedUser;
 import com.example.eventplanner.model.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GetAuthenticatedUserDTO implements Parcelable {
     private Integer id;
@@ -17,6 +21,9 @@ public class GetAuthenticatedUserDTO implements Parcelable {
     private GetAddressDTO address;
     private Role role;
     private boolean isActive;
+    private List<GetEventDTO> favouriteEvents;
+    private List<GetEventDTO> goingToEvents;
+    //private List<GetServiceProductDTO> favouriteServiceProducts;
 
     public GetAuthenticatedUserDTO() {super();}
 
@@ -92,6 +99,22 @@ public class GetAuthenticatedUserDTO implements Parcelable {
         isActive = active;
     }
 
+    public List<GetEventDTO> getFavouriteEvents() {
+        return favouriteEvents;
+    }
+
+    public void setFavouriteEvents(List<GetEventDTO> favouriteEvents) {
+        this.favouriteEvents = favouriteEvents;
+    }
+
+    public List<GetEventDTO> getGoingToEvents() {
+        return goingToEvents;
+    }
+
+    public void setGoingToEvents(List<GetEventDTO> goingToEvents) {
+        this.goingToEvents = goingToEvents;
+    }
+
     protected GetAuthenticatedUserDTO(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
@@ -106,6 +129,10 @@ public class GetAuthenticatedUserDTO implements Parcelable {
         address = in.readParcelable(GetAddressDTO.class.getClassLoader());
         role = Role.valueOf(in.readString());
         isActive = in.readByte() != 0;
+        favouriteEvents = new ArrayList<>();
+        in.readTypedList(favouriteEvents, GetEventDTO.CREATOR);
+        goingToEvents = new ArrayList<>();
+        in.readTypedList(goingToEvents, GetEventDTO.CREATOR);
     }
 
     @Override
@@ -124,6 +151,8 @@ public class GetAuthenticatedUserDTO implements Parcelable {
         dest.writeParcelable(address, flags);
         dest.writeString(role.name());
         dest.writeByte((byte) (isActive ? 1 : 0));
+        dest.writeTypedList(favouriteEvents);
+        dest.writeTypedList(goingToEvents);
     }
 
     @Override
