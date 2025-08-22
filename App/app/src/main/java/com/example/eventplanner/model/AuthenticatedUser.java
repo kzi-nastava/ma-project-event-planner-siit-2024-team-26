@@ -3,6 +3,11 @@ package com.example.eventplanner.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.eventplanner.dto.event.GetEventDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AuthenticatedUser implements Parcelable {
 
     private Integer id;
@@ -14,8 +19,12 @@ public class AuthenticatedUser implements Parcelable {
     private String lastName;
     private String phoneNumber;
     private Address address;
+    private List<Event> favouriteEvents;
+    private List<Event> goingToEvents;
 
-    public AuthenticatedUser(Integer id, String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
+    public AuthenticatedUser(Integer id, String email, String password, Boolean isActive, String role,
+                             String firstName, String lastName, String phoneNumber, Address address,
+                             List<Event> favouriteEvents, List<Event> goingToEvents) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -25,6 +34,8 @@ public class AuthenticatedUser implements Parcelable {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.favouriteEvents = favouriteEvents;
+        this.goingToEvents = goingToEvents;
     }
 
     public Integer getId() {
@@ -99,6 +110,22 @@ public class AuthenticatedUser implements Parcelable {
         this.address = address;
     }
 
+    public List<Event> getFavouriteEvents() {
+        return favouriteEvents;
+    }
+
+    public void setFavouriteEvents(List<Event> favouriteEvents) {
+        this.favouriteEvents = favouriteEvents;
+    }
+
+    public List<Event> getGoingToEvents() {
+        return goingToEvents;
+    }
+
+    public void setGoingToEvents(List<Event> goingToEvents) {
+        this.goingToEvents = goingToEvents;
+    }
+
     protected AuthenticatedUser(Parcel in) {
         id = in.readInt();
         email = in.readString();
@@ -110,6 +137,10 @@ public class AuthenticatedUser implements Parcelable {
         lastName = in.readString();
         phoneNumber = in.readString();
         address = in.readParcelable(Address.class.getClassLoader());
+        /*favouriteEvents = new ArrayList<>();
+        in.readTypedList(favouriteEvents, Event.CREATOR);
+        goingToEvents = new ArrayList<>();
+        in.readTypedList(goingToEvents, Event.CREATOR);*/
     }
 
     @Override
@@ -123,6 +154,8 @@ public class AuthenticatedUser implements Parcelable {
         dest.writeString(lastName);
         dest.writeString(phoneNumber);
         dest.writeParcelable(address, flags);
+        // dest.writeTypedList(favouriteEvents);
+        // dest.writeTypedList(goingToEvents);
     }
 
     @Override

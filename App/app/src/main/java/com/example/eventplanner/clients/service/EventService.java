@@ -33,4 +33,7 @@ public interface EventService {
             @Query("size") Integer size,
             @Query("page") Integer page
     );
+
+    @GET("events")
+    Call<List<GetEventDTO>> getEventsByOrganizer(@Query("eo_id") Integer organizerId);
 }

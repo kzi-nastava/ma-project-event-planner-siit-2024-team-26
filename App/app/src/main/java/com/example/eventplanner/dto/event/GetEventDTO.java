@@ -1,14 +1,14 @@
 package com.example.eventplanner.dto.event;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.eventplanner.dto.address.GetAddressDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.eventType.GetEventTypeDTO;
 import com.example.eventplanner.model.PrivacyType;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
-public class GetEventDTO {
+public class GetEventDTO implements Parcelable {
     private Integer id;
     private String name;
     private String description;
@@ -23,7 +23,114 @@ public class GetEventDTO {
     private GetAddressDTO address;
     private GetEventTypeDTO eventType;
 
-    public GetEventDTO(){super();}
+    public GetEventDTO() {
+        super();
+    }
+
+    protected GetEventDTO(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        name = in.readString();
+        description = in.readString();
+        if (in.readByte() == 0) {
+            guestsLimit = null;
+        } else {
+            guestsLimit = in.readInt();
+        }
+        // PrivacyType - enum, čuvamo kao String i vraćamo nazad
+        String privacyTypeName = in.readString();
+        privacyType = privacyTypeName == null ? null : PrivacyType.valueOf(privacyTypeName);
+
+        starts = in.readString();
+        ends = in.readString();
+
+        if (in.readByte() == 0) {
+            gradeSum = null;
+        } else {
+            gradeSum = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            gradeCount = null;
+        } else {
+            gradeCount = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            numVisitors = null;
+        } else {
+            numVisitors = in.readInt();
+        }
+
+        eventOrganizer = in.readParcelable(GetAuthenticatedUserDTO.class.getClassLoader());
+        address = in.readParcelable(GetAddressDTO.class.getClassLoader());
+        eventType = in.readParcelable(GetEventTypeDTO.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        dest.writeString(description);
+        if (guestsLimit == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(guestsLimit);
+        }
+        dest.writeString(privacyType == null ? null : privacyType.name());
+
+        dest.writeString(starts);
+        dest.writeString(ends);
+
+        if (gradeSum == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(gradeSum);
+        }
+        if (gradeCount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(gradeCount);
+        }
+        if (numVisitors == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(numVisitors);
+        }
+
+        dest.writeParcelable(eventOrganizer, flags);
+        dest.writeParcelable(address, flags);
+        dest.writeParcelable(eventType, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GetEventDTO> CREATOR = new Creator<GetEventDTO>() {
+        @Override
+        public GetEventDTO createFromParcel(Parcel in) {
+            return new GetEventDTO(in);
+        }
+
+        @Override
+        public GetEventDTO[] newArray(int size) {
+            return new GetEventDTO[size];
+        }
+    };
+
+    // --- getters i setters ---
 
     public Integer getId() {
         return id;

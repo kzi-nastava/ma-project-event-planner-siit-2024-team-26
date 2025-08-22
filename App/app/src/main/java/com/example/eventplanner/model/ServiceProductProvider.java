@@ -2,12 +2,14 @@ package com.example.eventplanner.model;
 
 import android.os.Parcel;
 
+import java.util.List;
+
 public class ServiceProductProvider extends AuthenticatedUser {
 
     private Company company;
     public ServiceProductProvider(Integer id, String email, String password, Boolean isActive, String role, String firstName,
-                                  String lastName, String phoneNumber, Address address, Company company) {
-        super(id, email, password, isActive, role, firstName, lastName, phoneNumber, address);
+                                  String lastName, String phoneNumber, Address address, Company company, List<Event> favouriteEvents, List<Event> goingToEvents) {
+        super(id, email, password, isActive, role, firstName, lastName, phoneNumber, address, favouriteEvents, goingToEvents);
         this.company = company;
     }
 

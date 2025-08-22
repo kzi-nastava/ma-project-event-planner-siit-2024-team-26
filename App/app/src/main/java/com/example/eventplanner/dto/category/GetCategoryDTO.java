@@ -1,8 +1,11 @@
 package com.example.eventplanner.dto.category;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.eventplanner.model.State;
 
-public class GetCategoryDTO {
+public class GetCategoryDTO implements Parcelable {
 
     private Integer id;
     private String name;
@@ -10,7 +13,9 @@ public class GetCategoryDTO {
     private State state;
     private boolean isDeleted;
 
-    public GetCategoryDTO(){super();}
+    public GetCategoryDTO() {
+        super();
+    }
 
     public GetCategoryDTO(Integer id, String name, String description, State state, boolean isDeleted) {
         this.id = id;
@@ -19,6 +24,54 @@ public class GetCategoryDTO {
         this.state = state;
         this.isDeleted = isDeleted;
     }
+
+    protected GetCategoryDTO(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        name = in.readString();
+        description = in.readString();
+
+        String stateName = in.readString();
+        state = stateName == null ? null : State.valueOf(stateName);
+
+        isDeleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(state == null ? null : state.name());
+        dest.writeByte((byte) (isDeleted ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GetCategoryDTO> CREATOR = new Creator<GetCategoryDTO>() {
+        @Override
+        public GetCategoryDTO createFromParcel(Parcel in) {
+            return new GetCategoryDTO(in);
+        }
+
+        @Override
+        public GetCategoryDTO[] newArray(int size) {
+            return new GetCategoryDTO[size];
+        }
+    };
+
+    // Getteri i setteri
 
     public Integer getId() {
         return id;
