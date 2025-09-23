@@ -54,6 +54,9 @@ public class CreateEventHostFragment extends Fragment {
             viewModel.setCurrentUser(user);
         }
 
+        //Initialize email list for event invitations
+        viewModel.instanciateEmailsList();
+
         // Find views
         viewPager = view.findViewById(R.id.view_pager);
         tabLayout = view.findViewById(R.id.tab_layout_stepper);
