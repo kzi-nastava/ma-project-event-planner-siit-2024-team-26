@@ -5,9 +5,11 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
+lifecycleViewmodel = "2.7.0"
 material = "1.12.0"
 activity = "1.9.2"
 constraintlayout = "2.2.0"
+materialStepper = "4.3.1"
 stomp = "1.4.3"
 ucrop = "2.2.8"
 recyclerview = "1.4.0"
@@ -22,9 +24,11 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+material-stepper = { module = "com.stepstone.stepper:material-stepper", version.ref = "materialStepper" }
 stomp = { module = "com.github.stomp-android:stomp", version.ref = "stomp" }
 ucrop = { module = "com.github.yalantis:ucrop", version.ref = "ucrop" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
