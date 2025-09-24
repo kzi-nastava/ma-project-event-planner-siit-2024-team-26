@@ -204,7 +204,7 @@ public class CreateEventViewModel extends ViewModel {
 
         // Kreiranje i postavljanje lokacije za Novi Sad
         // Koordinate Novog Sada: Latitude: 45.2671, Longitude: 19.8335
-        CreateLocationDTO noviSadLocation = new CreateLocationDTO(45.2671, 19.8335);
+        CreateLocationDTO noviSadLocation = new CreateLocationDTO(19.8335, 45.2671);
         address.setLocation(noviSadLocation);
 
         // Postavljanje kompletnog objekta adrese u glavni DTO

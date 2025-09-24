@@ -1,5 +1,8 @@
 package com.example.eventplanner.fragments.details;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -9,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +29,7 @@ import android.graphics.Rect;
 import com.example.eventplanner.HomeActivity;
 import com.example.eventplanner.R;
 import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.clients.service.GoingToService;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.chat.CreateChatDTO;
@@ -32,6 +38,7 @@ import com.example.eventplanner.dto.chat.GetChatDTO;
 import com.example.eventplanner.dto.event.GetEventDTO;
 
 import com.example.eventplanner.databinding.FragmentEventDetailsBinding;
+import com.example.eventplanner.dto.event.UserEventDTO;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
@@ -46,9 +53,14 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.IdentityHashMap;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,7 +92,8 @@ public class EventDetailsFragment extends Fragment {
     private Animation rotateAntiClockWiseFabAnim;
     private Animation fromBottomBgAnim;
     private Animation toBottomBgAnim;
-
+    public static GoingToService goingToService = ClientUtils.goingToService;
+    private boolean isUserGoing = false;
 
     public EventDetailsFragment() {
         // Required empty public constructor
@@ -196,11 +209,163 @@ public class EventDetailsFragment extends Fragment {
     }
 
     private void onGoingClicked() {
-        Toast.makeText(getContext(), "Going Clicked", Toast.LENGTH_SHORT).show();
+        if (currentUser == null) {
+            Toast.makeText(getContext(), "You must be logged in.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (foundEvent == null) {
+            Toast.makeText(getContext(), "Event data not loaded.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Onemogućavamo dugme da sprečimo duple klikove dok traje poziv
+        setGoingToButtonClickable(false);
+
+        if (isUserGoing) {
+            // Ako korisnik već ide, pozivamo metodu za uklanjanje
+            removeUserFromEvent();
+        } else {
+            // Ako korisnik ne ide, pozivamo metodu za dodavanje
+            addUserToEvent();
+        }
+    }
+
+    private void addUserToEvent() {
+        // Kreiramo DTO sa kompletnim objektima koje već imamo u fragmentu
+        UserEventDTO dto = new UserEventDTO(foundEvent, currentUser);
+
+        Call<UserEventDTO> call = ClientUtils.goingToService.addGoingToEvent(dto);
+
+        call.enqueue(new Callback<UserEventDTO>() {
+            @Override
+            public void onResponse(Call<UserEventDTO> call, Response<UserEventDTO> response) {
+                if (response.isSuccessful()) {
+                    isUserGoing = true;
+                    updateGoingToButtonUI();
+                    // Važno: Ažurirajte lokalnu listu u currentUser objektu!
+                    if(currentUser != null && currentUser.getGoingToEvents() != null){
+                        currentUser.getGoingToEvents().add(foundEvent);
+                    }
+                    Snackbar.make(binding.getRoot(), "You are now going to this event!", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(binding.getRoot(), "Error: " + response.code(), Snackbar.LENGTH_SHORT).show();
+                }
+                setGoingToButtonClickable(true);
+            }
+
+            @Override
+            public void onFailure(Call<UserEventDTO> call, Throwable t) {
+                Snackbar.make(binding.getRoot(), "Network error.", Snackbar.LENGTH_SHORT).show();
+                setGoingToButtonClickable(true);
+            }
+        });
+    }
+
+    private void removeUserFromEvent() {
+        Call<Void> call = ClientUtils.goingToService.removeGoingToEvent(foundEvent.getId(), currentUser.getId());
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    isUserGoing = false;
+                    updateGoingToButtonUI();
+                    // Važno: Ažurirajte lokalnu listu u currentUser objektu!
+                    if(currentUser != null && currentUser.getGoingToEvents() != null){
+                        currentUser.getGoingToEvents().removeIf(event -> event.getId().equals(foundEvent.getId()));
+                    }
+                    Snackbar.make(binding.getRoot(), "You are no longer going to this event.", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(binding.getRoot(), "Error: " + response.code(), Snackbar.LENGTH_SHORT).show();
+                }
+                setGoingToButtonClickable(true);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Snackbar.make(binding.getRoot(), "Network error.", Snackbar.LENGTH_SHORT).show();
+                setGoingToButtonClickable(true);
+            }
+        });
+    }
+
+    // NOVA helper metoda da se ne ponavlja kod
+    private void setGoingToButtonClickable(boolean clickable) {
+        binding.fabGoing.setClickable(clickable);
+        binding.textGoing.setClickable(clickable);
     }
 
     private void onDownloadClicked() {
-        Toast.makeText(getContext(), "Download Clicked", Toast.LENGTH_SHORT).show();
+        if (foundEvent == null) {
+            Toast.makeText(getContext(), "Event details not loaded yet.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Prikazujemo poruku da je preuzimanje počelo
+        Snackbar.make(binding.getRoot(), "Starting download...", Snackbar.LENGTH_SHORT).show();
+
+        // Pozivamo ispravljenu metodu servisa
+        Call<ResponseBody> call = ClientUtils.eventService.exportEventToPdf(foundEvent.getId());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Prebacujemo operaciju pisanja fajla na pozadinsku nit
+                    // da ne bismo blokirali korisnički interfejs
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    executor.execute(() -> {
+                        boolean success = savePdfToDownloads(response.body());
+                        // Vraćamo se na glavnu nit da prikažemo rezultat
+                        getActivity().runOnUiThread(() -> {
+                            if (success) {
+                                Snackbar.make(binding.getRoot(), "PDF saved to Downloads folder.", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                Snackbar.make(binding.getRoot(), "Failed to save PDF.", Snackbar.LENGTH_LONG).show();
+                            }
+                        });
+                    });
+                } else {
+                    Snackbar.make(binding.getRoot(), "Download failed: " + response.message(), Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Snackbar.make(binding.getRoot(), "Network Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private boolean savePdfToDownloads(ResponseBody body) {
+        String fileName = "Event_" + foundEvent.getId() + ".pdf";
+        ContentResolver resolver = getContext().getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+        // Čuvamo fajl u javni "Downloads" folder
+        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+        Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues);
+
+        if (uri != null) {
+            try (InputStream inputStream = body.byteStream();
+                 OutputStream outputStream = resolver.openOutputStream(uri)) {
+
+                if (outputStream == null) return false;
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                return true;
+
+            } catch (IOException e) {
+                Log.e("PDF_SAVE", "Error saving PDF", e);
+                return false;
+            }
+        }
+        return false;
     }
 
     private void onOrganizerClicked() {
@@ -360,6 +525,34 @@ public class EventDetailsFragment extends Fragment {
         binding.addressText2.setText(address2);
         binding.date2Text.setText(DateStringFormatter.format(foundEvent.getStarts(), "dd.MM.yyyy HH:mm"));
         binding.date3Text.setText(DateStringFormatter.format(foundEvent.getEnds(), "dd.MM.yyyy HH:mm"));
+
+        checkInitialGoingToState();
+        updateGoingToButtonUI();
+    }
+
+    // NOVA METODA za proveru početnog stanja
+    private void checkInitialGoingToState() {
+        if (currentUser == null || currentUser.getGoingToEvents() == null || foundEvent == null) {
+            isUserGoing = false;
+            return;
+        }
+
+        // Proveravamo da li lista događaja na koje korisnik ide sadrži trenutni događaj
+        isUserGoing = currentUser.getGoingToEvents().stream()
+                .anyMatch(event -> event.getId().equals(foundEvent.getId()));
+    }
+
+    // NOVA METODA za ažuriranje teksta i izgleda dugmeta
+    private void updateGoingToButtonUI() {
+        if (isUserGoing) {
+            binding.textGoing.setText("You are going!");
+            // Opciono: promenite ikonicu ili boju dugmeta da reflektuje stanje
+            // binding.fabGoing.setImageResource(R.drawable.ic_cancel);
+        } else {
+            binding.textGoing.setText("Add me to event");
+            // Opciono: vratite ikonicu na podrazumevanu
+            // binding.fabGoing.setImageResource(R.drawable.ic_check);
+        }
     }
 
     private void setMap() {
