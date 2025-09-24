@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 newIntent.putExtras(args);
                 startActivity(newIntent);
                 finish();
+            }else{
+                doTransition();
             }
         }
-        if (ClientUtils.getTokenManager().getToken() != null && intent.getBooleanExtra("fromNotification", false)){
+        else if (ClientUtils.getTokenManager().getToken() != null && intent.getBooleanExtra("fromNotification", false)){
             tranistionToHomeActivityWithNotificationIntent(intent);
         }
         else{

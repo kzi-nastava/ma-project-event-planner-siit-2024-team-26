@@ -39,7 +39,6 @@ public class EventCreationFormFragment extends Fragment {
 
     Button addButton;
     Button resetButton;
-    Button eventCreateButton;
     TextView emailTextView;
     TextView enteredEmailsTextView;
 
@@ -74,7 +73,6 @@ public class EventCreationFormFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_creation_form, container, false);
         addButton = view.findViewById(R.id.addButton);
         resetButton = view.findViewById(R.id.resetButton);
-        eventCreateButton = view.findViewById(R.id.eventCreateButton);
         emailTextView = view.findViewById(R.id.emailInput);
         enteredEmailsTextView = view.findViewById(R.id.enteredEmails);
         enteredEmailsTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -110,17 +108,6 @@ public class EventCreationFormFragment extends Fragment {
                 enteredEmailsTextView.setText(makeEmailsString());
             }
         });
-
-        eventCreateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (String email: enteredEmails){
-                    sendInvitation(email);
-                }
-
-            }
-        });
-
         return view;
     }
 
