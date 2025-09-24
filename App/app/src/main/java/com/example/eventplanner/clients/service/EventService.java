@@ -11,6 +11,7 @@ import com.example.eventplanner.model.Page;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -45,5 +46,5 @@ public interface EventService {
     Call<CreatedEventDTO> createEvent(@Body CreateEventDTO event);
 
     @GET("events/{eventId}/export-pdf")
-    Call<byte[]> exportEventToPdf(@Query("eventId") Integer eventId);
+    Call<ResponseBody> exportEventToPdf(@Path("eventId") Integer eventId);
 }

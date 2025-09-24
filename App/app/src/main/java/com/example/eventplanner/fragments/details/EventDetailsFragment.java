@@ -1,5 +1,8 @@
 package com.example.eventplanner.fragments.details;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -9,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +51,14 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.IdentityHashMap;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -200,7 +210,76 @@ public class EventDetailsFragment extends Fragment {
     }
 
     private void onDownloadClicked() {
-        Toast.makeText(getContext(), "Download Clicked", Toast.LENGTH_SHORT).show();
+        if (foundEvent == null) {
+            Toast.makeText(getContext(), "Event details not loaded yet.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Prikazujemo poruku da je preuzimanje počelo
+        Snackbar.make(binding.getRoot(), "Starting download...", Snackbar.LENGTH_SHORT).show();
+
+        // Pozivamo ispravljenu metodu servisa
+        Call<ResponseBody> call = ClientUtils.eventService.exportEventToPdf(foundEvent.getId());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Prebacujemo operaciju pisanja fajla na pozadinsku nit
+                    // da ne bismo blokirali korisnički interfejs
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    executor.execute(() -> {
+                        boolean success = savePdfToDownloads(response.body());
+                        // Vraćamo se na glavnu nit da prikažemo rezultat
+                        getActivity().runOnUiThread(() -> {
+                            if (success) {
+                                Snackbar.make(binding.getRoot(), "PDF saved to Downloads folder.", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                Snackbar.make(binding.getRoot(), "Failed to save PDF.", Snackbar.LENGTH_LONG).show();
+                            }
+                        });
+                    });
+                } else {
+                    Snackbar.make(binding.getRoot(), "Download failed: " + response.message(), Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Snackbar.make(binding.getRoot(), "Network Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private boolean savePdfToDownloads(ResponseBody body) {
+        String fileName = "Event_" + foundEvent.getId() + ".pdf";
+        ContentResolver resolver = getContext().getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+        // Čuvamo fajl u javni "Downloads" folder
+        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+        Uri uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues);
+
+        if (uri != null) {
+            try (InputStream inputStream = body.byteStream();
+                 OutputStream outputStream = resolver.openOutputStream(uri)) {
+
+                if (outputStream == null) return false;
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                return true;
+
+            } catch (IOException e) {
+                Log.e("PDF_SAVE", "Error saving PDF", e);
+                return false;
+            }
+        }
+        return false;
     }
 
     private void onOrganizerClicked() {
