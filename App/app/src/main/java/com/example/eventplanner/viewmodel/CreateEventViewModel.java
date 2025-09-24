@@ -1,17 +1,23 @@
 package com.example.eventplanner.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.service.EventService;
 import com.example.eventplanner.clients.service.EventTypeService;
+import com.example.eventplanner.clients.service.InvitationService;
 import com.example.eventplanner.dto.address.CreateAddressDTO;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.event.CreateEventDTO;
 import com.example.eventplanner.dto.event.CreatedEventDTO;
+import com.example.eventplanner.dto.event.EventReservationDTO;
 import com.example.eventplanner.dto.eventOrganizer.GetEventOrganizerDTO;
 import com.example.eventplanner.dto.eventType.GetEventTypeDTO;
+import com.example.eventplanner.dto.invitation.CreateInvitationDTO;
+import com.example.eventplanner.dto.invitation.CreatedInvitationDTO;
 import com.example.eventplanner.dto.location.CreateLocationDTO;
 import com.example.eventplanner.model.*;
 
@@ -63,6 +69,8 @@ public class CreateEventViewModel extends ViewModel {
     public void setCurrentUser(GetAuthenticatedUserDTO user) {
         currentUser = user;
     }
+
+    private ArrayList<String> enteredEmails;
 
     public void fetchEventTypes() {
         isLoading.setValue(true); // Počelo je učitavanje
@@ -139,7 +147,9 @@ public class CreateEventViewModel extends ViewModel {
                     // 3. AKO JE PRVI POZIV USPEO, POKREĆEMO OSTALE POZIVE
                     // Ovo je replika logike iz vaše web aplikacije
                     createActivities(createdEvent);
-                    createInvitations(createdEvent);
+                    for (String email : enteredEmails){
+                        createInvitations(email, createdEvent);
+                    }
                     createReservations(createdEvent);
 
                     snackbarMessage.postValue("Event created successfully!");
@@ -228,15 +238,44 @@ public class CreateEventViewModel extends ViewModel {
         System.out.println("Placeholder: Creating activities for event ID: " + event.getId());
     }
 
-    private void createInvitations(CreatedEventDTO event) {
-        // Logika za prikupljanje emailova i poziv InvitationService-a
-        // List<String> emails = emailList.getValue();
-        // ... for petlja i poziv invitationService.addInvitation(...)
-        System.out.println("Placeholder: Creating invitations for event ID: " + event.getId());
+    private void createInvitations(String email, CreatedEventDTO createdEvent) {
+        EventReservationDTO event = new EventReservationDTO(createdEvent.getId(), createdEvent.getName(), createdEvent.getDescription(), createdEvent.getStarts());
+
+        CreateInvitationDTO invitation =new CreateInvitationDTO(email, event, "Come to our closed type event!" );
+
+        Call<CreatedInvitationDTO> call = ClientUtils.invitationService.createInvitation(invitation);
+        call.enqueue(new Callback<CreatedInvitationDTO>() {
+
+            @Override
+            public void onResponse(Call<CreatedInvitationDTO> call, Response<CreatedInvitationDTO> response) {
+                if (response.isSuccessful()) {
+                }
+            }
+            @Override
+            public void onFailure(Call<CreatedInvitationDTO> call, Throwable t) {
+                Log.i("POZIV", t.getMessage());
+            }
+        });
     }
 
     private void createReservations(CreatedEventDTO event) {
         // Logika za prikupljanje rezervisanih servisa i poziv ReservationService-a
         System.out.println("Placeholder: Creating reservations for event ID: " + event.getId());
+    }
+
+    public void clearEmailsList(){
+        this.enteredEmails.clear();
+    }
+
+    public void instanciateEmailsList(){
+        this.enteredEmails = new ArrayList<String>();
+    }
+
+    public void addEmailToEmailsList(String email){
+        this.enteredEmails.add(email);
+    }
+
+    public ArrayList<String> getEmailsList(){
+        return this.enteredEmails;
     }
 }
