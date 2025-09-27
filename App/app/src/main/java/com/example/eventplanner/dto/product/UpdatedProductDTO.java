@@ -1,45 +1,36 @@
 package com.example.eventplanner.dto.product;
 
-import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.category.GetCategoryDTO;
+import com.example.eventplanner.dto.comment.UpdatedCommentDTO;
 import com.example.eventplanner.model.ServiceProductType;
-import com.google.gson.annotations.SerializedName;
-
-import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 
-public class GetProductDTO {
+public class UpdatedProductDTO {
     private Integer id;
     private String name;
     private GetCategoryDTO category;
     private String description;
     private double price;
     private double discount;
-    private ArrayList<String> images;
     private ServiceProductType serviceProductType;
     private Integer gradeSum;
     private Integer gradeCount;
-    private ArrayList<Comment> comments;
-    @SerializedName("available")
+    private ArrayList<UpdatedCommentDTO> comments;
     private boolean isAvailable;
-    @SerializedName("visible")
     private boolean isVisible;
-    @SerializedName("deleted")
     private boolean isDeleted;
-    private GetAuthenticatedUserDTO spProvider;
 
-    public GetProductDTO() {
+    public UpdatedProductDTO() {
     }
 
-    public GetProductDTO(Integer id, String name, GetCategoryDTO category, String description, double price, double discount, ArrayList<String> images, ServiceProductType serviceProductType, Integer gradeSum, Integer gradeCount, ArrayList<Comment> comments, boolean isAvailable, boolean isVisible, boolean isDeleted, GetAuthenticatedUserDTO spProvider) {
+    public UpdatedProductDTO(Integer id, String name, GetCategoryDTO category, String description, double price, double discount, ServiceProductType serviceProductType, Integer gradeSum, Integer gradeCount, ArrayList<UpdatedCommentDTO> comments, boolean isAvailable, boolean isVisible, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
         this.price = price;
         this.discount = discount;
-        this.images = images;
         this.serviceProductType = serviceProductType;
         this.gradeSum = gradeSum;
         this.gradeCount = gradeCount;
@@ -47,7 +38,6 @@ public class GetProductDTO {
         this.isAvailable = isAvailable;
         this.isVisible = isVisible;
         this.isDeleted = isDeleted;
-        this.spProvider = spProvider;
     }
 
     public Integer getId() {
@@ -98,14 +88,6 @@ public class GetProductDTO {
         this.discount = discount;
     }
 
-    public ArrayList<String> getImages() {
-        return images;
-    }
-
-    public void setImages(ArrayList<String> images) {
-        this.images = images;
-    }
-
     public ServiceProductType getServiceProductType() {
         return serviceProductType;
     }
@@ -130,11 +112,11 @@ public class GetProductDTO {
         this.gradeCount = gradeCount;
     }
 
-    public ArrayList<Comment> getComments() {
+    public ArrayList<UpdatedCommentDTO> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<Comment> comments) {
+    public void setComments(ArrayList<UpdatedCommentDTO> comments) {
         this.comments = comments;
     }
 
@@ -160,13 +142,5 @@ public class GetProductDTO {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
-    }
-
-    public GetAuthenticatedUserDTO getSpProvider() {
-        return spProvider;
-    }
-
-    public void setSpProvider(GetAuthenticatedUserDTO spProvider) {
-        this.spProvider = spProvider;
     }
 }

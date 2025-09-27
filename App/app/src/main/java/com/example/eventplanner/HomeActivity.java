@@ -44,6 +44,7 @@ import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.eventCreation.CreateEventHostFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.CommentsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.MyProductsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ReportsFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
@@ -324,6 +325,11 @@ public class HomeActivity extends AppCompatActivity {
                             selected[0] = true;
                             dialog.dismiss();
                             FragmentTransition.to(ServiceCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                            currentSelectedBottomIcon = R.id.create;
+                        } else {
+                            selected[0] = true;
+                            dialog.dismiss();
+                            FragmentTransition.to(MyProductsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                             currentSelectedBottomIcon = R.id.create;
                         }
                     }
