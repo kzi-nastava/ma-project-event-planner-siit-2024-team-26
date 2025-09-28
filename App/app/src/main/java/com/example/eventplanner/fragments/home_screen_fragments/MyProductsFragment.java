@@ -19,8 +19,10 @@ import com.example.eventplanner.R;
 import com.example.eventplanner.adapters.MyProductsAdapter;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.product.GetProductDTO;
+import com.example.eventplanner.fragments.CreateProductFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.details.ProductDetailsFragment;
+import com.example.eventplanner.fragments.details.UserDetailsFragment;
 import com.example.eventplanner.fragments.eventCreation.CreateEventHostFragment;
 import com.example.eventplanner.viewmodel.MyProductsViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -35,6 +37,7 @@ public class MyProductsFragment extends Fragment implements MyProductsAdapter.On
     private MyProductsAdapter adapter;
     private ProgressBar progressBar;
     private Button btnAddProduct;
+    private GetAuthenticatedUserDTO currentUser;
     private Integer loggedInUserId = 1; // Primer! Zamenite sa pravim ID-jem ulogovanog korisnika
 
     public static MyProductsFragment newInstance(GetAuthenticatedUserDTO currentUser) {
@@ -42,6 +45,7 @@ public class MyProductsFragment extends Fragment implements MyProductsAdapter.On
         Bundle args = new Bundle();
         args.putParcelable("currentUser", currentUser);
         fragment.setArguments(args);
+        fragment.currentUser = currentUser;
         fragment.loggedInUserId = currentUser.getId();
         return fragment;
     }
@@ -71,10 +75,7 @@ public class MyProductsFragment extends Fragment implements MyProductsAdapter.On
         // Dobavi proizvode za ulogovanog korisnika
         viewModel.fetchProducts(loggedInUserId);
 
-        btnAddProduct.setOnClickListener(v -> {
-            // Logika za navigaciju na ekran za kreiranje novog proizvoda
-            Toast.makeText(getContext(), "Navigate to Create Product Screen", Toast.LENGTH_SHORT).show();
-        });
+        btnAddProduct.setOnClickListener(v -> onCreateProductClicked());
     }
 
     private void setupObservers() {
@@ -93,6 +94,15 @@ public class MyProductsFragment extends Fragment implements MyProductsAdapter.On
                 Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void onCreateProductClicked() {
+        FragmentTransition.to(
+                CreateProductFragment.newInstance(currentUser),
+                getActivity(),
+                true,
+                R.id.my_products_fragment
+        );
     }
 
     @Override

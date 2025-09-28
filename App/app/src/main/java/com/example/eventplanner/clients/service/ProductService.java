@@ -2,6 +2,8 @@ package com.example.eventplanner.clients.service;
 
 import com.example.eventplanner.dto.event.GetEventDTO;
 import com.example.eventplanner.dto.event.TopEventDTO;
+import com.example.eventplanner.dto.product.CreateProductDTO;
+import com.example.eventplanner.dto.product.CreatedProductDTO;
 import com.example.eventplanner.dto.product.GetProductDTO;
 import com.example.eventplanner.dto.product.ProductCardDTO;
 import com.example.eventplanner.dto.product.TopProductDTO;
@@ -13,8 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -58,4 +62,7 @@ public interface ProductService {
 
     @DELETE("products/{id}")
     Call<Void> deleteProduct(@Path("id") int productId);
+
+    @POST("products")
+    Call<CreatedProductDTO> createProduct(@Body CreateProductDTO productDTO);
 }

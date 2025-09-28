@@ -198,7 +198,12 @@ public class ProductDetailsFragment extends Fragment {
     private void setAttributes() {
         binding.productName.setText(foundProduct.getName());
         binding.description.setText(foundProduct.getDescription());
-        binding.categoryText.setText(foundProduct.getCategory().getName());
+        if (foundProduct.getCategory() != null) {
+            binding.categoryText.setText(foundProduct.getCategory().getName());
+        } else {
+            binding.categoryText.setText("No category");
+            
+        }
         binding.priceText.setText(String.format("%.2f €", foundProduct.getPrice()));
         binding.discountText.setText(String.format("%.0f%%", foundProduct.getDiscount()));
         String rating = "N/A";
