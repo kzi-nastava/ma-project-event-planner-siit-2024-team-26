@@ -2,7 +2,9 @@ package com.example.eventplanner.dto.product;
 
 import com.example.eventplanner.dto.category.GetCategoryDTO;
 import com.example.eventplanner.dto.comment.UpdatedCommentDTO;
+import com.example.eventplanner.dto.serviceProductProvider.GetSPProviderDTO;
 import com.example.eventplanner.model.ServiceProductType;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -17,14 +19,18 @@ public class UpdatedProductDTO {
     private Integer gradeSum;
     private Integer gradeCount;
     private ArrayList<UpdatedCommentDTO> comments;
+    private GetSPProviderDTO spProvider;
+    @SerializedName("available")
     private boolean isAvailable;
+    @SerializedName("visible")
     private boolean isVisible;
+    @SerializedName("deleted")
     private boolean isDeleted;
 
     public UpdatedProductDTO() {
     }
 
-    public UpdatedProductDTO(Integer id, String name, GetCategoryDTO category, String description, double price, double discount, ServiceProductType serviceProductType, Integer gradeSum, Integer gradeCount, ArrayList<UpdatedCommentDTO> comments, boolean isAvailable, boolean isVisible, boolean isDeleted) {
+    public UpdatedProductDTO(Integer id, String name, GetCategoryDTO category, String description, double price, double discount, ServiceProductType serviceProductType, Integer gradeSum, Integer gradeCount, ArrayList<UpdatedCommentDTO> comments, GetSPProviderDTO spProvider, boolean isAvailable, boolean isVisible, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -38,6 +44,7 @@ public class UpdatedProductDTO {
         this.isAvailable = isAvailable;
         this.isVisible = isVisible;
         this.isDeleted = isDeleted;
+        this.spProvider = spProvider;
     }
 
     public Integer getId() {
@@ -142,5 +149,13 @@ public class UpdatedProductDTO {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public GetSPProviderDTO getSpProvider() {
+        return spProvider;
+    }
+
+    public void setSpProvider(GetSPProviderDTO spProvider) {
+        this.spProvider = spProvider;
     }
 }

@@ -143,6 +143,8 @@ public class CreateProductFragment extends Fragment {
             binding.layoutProposedCategory.setVisibility(isProposing ? View.VISIBLE : View.GONE);
         });
 
+        updateCategorySelection();
+
         viewModel.getSelectedImageUris().observe(getViewLifecycleOwner(), this::updateImagePreviews);
     }
 
@@ -160,6 +162,25 @@ public class CreateProductFragment extends Fragment {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, categoryNames);
         binding.actvCategory.setAdapter(adapter);
+    }
+
+    private void updateCategorySelection() {
+        int categoryId = 0;
+        if (viewModel.selectedCategory.getValue() != null) {
+            categoryId = viewModel.selectedCategory.getValue().getId();
+        }
+        List<GetCategoryDTO> categories = viewModel.getCategories().getValue();
+
+        // Izvrši logiku samo ako su i proizvod i kategorije učitani
+        if (categoryId != 0 && categories != null) {
+            for (int i = 0; i < categories.size(); i++) {
+                if (categories.get(i).getId().equals(categoryId)) {
+                    String categoryName = categories.get(i).getName();
+                    binding.actvCategory.setText(categoryName, false); // false da ne bi otvarao listu
+                    return;
+                }
+            }
+        }
     }
 
     private void updateImagePreviews(List<Uri> uris) {

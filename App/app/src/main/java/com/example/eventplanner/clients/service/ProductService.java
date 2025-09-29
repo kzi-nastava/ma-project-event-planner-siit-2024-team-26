@@ -7,6 +7,7 @@ import com.example.eventplanner.dto.product.CreatedProductDTO;
 import com.example.eventplanner.dto.product.GetProductDTO;
 import com.example.eventplanner.dto.product.ProductCardDTO;
 import com.example.eventplanner.dto.product.TopProductDTO;
+import com.example.eventplanner.dto.product.UpdateProductDTO;
 import com.example.eventplanner.dto.product.UpdatedProductDTO;
 import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.model.Page;
@@ -65,4 +66,7 @@ public interface ProductService {
 
     @POST("products")
     Call<CreatedProductDTO> createProduct(@Body CreateProductDTO productDTO);
+
+    @PUT("products/{id}")
+    Call<UpdatedProductDTO> updateProduct(@Path("id") int productId, @Body UpdateProductDTO productDTO);
 }

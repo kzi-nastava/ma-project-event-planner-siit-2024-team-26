@@ -1,29 +1,33 @@
 package com.example.eventplanner.dto.product;
 
 import com.example.eventplanner.dto.category.GetCategoryDTO;
+import com.example.eventplanner.dto.serviceProductProvider.GetSPProviderDTO;
 import com.example.eventplanner.model.ServiceProductProvider;
+import com.google.gson.annotations.SerializedName;
 
 public class UpdateProductDTO {
+    @SerializedName("available")
     private boolean isAvailable;
+    @SerializedName("visible ")
     private boolean isVisible;
     private GetCategoryDTO category;
     private String description;
     private double price;
     private double discount;
-    private ServiceProductProvider serviceProductProvider;
+    private GetSPProviderDTO spProvider;
     private String newCategory;
 
     public UpdateProductDTO() {
     }
 
-    public UpdateProductDTO(boolean isAvailable, boolean isVisible, GetCategoryDTO category, String description, double price, double discount, ServiceProductProvider serviceProductProvider, String newCategory) {
+    public UpdateProductDTO(boolean isAvailable, boolean isVisible, GetCategoryDTO category, String description, double price, double discount, GetSPProviderDTO spProvider, String newCategory) {
         this.isAvailable = isAvailable;
         this.isVisible = isVisible;
         this.category = category;
         this.description = description;
         this.price = price;
         this.discount = discount;
-        this.serviceProductProvider = serviceProductProvider;
+        this.spProvider = spProvider;
         this.newCategory = newCategory;
     }
 
@@ -75,12 +79,12 @@ public class UpdateProductDTO {
         this.discount = discount;
     }
 
-    public ServiceProductProvider getServiceProductProvider() {
-        return serviceProductProvider;
+    public GetSPProviderDTO getSPProvider() {
+        return spProvider;
     }
 
-    public void setServiceProductProvider(ServiceProductProvider serviceProductProvider) {
-        this.serviceProductProvider = serviceProductProvider;
+    public void setSPProvider(GetSPProviderDTO spProvider) {
+        this.spProvider = spProvider;
     }
 
     public String getNewCategory() {

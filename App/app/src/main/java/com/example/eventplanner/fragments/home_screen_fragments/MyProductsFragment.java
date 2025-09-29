@@ -20,6 +20,7 @@ import com.example.eventplanner.adapters.MyProductsAdapter;
 import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
 import com.example.eventplanner.dto.product.GetProductDTO;
 import com.example.eventplanner.fragments.CreateProductFragment;
+import com.example.eventplanner.fragments.EditProductFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.details.ProductDetailsFragment;
 import com.example.eventplanner.fragments.details.UserDetailsFragment;
@@ -112,8 +113,7 @@ public class MyProductsFragment extends Fragment implements MyProductsAdapter.On
 
     @Override
     public void onEditClicked(GetProductDTO product) {
-        Toast.makeText(getContext(), "Edit " + product.getName(), Toast.LENGTH_SHORT).show();
-        // Navigacija na EditProductFragment...
+        FragmentTransition.to(EditProductFragment.newInstance(product.getId(), currentUser), getActivity(), true, R.id.my_products_fragment);
     }
 
     @Override
