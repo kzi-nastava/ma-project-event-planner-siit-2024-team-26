@@ -3,7 +3,14 @@ package com.example.eventplanner.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.eventplanner.dto.event.GetEventDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AuthenticatedUser implements Parcelable {
+
+    private Integer id;
     private String email;
     private String password;
     private Boolean isActive;
@@ -12,8 +19,13 @@ public class AuthenticatedUser implements Parcelable {
     private String lastName;
     private String phoneNumber;
     private Address address;
+    private List<Event> favouriteEvents;
+    private List<Event> goingToEvents;
 
-    public AuthenticatedUser(String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
+    public AuthenticatedUser(Integer id, String email, String password, Boolean isActive, String role,
+                             String firstName, String lastName, String phoneNumber, Address address,
+                             List<Event> favouriteEvents, List<Event> goingToEvents) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.isActive = isActive;
@@ -22,6 +34,16 @@ public class AuthenticatedUser implements Parcelable {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.favouriteEvents = favouriteEvents;
+        this.goingToEvents = goingToEvents;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -88,7 +110,24 @@ public class AuthenticatedUser implements Parcelable {
         this.address = address;
     }
 
+    public List<Event> getFavouriteEvents() {
+        return favouriteEvents;
+    }
+
+    public void setFavouriteEvents(List<Event> favouriteEvents) {
+        this.favouriteEvents = favouriteEvents;
+    }
+
+    public List<Event> getGoingToEvents() {
+        return goingToEvents;
+    }
+
+    public void setGoingToEvents(List<Event> goingToEvents) {
+        this.goingToEvents = goingToEvents;
+    }
+
     protected AuthenticatedUser(Parcel in) {
+        id = in.readInt();
         email = in.readString();
         password = in.readString();
         byte tmpIsActive = in.readByte();
@@ -98,10 +137,15 @@ public class AuthenticatedUser implements Parcelable {
         lastName = in.readString();
         phoneNumber = in.readString();
         address = in.readParcelable(Address.class.getClassLoader());
+        /*favouriteEvents = new ArrayList<>();
+        in.readTypedList(favouriteEvents, Event.CREATOR);
+        goingToEvents = new ArrayList<>();
+        in.readTypedList(goingToEvents, Event.CREATOR);*/
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(email);
         dest.writeString(password);
         dest.writeByte((byte) (isActive == null ? 0 : isActive ? 1 : 2));
@@ -110,6 +154,8 @@ public class AuthenticatedUser implements Parcelable {
         dest.writeString(lastName);
         dest.writeString(phoneNumber);
         dest.writeParcelable(address, flags);
+        // dest.writeTypedList(favouriteEvents);
+        // dest.writeTypedList(goingToEvents);
     }
 
     @Override

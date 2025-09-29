@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/homePageButton"
+            android:icon="@drawable/baseline_home_24"
+            android:title="@string/Home" />
+        <item
             android:id="@+id/profileButton"
             android:icon="@drawable/baseline_account_24"
             android:title="@string/DrawerProfile" />
@@ -21,8 +25,20 @@
             android:icon="@drawable/baseline_settings_24"
             android:title="@string/DrawerSettings" />
         <item
+            android:id="@+id/usersCommentsButton"
+            android:icon="@drawable/baseline_chat_24"
+            android:title="@string/DrawerComments"
+            android:visible="false"/>
+        <item
+            android:id="@+id/usersReportsButton"
+            android:icon="@drawable/baseline_warning_24"
+            android:title="@string/DrawerReports"
+            android:visible="false"/>
+
+        <item
             android:id="@+id/logoutButton"
             android:icon="@drawable/baseline_logout_24"
             android:title="@string/DrawerLogout" />
+
     </group>
 </menu>

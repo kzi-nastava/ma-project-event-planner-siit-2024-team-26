@@ -1,19 +1,28 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
+
+def getIpAddress(){
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("ip_addr")
 }
 
 android {
     namespace 'com.example.eventplanner'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.example.eventplanner"
         minSdk 30
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "IP_ADDR", "\""+getIpAddress()+"\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -26,6 +35,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+        compose true
+    }
+
+    packagingOptions {
+        exclude 'META-INF/*'
+
+    }
 }
 
 dependencies {
@@ -34,9 +54,54 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.recyclerview
+    implementation libs.lifecycle.runtime.ktx
+    implementation libs.activity.compose
+    implementation platform(libs.compose.bom)
+    implementation libs.ui
+    implementation libs.ui.graphics
+    implementation libs.ui.tooling.preview
+    implementation libs.material3
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation libs.ucrop
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'com.kizitonwose.calendar:view:2.0.4'
+    androidTestImplementation platform(libs.compose.bom)
+    androidTestImplementation libs.ui.test.junit4
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
+
+    implementation 'org.java-websocket:Java-WebSocket:1.5.2'
+    implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.6'
+    // RxJava za backend operacije
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+
+// RxAndroid za glavnu nit (Android operacije)
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // Za mape
+    implementation 'org.osmdroid:osmdroid-android:6.1.14'
+    implementation 'org.osmdroid:osmdroid-geopackage:6.1.14'
+
+    //Za uoblicenu sliku
+    // implementation libs.material.stepper
+    implementation 'com.google.android.material:material:1.12.0'
+
+    implementation libs.lifecycle.viewmodel
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.7.0'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    // Volley za HTTP pozive
+    implementation 'com.android.volley:volley:1.2.1'
+    debugImplementation libs.ui.tooling
+    debugImplementation libs.ui.test.manifest
+
 
 }

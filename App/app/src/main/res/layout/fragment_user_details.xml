@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".fragments.details.UserDetailsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/userFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholderText"
+            android:textAlignment="center"
+            android:textColor="@color/blackreversable"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:background="@color/accent"
+            android:src="@drawable/baseline_account_24"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/roleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/placeholderText"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/roleIcon"
+            app:layout_constraintTop_toTopOf="@+id/roleIcon" />
+
+        <TextView
+            android:id="@+id/phoneText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/placeholderText"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/phoneIcon"
+            app:layout_constraintTop_toTopOf="@+id/phoneIcon" />
+
+        <TextView
+            android:id="@+id/emailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/placeholderText"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/emailIcon"
+            app:layout_constraintTop_toTopOf="@+id/emailIcon" />
+
+        <TextView
+            android:id="@+id/addressText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/placeholderText"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/addressIcon"
+            app:layout_constraintTop_toTopOf="@+id/addressIcon" />
+
+        <TextView
+            android:id="@+id/addressText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/placeholderText"
+            android:textSize="20sp"
+            android:textColor="@color/blackreversable"
+            app:layout_constraintStart_toEndOf="@+id/addressIcon"
+            app:layout_constraintTop_toBottomOf="@+id/addressText1" />
+
+        <ImageView
+            android:id="@+id/roleIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/baseline_category_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userFullName"
+            app:tint="@color/blackreversable" />
+
+        <ImageView
+            android:id="@+id/phoneIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_call_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/roleIcon"
+            app:tint="@color/blackreversable" />
+
+        <ImageView
+            android:id="@+id/emailIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_email_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phoneIcon"
+            app:tint="@color/blackreversable" />
+
+        <ImageView
+            android:id="@+id/addressIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/baseline_location_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailIcon"
+            app:tint="@color/blackreversable" />
+
+        <View
+            android:id="@+id/transparentBg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC3E3E3E"
+            android:backgroundTint="#CC3E3E3E"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_add_24"
+            app:backgroundTint="@color/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/addressText1"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabChatUser"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_chat_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabMain"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabReport"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:foregroundTint="@color/white"
+            android:src="@drawable/baseline_alert_24"
+            android:visibility="invisible"
+            app:backgroundTint="@color/secondary"
+            app:fabCustomSize="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/fabChatUser"
+            app:layout_constraintEnd_toEndOf="@+id/fabMain"
+            app:layout_constraintStart_toStartOf="@+id/fabMain"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/textChatUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="@string/chatUser"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabChatUser"
+            app:layout_constraintEnd_toStartOf="@+id/fabChatUser"
+            app:layout_constraintTop_toTopOf="@+id/fabChatUser" />
+
+        <TextView
+            android:id="@+id/textFavourites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/card_background_secondary"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="@string/reportUser"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fabReport"
+            app:layout_constraintEnd_toStartOf="@+id/fabReport"
+            app:layout_constraintTop_toTopOf="@+id/fabReport" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -1,17 +1,22 @@
 package com.example.eventplanner;
 
-import android.annotation.SuppressLint;
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,35 +25,68 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
+import com.example.eventplanner.adapters.ServiceSearchAdapter;
+import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.clients.authorization.TokenManager;
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+import com.example.eventplanner.fragments.EventCreationFormFragment;
+import com.example.eventplanner.fragments.eventCreation.CreateEventHostFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.CommentsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.MyProductsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.NotificationsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.ReportsFragment;
+import com.example.eventplanner.fragments.home_screen_fragments.SingleChatFragment;
+import com.example.eventplanner.services.WebSocketService;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.service.ServiceCardDTO;
 import com.example.eventplanner.fragments.ServiceCreationFormFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.EventTabFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 import com.example.eventplanner.fragments.home_screen_fragments.HomeScreenFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.ServiceProductTabFragment;
-import com.example.eventplanner.fragments.home_screen_fragments.TopListsTabFragment;
 import com.example.eventplanner.model.AuthenticatedUser;
+import com.example.eventplanner.model.Page;
+import com.example.eventplanner.model.Role;
 import com.example.eventplanner.model.ServiceProductProvider;
+import com.example.eventplanner.clients.service.EventService;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeActivity extends AppCompatActivity {
+
+
+    private EventService eventService;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
 
-    private AuthenticatedUser user;
+    private GetAuthenticatedUserDTO user;
     private Boolean isCreationFormShowed;
+
+    private Boolean toExitApplication;
 
     BottomNavigationView bottomNavigationView;
     int currentSelectedBottomIcon;
+
+    boolean isFromNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +100,6 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
         drawerLayout = findViewById(R.id.drawer_layout);
         MaterialToolbar toolbar = findViewById(R.id.materialToolbar2);
         setSupportActionBar(toolbar);
@@ -78,12 +115,18 @@ public class HomeActivity extends AppCompatActivity {
 
         handleBackButtonClicked(); // When back button is pressed
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            user = bundle.getParcelable("User");
+        Intent intent = getIntent();
+        isFromNotification = intent.getBooleanExtra("fromNotification", false);
+        if (isFromNotification){
+            currentSelectedBottomIcon = R.id.chat;
+        }else{
+            currentSelectedBottomIcon = R.id.home;
         }
 
-        currentSelectedBottomIcon = R.id.home;
+        bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
+        setUser();
+
+        checkForNotifications();
 
     }
 
@@ -158,6 +201,8 @@ public class HomeActivity extends AppCompatActivity {
                     builder.setTitle("Log out")
                             .setMessage("Are you sure you want to log out?")
                             .setPositiveButton("YES", (dialog, which) -> {
+                                ClientUtils.removeToken(); // Removes token from SharedPreferences
+                                stopBackgroundService(); // Stops foreground service ( WEBSOCKET )
                                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -169,49 +214,100 @@ public class HomeActivity extends AppCompatActivity {
                             .show();
 
                 }
+                if (item.getItemId() == R.id.usersReportsButton){
+                    FragmentTransition.to(ReportsFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                if (item.getItemId() == R.id.usersCommentsButton){
+                    FragmentTransition.to(CommentsFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                if (item.getItemId() == R.id.profileButton) {
+                    Intent intent = new Intent(HomeActivity.this, UserDetailsActivity.class);
+                    startActivity(intent);
+                }
                 return false;
             }
         });
 
+        // HANDLING BOTTOM TOOLBAR
         bottomNavigationView = findViewById(R.id.bottomNavigationView2);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == currentSelectedBottomIcon){
-                    return true;
-                }
-                if (item.getItemId() == R.id.create && user instanceof ServiceProductProvider) {
-                    showCreateDialogSpp();
-                    return true;
-                }
-                if (item.getItemId() == R.id.home){
-                    FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
-                    currentSelectedBottomIcon = R.id.home;
-                    return true;
-                }
+                    if (item.getItemId() == currentSelectedBottomIcon) {
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.create && user.getRole() == Role.SERVICE_PRODUCT_PROVIDER) {
+                        showCreateDialogSpp();
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.home) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.home;
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.calendar) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(CalendarFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.calendar;
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.notifications) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(NotificationsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.notifications;
+                        return true;
+                    }
+                    if (item.getItemId() == R.id.create && user.getRole() == Role.EVENT_ORGANIZER) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(CreateEventHostFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.create;
+                        return true;
+                    }
+
+                    if (item.getItemId() == R.id.chat) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(ChatTabFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.chat;
+                        return true;
+                    }
+
                 return false;
             }
         });
 
-
+    }
+    private void removeAllFromBackStack(){
+        FragmentManager manager = getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() > 0) {
+            manager.popBackStackImmediate(null, manager.POP_BACK_STACK_INCLUSIVE);
+        }
     }
 
     private void handleBackButtonClicked() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+
             @Override
             public void handleOnBackPressed() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("Closing application")
-                        .setMessage("Are you sure you want to close application?")
-                        .setPositiveButton("YES", (dialog, which) -> {
-                            finish();
-                        })
-                        .setNegativeButton("NO", (dialog, which) -> {
-                            dialog.dismiss();
-                        })
-                        .setCancelable(true)
-                        .show();
-
+               if (!isMoreFragment(fragmentManager)) {
+                   AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                   builder.setTitle("Closing application")
+                           .setMessage("Are you sure you want to close application?")
+                           .setPositiveButton("YES", (dialog, which) -> {
+                               finish();
+                           })
+                           .setNegativeButton("NO", (dialog, which) -> {
+                               dialog.dismiss();
+                           })
+                           .setCancelable(true)
+                           .show();
+               }else{
+                   fragmentManager.popBackStack();
+               }
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
@@ -230,6 +326,11 @@ public class HomeActivity extends AppCompatActivity {
                             dialog.dismiss();
                             FragmentTransition.to(ServiceCreationFormFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
                             currentSelectedBottomIcon = R.id.create;
+                        } else {
+                            selected[0] = true;
+                            dialog.dismiss();
+                            FragmentTransition.to(MyProductsFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                            currentSelectedBottomIcon = R.id.create;
                         }
                     }
                 }).
@@ -237,7 +338,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                        if (!selected[0]){
-                           FragmentTransition.to(HomeScreenFragment.newInstance(), HomeActivity.this, false, R.id.mainScreenFragment);
+                           FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
                             bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
                        }
                     }
@@ -248,4 +349,110 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    private boolean isMoreFragment(FragmentManager fragmentManager){
+        fragmentManager = getSupportFragmentManager();
+        Log.i("NESTO", String.valueOf(fragmentManager.getBackStackEntryCount()));
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private void setUser(){
+        Intent intent = getIntent();
+        if (getApplicationContext() != null) {
+            TokenManager tokenManager = ClientUtils.getTokenManager();
+            String email = tokenManager.getEmail(tokenManager.getToken());
+
+            Call<GetAuthenticatedUserDTO> call = ClientUtils.authenticatedUserService.getUserByEmail(email);
+            call.enqueue(new Callback<GetAuthenticatedUserDTO>() {
+
+                @Override
+                public void onResponse(Call<GetAuthenticatedUserDTO> call, Response<GetAuthenticatedUserDTO> response) {
+                    if (response.isSuccessful()) {
+                        user = response.body();
+                        setNavigationDrawerMenu();
+                        runBackgroundService();
+                        if (intent != null && isFromNotification){
+                            transitionToSingleChatFragment(intent);
+                        }else{
+                            FragmentTransition.to(HomeScreenFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetAuthenticatedUserDTO> call, Throwable t) {
+                    Log.i("POZIV", t.getMessage());
+                }
+            });
+
+        }
+    }
+
+    private void setNavigationDrawerMenu(){
+        NavigationView navigationView = findViewById(R.id.navigation_drawer);
+        View headerView = navigationView.getHeaderView(0);
+        TextView drawerNameTextView = headerView.findViewById(R.id.drawerName); // R.id.drawerName je ID vašeg TextView-a u nav_header.xml
+        drawerNameTextView.setText(user.getFirstName() + " " + user.getLastName());
+
+        Menu navigationMenu = navigationView.getMenu();
+        if (user.getRole() == Role.ADMINISTRATOR){
+            navigationMenu.findItem(R.id.usersReportsButton).setVisible(true);
+            navigationMenu.findItem(R.id.usersCommentsButton).setVisible(true);
+        }
+
+        String imageUrl = user.getImage(); // primer: https://mojserver.com/slike/user123.jpg
+        ImageView piView = headerView.findViewById(R.id.imageView);
+
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.baseline_person_24) // fallback ako slika još nije učitana
+                    .error(R.drawable.baseline_person_24)           // fallback ako slika ne postoji
+                    .into(piView);
+        }
+    }
+
+    private void runBackgroundService(){
+        if (!WebSocketService.isServiceRunning()) {
+            Log.i("WebSocket", "Service is not running, starting...");
+            Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
+            Bundle args = new Bundle();
+            args.putParcelable("currentUser", user);
+            serviceIntent.putExtras(args);
+            startForegroundService(serviceIntent);
+        }
+        else{
+            Log.i("WebSocket", "Service is already running!");
+        }
+    }
+
+    private void stopBackgroundService(){
+        Intent serviceIntent = new Intent(HomeActivity.this, WebSocketService.class);
+        stopService(serviceIntent);  // Prekida servis
+    }
+
+    private void checkForNotifications(){
+        // Request notification permission if not already granted
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 123);
+        }
+    }
+
+    private void transitionToSingleChatFragment(Intent notificationIntent){
+        GetAuthenticatedUserDTO currentUser = notificationIntent.getParcelableExtra("currentUser");
+        ChatAuthenticatedUserDTO otherUser = notificationIntent.getParcelableExtra("otherUser");
+        boolean isAuthenticatedUser = notificationIntent.getBooleanExtra("isAuthenticatedUser", false);
+        FragmentTransition.to(ChatTabFragment.newInstance(currentUser), HomeActivity.this, false, R.id.mainScreenFragment);
+        FragmentTransition.to(SingleChatFragment.newInstance(currentUser, otherUser, isAuthenticatedUser), HomeActivity.this, true, R.id.mainScreenFragment);
+        setIntent(new Intent());
+    }
+
+    public void setCurrentSelectedBottomIcon(int currentSelectedBottomIcon) {
+        bottomNavigationView.setSelectedItemId(currentSelectedBottomIcon);
+        this.currentSelectedBottomIcon = currentSelectedBottomIcon;
+    }
 }

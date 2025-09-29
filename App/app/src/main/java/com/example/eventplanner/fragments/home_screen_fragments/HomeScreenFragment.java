@@ -11,19 +11,24 @@ import android.widget.TextView;
 
 import com.example.eventplanner.HomeActivity;
 import com.example.eventplanner.R;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.fragments.EventCreationFormFragment;
 import com.example.eventplanner.fragments.FragmentTransition;
 
 
 public class HomeScreenFragment extends Fragment {
+
+    private GetAuthenticatedUserDTO currentUser;
 
     public HomeScreenFragment() {
         // Required empty public constructor
     }
 
 
-    public static HomeScreenFragment newInstance() {
+    public static HomeScreenFragment newInstance(GetAuthenticatedUserDTO user) {
         HomeScreenFragment fragment = new HomeScreenFragment();
         Bundle args = new Bundle();
+        args.putParcelable("currentUser", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -31,7 +36,9 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null){
+            currentUser = getArguments().getParcelable("currentUser");
+        }
     }
 
     @Override
@@ -49,14 +56,15 @@ public class HomeScreenFragment extends Fragment {
 
         //Put fragment on opening this activity
         trendingText.setTextColor(getResources().getColor(R.color.neutral));
-        FragmentTransition.to(TopListsTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
+        FragmentTransition.to(TopListsTabFragment.newInstance(currentUser), getActivity(), false, R.id.homeScreenFragment);
+
 
         eventsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
                 eventsText.setTextColor(getResources().getColor(R.color.neutral));
-                FragmentTransition.to(EventTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
+                FragmentTransition.to(EventTabFragment.newInstance(currentUser), getActivity(), false, R.id.homeScreenFragment);
             }
         });
 
@@ -65,7 +73,7 @@ public class HomeScreenFragment extends Fragment {
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
                 trendingText.setTextColor(getResources().getColor(R.color.neutral));
-                FragmentTransition.to(TopListsTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
+                FragmentTransition.to(TopListsTabFragment.newInstance(currentUser), getActivity(), false, R.id.homeScreenFragment);
             }
         });
 
@@ -74,7 +82,7 @@ public class HomeScreenFragment extends Fragment {
             public void onClick(View v) {
                 resetColors(trendingText, eventsText, servicesProductText);
                 servicesProductText.setTextColor(getResources().getColor(R.color.neutral));
-                FragmentTransition.to(ServiceProductTabFragment.newInstance(), getActivity(), false, R.id.homeScreenFragment);
+                FragmentTransition.to(ServiceProductTabFragment.newInstance(currentUser), getActivity(), false, R.id.homeScreenFragment);
             }
         });
     }

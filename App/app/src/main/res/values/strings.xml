@@ -8,6 +8,8 @@
     <string name="Create">Create</string>
     <string name="Chat">Chat</string>
     <string name="Notifications">Notifications</string>
+    <string name="Reports">Reports</string>
+    <string name="Comments">Comments</string>
 
     <string name="PlaceholderName">Firstname Lastname</string>
     <string name="PlaceholderNotLogged">Not logged in</string>
@@ -19,6 +21,8 @@
     <string name="DrawerLogout">Log out</string>
     <string name="DrawerLogin">Log in</string>
     <string name="DrawerRegister">Register account</string>
+    <string name="DrawerReports">Users reports</string>
+    <string name="DrawerComments">Users comments</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -44,9 +48,9 @@
     <string name="onlyProducts">Only products</string>
     <string name="onlyServices">Only services</string>
     <string name="showBoth">Products and services</string>
-    <string name="topEventList">Top 5 events</string>
-    <string name="topServiceList">Top 5 services</string>
-    <string name="topProductList">Top 5 products</string>
+    <string name="topEventList">Top events</string>
+    <string name="topServiceList">Top services</string>
+    <string name="topProductList">Top products</string>
     <string name="swipeRight">Swipe right</string>
     <string name="productAndServices">PRODUCTS &amp; SERVICES </string>
     <string name="events">EVENTS</string>
@@ -66,10 +70,48 @@
     <string name="fixedServiceDuration">Fixed service duration</string>
     <string name="uploadImages">Upload images</string>
     <string name="availableForReservation">Available for reservation</string>
-
+    <string name="cities">Cities</string>
+    <string name="company">Company</string>
+    <string name="makeReservation">Make reservation</string>
     <string name="login_features">Log in or register to access more features</string>
-
+    <string name="addToFavourites">Add to favourites</string>
+    <string name="provider">Provider</string>
+    <string name="chatWithProvider">Chat with provider</string>
+    <string name="addReview">Add review</string>
     <string name="sortBy">Sort by:</string>
     <string name="order">Order: </string>
+    <string name="firstName">First name:</string>
+    <string name="lastName">Last name:</string>
+    <string name="register">Register</string>
+    <string name="givenEmail">Email</string>
+    <string name="givenPassword">Password</string>
+
+    <string name="quickRegistrationText">To use additional features promote account to Service Product Provider or Event Organizer!</string>
+
+    <string name="viewMore">View more</string>
+    <string name="viewLess">View less</string>
+    <string name="delete">Delete</string>
+    <string name="add">Add</string>
+    <string name="reset">Reset</string>
+    <string name="createEvent">Create event</string>
+    <string name="invitations">Invitations</string>
+    <string name="approve">Approve</string>
+
+    <string name="yourChats">Your chats</string>
+    <string name="enterText">Enter text</string>
+
+    <string name="placeholderText">Placeholder text</string>
+    <string name="placeholderNumber">##.##</string>
+    <string name="placeholderDescription">Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</string>
+
+    <string name="addFavourite">Add to favourites</string>
+    <string name="viewPProvider">View product provider</string>
+    <string name="reportUser">Report this user</string>
+    <string name="chatUser">Chat with this user</string>
+
+    <string name="product_image">Image of the product</string>
+    <string name="title_activity_user_details">UserDetailsActivity</string>
+
+    <string name="tap_event">Tap event for more details</string>
 
 </resources>

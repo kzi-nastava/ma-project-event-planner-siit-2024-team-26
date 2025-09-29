@@ -16,6 +16,7 @@
     </style>
 
     <style name="Theme.EventPlanner" parent="Base.Theme.EventPlanner" />
+
     <style name="FullScreenBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item>
 
@@ -24,6 +25,44 @@
     <style name="BottomSheetAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_animation</item>
         <item name="android:windowExitAnimation">@anim/slide_out_animation</item>
+    </style>
+
+    <style name="CustomCircle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CircleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CustomStepButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="SaveEventButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/accent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="cornerRadius">5dp</item>
+    </style>
+
+    <style name="CustomTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="boxCornerRadiusTopEnd">5dp</item>
+        <item name="boxCornerRadiusBottomStart">5dp</item>
+        <item name="boxCornerRadiusBottomEnd">5dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="boxStrokeColor">@color/custom_text_input_colors</item>
+        <item name="android:textColorHint">@color/custom_text_input_colors</item>
+        <item name="hintTextColor">@color/custom_text_input_colors</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="placeholderTextColor">@color/neutral</item>
+        <item name="boxStrokeErrorColor">@color/secondary</item>
     </style>
 
 </resources>

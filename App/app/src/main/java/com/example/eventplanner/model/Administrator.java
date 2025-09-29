@@ -2,9 +2,11 @@ package com.example.eventplanner.model;
 
 import android.os.Parcel;
 
+import java.util.List;
+
 public class Administrator extends AuthenticatedUser{
-    public Administrator(String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address) {
-        super(email, password, isActive, role, firstName, lastName, phoneNumber, address);
+    public Administrator(Integer id, String email, String password, Boolean isActive, String role, String firstName, String lastName, String phoneNumber, Address address, List<Event> favouriteEvents, List<Event> goingToEvents) {
+        super(id, email, password, isActive, role, firstName, lastName, phoneNumber, address, favouriteEvents, goingToEvents);
     }
 
     protected Administrator(Parcel in) {

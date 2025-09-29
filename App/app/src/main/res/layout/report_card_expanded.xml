@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="200dp"
+    android:background="@drawable/card_background_gold">
+
+
+    <TextView
+        android:id="@+id/reportReportedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From:"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
+
+    <TextView
+        android:id="@+id/reportGotReported"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Reported:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/reportReportedBy"
+        app:layout_constraintTop_toBottomOf="@id/reportReportedBy" />
+
+    <Button
+        android:id="@+id/reportViewMoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/secondary"
+        android:text="@string/viewLess"
+        app:cornerRadius="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reportText" />
+
+    <Button
+        android:id="@+id/reportDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:backgroundTint="@color/secondary"
+        android:text="@string/delete"
+        app:cornerRadius="5dp"
+        app:layout_constraintStart_toEndOf="@id/reportApproveButton"
+        app:layout_constraintTop_toTopOf="@id/reportViewMoreButton" />
+
+    <Button
+        android:id="@+id/reportApproveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:backgroundTint="@color/secondary"
+        android:text="@string/approve"
+        app:cornerRadius="5dp"
+        app:layout_constraintStart_toEndOf="@id/reportViewMoreButton"
+        app:layout_constraintTop_toTopOf="@id/reportViewMoreButton" />
+
+    <TextView
+        android:id="@+id/reportText"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:breakStrategy="simple"
+        android:ellipsize="end"
+        android:lineSpacingExtra="4dp"
+        android:text="Report text"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/reportGotReported"
+        app:layout_constraintTop_toBottomOf="@id/reportGotReported" />
+</androidx.constraintlayout.widget.ConstraintLayout>

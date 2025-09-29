@@ -9,13 +9,13 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:layout_width="140dp"
         android:layout_height="140dp"
-        android:tint="@color/blackreversable"
-        app:srcCompat="@drawable/baseline_account_24"
-        tools:ignore="UseAppTint" />
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/CircleImageView"/>
 
     <TextView
         android:id="@+id/drawerName"

@@ -1,0 +1,344 @@
+package com.example.eventplanner.fragments.home_screen_fragments;
+
+import static io.reactivex.internal.operators.flowable.FlowableReplay.observeOn;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.example.eventplanner.R;
+import com.example.eventplanner.adapters.ChatAdapter;
+import com.example.eventplanner.adapters.MessageAdapter;
+import com.example.eventplanner.clients.ClientUtils;
+import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
+import com.example.eventplanner.dto.authenticatedUser.GetAuthenticatedUserDTO;
+import com.example.eventplanner.dto.chat.BlockSignalDTO;
+import com.example.eventplanner.dto.chat.GetChatDTO;
+import com.example.eventplanner.dto.chat.UpdateChatDTO;
+import com.example.eventplanner.dto.chat.UpdatedChatDTO;
+import com.example.eventplanner.dto.message.CreateMessageDTO;
+import com.example.eventplanner.dto.message.GetMessageDTO;
+import com.example.eventplanner.model.Role;
+import com.example.eventplanner.model.id.ChatId;
+import com.example.eventplanner.services.WebSocketService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.subjects.BehaviorSubject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link SingleChatFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class SingleChatFragment extends Fragment {
+
+    private GetAuthenticatedUserDTO currentUser;
+    private RecyclerView recyclerView;
+
+    private ChatAuthenticatedUserDTO otherUser;
+    private ArrayList<GetMessageDTO> userMessages;
+    private MessageAdapter messageAdapter;
+    private ImageButton sendButton;
+    private ImageButton blockUserButton;
+    private boolean isAuthenticatedUser;
+    private TextView chatWithTextView;
+
+    private String message;
+
+    private GetChatDTO currentChat;
+
+    private EditText messageInputEditText;
+
+    private View mainView;
+
+    public SingleChatFragment() {
+        // Required empty public constructor
+    }
+
+    public static SingleChatFragment newInstance(GetAuthenticatedUserDTO currentUser, ChatAuthenticatedUserDTO otherUser, boolean isAuthenticatedUser) {
+        SingleChatFragment fragment = new SingleChatFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("currentUser", currentUser);
+        args.putParcelable("otherUser", otherUser);
+        args.putBoolean("isAuthenticatedUser", isAuthenticatedUser);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            currentUser = getArguments().getParcelable("currentUser");
+            otherUser = getArguments().getParcelable("otherUser");
+            isAuthenticatedUser = getArguments().getBoolean("isAuthenticatedUser");
+        }
+        userMessages = new ArrayList<>();
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_single_chat, container, false);
+        mainView = view;
+        loadChat();
+        setUpAttributes(view);
+        setUpRecyclerView(view);
+        loadMessages();
+        return view;
+    }
+
+    private void loadChat(){
+        Call<GetChatDTO> call = ClientUtils.chatService.getChat(currentUser.getId(), otherUser.getId());
+        call.enqueue(new Callback<GetChatDTO>() {
+
+            @Override
+            public void onResponse(Call<GetChatDTO> call, Response<GetChatDTO> response) {
+                if (response.isSuccessful()) {
+                    currentChat = response.body();
+                    setMessageInput();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetChatDTO> call, Throwable t) {
+                Log.i("Chat", t.getMessage());
+            }
+        });
+    }
+
+    private void loadMessages(){ // setUpRecyclerView must be called before this method
+        Call<ArrayList<GetMessageDTO>> call = ClientUtils.messageService.getByUsers(currentUser.getId(), otherUser.getId());
+        call.enqueue(new Callback<ArrayList<GetMessageDTO>>() {
+
+            @Override
+            public void onResponse(Call<ArrayList<GetMessageDTO>> call, Response<ArrayList<GetMessageDTO>> response) {
+                if (response.isSuccessful()) {
+                    userMessages = response.body();
+                    messageAdapter = new MessageAdapter(userMessages, getActivity(), currentUser, otherUser);
+                    recyclerView.setAdapter(messageAdapter);
+                    recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                    connectToSignal();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<GetMessageDTO>> call, Throwable t) {
+                Log.i("Messages", t.getMessage());
+            }
+        });
+    }
+    private void setUpRecyclerView(View view){
+        recyclerView = view.findViewById(R.id.messagesRecycleView);
+        LinearLayoutManager layoutManagerMessages= new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManagerMessages);
+    }
+
+    private void setMessageInput(){
+        messageInputEditText = mainView.findViewById(R.id.messageInput);
+        if ((isAuthenticatedUser && currentChat.isUser_1_blocked()) || (!isAuthenticatedUser && currentChat.isUser_2_blocked())){
+            messageInputEditText.setEnabled(false);
+            messageInputEditText.setHint("This user is blocked!");
+        }else if ((isAuthenticatedUser && currentChat.isUser_2_blocked()) || (!isAuthenticatedUser && currentChat.isUser_1_blocked())){
+            messageInputEditText.setEnabled(false);
+            messageInputEditText.setHint("User has blocked you!");
+        }else{
+            messageInputEditText.setEnabled(true);
+            messageInputEditText.setHint("Enter text");
+        }
+
+    }
+    private void setUpAttributes(View view){
+        chatWithTextView = view.findViewById(R.id.userFirstAndLastName);
+        chatWithTextView.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
+
+        sendButton = view.findViewById(R.id.sendButton);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                message = messageInputEditText.getText().toString();
+                    if (message != null && !message.equals("")){
+                        sendMessage();
+                        messageInputEditText.setText("");
+                    }
+            }
+        });
+
+        blockUserButton = view.findViewById(R.id.blockUserButton);
+        blockUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBlockingDialog();
+            }
+        });
+    }
+
+
+    private void sendMessage(){
+        ChatAuthenticatedUserDTO authenticatedUserDTO;
+        ChatAuthenticatedUserDTO eventOganizerDTO;
+        boolean isFromUser1 = false;
+        if (isAuthenticatedUser){
+            authenticatedUserDTO = new ChatAuthenticatedUserDTO(currentUser);
+            eventOganizerDTO = otherUser;
+            isFromUser1 = false;
+        }
+        else{
+            authenticatedUserDTO = otherUser;
+            eventOganizerDTO = new ChatAuthenticatedUserDTO(currentUser);
+            isFromUser1 = true;
+        }
+        CreateMessageDTO messageToSend = new CreateMessageDTO(eventOganizerDTO, authenticatedUserDTO, message, isFromUser1);
+        WebSocketService.sendMessage(messageToSend);
+        messageAdapter.addItem(new GetMessageDTO(messageToSend));
+        recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
+    private void receiveMessage(GetMessageDTO receivedMessage){
+        if(!isAuthenticatedUser && otherUser.getId() == receivedMessage.getAuthenticatedUser().getId()){
+            if(otherUser.getId() == receivedMessage.getAuthenticatedUser().getId()){
+                showReceivedMessage(receivedMessage);
+            }
+        }else{
+            if(otherUser.getId() == receivedMessage.getEventOrganizer().getId()){
+                showReceivedMessage(receivedMessage);
+            }
+        }
+    }
+
+    private void showReceivedMessage(GetMessageDTO receivedMessage){
+        messageAdapter.addItem(receivedMessage);
+        recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
+    private void connectToSignal(){
+        WebSocketService.messageSignal
+                .observeOn(AndroidSchedulers.mainThread()).
+                subscribe(receivedMessage ->{
+                            receiveMessage(receivedMessage);
+                        },
+                        throwable -> {
+                            // Obradi grešku
+                            Log.e("RXJavaError", "Greška u BehaviorSubject: ", throwable);
+                        });
+
+        WebSocketService.blockSignal
+                .observeOn(AndroidSchedulers.mainThread()).
+                subscribe(receiveMessage -> {
+                    changeMessageInput(receiveMessage);
+                },
+                throwable -> {
+                    // Obradi grešku
+                    Log.e("RXJavaError", "Greška u BehaviorSubject: ", throwable);
+                });
+    }
+
+    private void showBlockingDialog(){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            String dialogMessage = setDialogMessage();
+
+            builder.setTitle("User blocking")
+                    .setMessage(dialogMessage);
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    blockUnblockUser();
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+    }
+
+    private String setDialogMessage(){
+        String dialogMessage;
+        if (isAuthenticatedUser){
+            if (!currentChat.isUser_1_blocked()){
+                dialogMessage = "Are you sure you want to block this user?";
+            }else{
+                dialogMessage = "Are you sure you want to unblock this user?";
+            }
+        }else{
+            if (!currentChat.isUser_2_blocked()){
+                dialogMessage = "Are you sure you want to block this user?";
+            }else{
+                dialogMessage = "Are you sure you want to unblock this user?";
+            }
+        }
+        return dialogMessage;
+    }
+
+    private void blockUnblockUser(){
+
+        BlockSignalDTO blockSignalDTO;
+
+        if (isAuthenticatedUser){
+            currentChat.setUser_1_blocked(!currentChat.isUser_1_blocked());
+            blockSignalDTO = new BlockSignalDTO(currentChat.getId(), currentChat.getEventOrganizer().getEmail(), true);
+        }else{
+            currentChat.setUser_2_blocked(!currentChat.isUser_2_blocked());
+            blockSignalDTO = new BlockSignalDTO(currentChat.getId(), currentChat.getAuthenticatedUser().getEmail(), false);
+        }
+        setMessageInput();
+
+        UpdateChatDTO updatedChat = new UpdateChatDTO(currentChat.getEventOrganizer(), currentChat.getAuthenticatedUser(), currentChat.isUser_1_blocked(), currentChat.isUser_2_blocked());
+
+        Call<UpdatedChatDTO> call = ClientUtils.chatService.updateChat(updatedChat, currentChat.getEventOrganizer().getId(), currentChat.getAuthenticatedUser().getId());
+        call.enqueue(new Callback<UpdatedChatDTO>() {
+
+            @Override
+            public void onResponse(Call<UpdatedChatDTO> call, Response<UpdatedChatDTO> response) {
+                if (response.isSuccessful()) {
+                    WebSocketService.sendBlockSignal(blockSignalDTO);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdatedChatDTO> call, Throwable t) {
+                Log.i("Chat", t.getMessage());
+            }
+        });
+    }
+
+    private void changeMessageInput(BlockSignalDTO blockSignalDTO){
+
+        if (currentChat.getId().getEventOrganizerId() == blockSignalDTO.getChatId().getEventOrganizerId()
+        && currentChat.getId().getAuthenticatedUserId() == blockSignalDTO.getChatId().getAuthenticatedUserId()){
+            if (blockSignalDTO.isUser1Changed()){
+                currentChat.setUser_1_blocked(!currentChat.isUser_1_blocked());
+            }else{
+                currentChat.setUser_2_blocked(!currentChat.isUser_2_blocked());
+            }
+            setMessageInput();
+        }
+    }
+}
