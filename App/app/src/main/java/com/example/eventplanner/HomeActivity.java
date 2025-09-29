@@ -41,6 +41,7 @@ import com.example.eventplanner.clients.ClientUtils;
 import com.example.eventplanner.clients.authorization.TokenManager;
 import com.example.eventplanner.dto.authenticatedUser.ChatAuthenticatedUserDTO;
 import com.example.eventplanner.fragments.EventCreationFormFragment;
+import com.example.eventplanner.fragments.EventTypesFragment;
 import com.example.eventplanner.fragments.eventCreation.CreateEventHostFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.ChatTabFragment;
 import com.example.eventplanner.fragments.home_screen_fragments.CommentsFragment;
@@ -266,7 +267,12 @@ public class HomeActivity extends AppCompatActivity {
                         currentSelectedBottomIcon = R.id.create;
                         return true;
                     }
-
+                    if (item.getItemId() == R.id.create && user.getRole() == Role.ADMINISTRATOR) {
+                        removeAllFromBackStack();
+                        FragmentTransition.to(EventTypesFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);
+                        currentSelectedBottomIcon = R.id.create;
+                        return true;
+                    }
                     if (item.getItemId() == R.id.chat) {
                         removeAllFromBackStack();
                         FragmentTransition.to(ChatTabFragment.newInstance(user), HomeActivity.this, false, R.id.mainScreenFragment);

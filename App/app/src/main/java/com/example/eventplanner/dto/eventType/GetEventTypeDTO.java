@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.eventplanner.dto.category.GetCategoryDTO;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class GetEventTypeDTO implements Parcelable {
     private Integer id;
     private String name;
     private String description;
+    @SerializedName("active")
     private boolean isActive;
     private List<GetCategoryDTO> recommendedCategories;
 
